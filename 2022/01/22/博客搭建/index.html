@@ -7,12 +7,12 @@
   
   <title>博客搭建 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="零碎知识何其多，博客以记之，先搭建一个简陋的用用。 准备工作npm install -g hexo-cli  创建一个文件夹，例 blog  打开终端 cd blog执行以下命令  搭建hexo环境 12hexo init npm install  搭建完后，blog文件夹如下图所示     最后调试 hexo s --debug  &#x2F;&#x2F;启动hexo服务器，默认localhost:4000访问，可">
+  <meta name="description" content="零碎知识何其多，博客以记之，先搭建一个简陋的用用。 准备工作npm install -g hexo-cli  创建一个文件夹，例 blog  打开终端 cd blog执行以下命令  搭建 hexo 环境 12hexo initnpm install  搭建完后，blog 文件夹如下图所示    最后调试 hexo s --debug &#x2F;&#x2F;启动hexo服务器，默认localhost:4000访问，可">
 <meta property="og:type" content="article">
 <meta property="og:title" content="博客搭建">
 <meta property="og:url" content="http://example.com/2022/01/22/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="零碎知识何其多，博客以记之，先搭建一个简陋的用用。 准备工作npm install -g hexo-cli  创建一个文件夹，例 blog  打开终端 cd blog执行以下命令  搭建hexo环境 12hexo init npm install  搭建完后，blog文件夹如下图所示     最后调试 hexo s --debug  &#x2F;&#x2F;启动hexo服务器，默认localhost:4000访问，可">
+<meta property="og:description" content="零碎知识何其多，博客以记之，先搭建一个简陋的用用。 准备工作npm install -g hexo-cli  创建一个文件夹，例 blog  打开终端 cd blog执行以下命令  搭建 hexo 环境 12hexo initnpm install  搭建完后，blog 文件夹如下图所示    最后调试 hexo s --debug &#x2F;&#x2F;启动hexo服务器，默认localhost:4000访问，可">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://github.com/Tzt97/picture/blob/main/p1.png?raw=true">
 <meta property="og:image" content="https://github.com/Tzt97/picture/blob/main/p2.png?raw=true">
@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190120161011234.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190120161020474.png">
 <meta property="article:published_time" content="2022-01-22T12:40:40.000Z">
-<meta property="article:modified_time" content="2022-01-23T04:55:18.905Z">
+<meta property="article:modified_time" content="2022-01-24T05:09:32.133Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://github.com/Tzt97/picture/blob/main/p1.png?raw=true">
@@ -102,32 +102,30 @@
 </li>
 <li><p>打开终端 <code>cd blog</code>执行以下命令</p>
 <img src="https://github.com/Tzt97/picture/blob/main/p1.png?raw=true" width = "50%" height = "50%" div align=center /></li>
-<li><p>搭建hexo环境</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo init </span><br><span class="line">npm install </span><br></pre></td></tr></table></figure>
-<p>搭建完后，blog文件夹如下图所示</p>
+<li><p>搭建 hexo 环境</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>搭建完后，blog 文件夹如下图所示</p>
  <img src="https://github.com/Tzt97/picture/blob/main/p2.png?raw=true" width = "50%" height = "50%" div align=center />
 
-<p> 最后调试<code> hexo s --debug  //启动hexo服务器，默认localhost:4000访问，可以看到调试信息</code></p>
+<p>最后调试<code> hexo s --debug //启动hexo服务器，默认localhost:4000访问，可以看到调试信息</code></p>
 </li>
-<li><p>再GitHub上创建一个个人仓库，注意命名格式，创建仓库的名字必须为username.github.io,例如下图</p>
+<li><p>再 GitHub 上创建一个个人仓库，注意命名格式，创建仓库的名字必须为 username.github.io,例如下图</p>
 </li>
 </ol>
  <img src="https://github.com/Tzt97/picture/blob/main/p3.png?raw=true" width = "50%" height = "50%" div align=center />
 
 <ol start="6">
-<li><p>联系本地blog文件夹与GitHub远程仓库，在terminal终端，将当前目录切换到你的本地博客目录，执行以下命令：<code>npm install hexo-deployer-git --save</code>，安装完成之后，打开本地博客目录的_config.yml文件，编辑其中的deploy节点：</p>
+<li><p>联系本地 blog 文件夹与 GitHub 远程仓库，在 terminal 终端，将当前目录切换到你的本地博客目录，执行以下命令：<code>npm install hexo-deployer-git --save</code>，安装完成之后，打开本地博客目录的_config.yml 文件，编辑其中的 deploy 节点：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/youlookwhat/youlookwhat.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure></li>
-<li><p>将本地初始化的hello world上传到仓库</p>
+<li><p>将本地初始化的 hello world 上传到仓库</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean  // clean本地项目，防止缓存</span><br><span class="line">hexo g      // 根据你编辑的md格式的博客，生成静态网页</span><br><span class="line">hexo d      // 将本地博客发布到github</span><br></pre></td></tr></table></figure></li>
-<li><p>执行后会让在终端输入用户名和密码，这里的密码是token,而不是用户密码。token的获取详见链接<a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_36728518/article/details/119733175">token</a>,但是要保存token并且每次提交都要复制粘贴一遍太麻烦，因此使用ssh密钥的方法来上传，具体生成方法如下</p>
+<li><p>执行后会让在终端输入用户名和密码，这里的密码是 token,而不是用户密码。token 的获取详见链接<a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_36728518/article/details/119733175">token</a>,但是要保存 token 并且每次提交都要复制粘贴一遍太麻烦，因此使用 ssh 密钥的方法来上传，具体生成方法如下</p>
 </li>
 </ol>
- <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> # 用你注册GitHub时的邮箱号，进行秘钥生成</span><br><span class="line">cd ~</span><br><span class="line">ssh-keygen -t rsa -C &quot;xxxxxxx@qq.com&quot;</span><br><span class="line"># 系统就会生成一个隐藏文件夹.ssh</span><br><span class="line">cd .ssh</span><br><span class="line">ls</span><br><span class="line"># 复制公钥</span><br><span class="line">vim id_rsa.pub</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> # 用你注册GitHub时的邮箱号，进行秘钥生成</span><br><span class="line">cd ~</span><br><span class="line">ssh-keygen -t rsa -C &quot;xxxxxxx@qq.com&quot;</span><br><span class="line"># 系统就会生成一个隐藏文件夹.ssh</span><br><span class="line">cd .ssh</span><br><span class="line">ls</span><br><span class="line"># 复制公钥</span><br><span class="line">vim id_rsa.pub</span><br></pre></td></tr></table></figure>
 
-<pre><code>     然后将密钥粘贴到GitHub上：
-</code></pre>
-<img src="https://img-blog.csdnimg.cn/20190120160825203.png" width = "30%" height = "30%" div align=center />
-
+<p>然后将密钥粘贴到 GitHub 上：<br><img src="https://img-blog.csdnimg.cn/20190120160825203.png" width = "30%" height = "30%" div align=center /></p>
 <img src="https://img-blog.csdnimg.cn/20190120161011234.png" width = "30%" height = "30%" div align=center />
 
 <img src="https://img-blog.csdnimg.cn/20190120161020474.png" width = "30%" height = "30%" div align=center />
@@ -135,13 +133,13 @@
 <pre><code>  这样每次提交就不用输入用户名和密码了
 </code></pre>
 <ol start="9">
-<li>补充一点基本操作，创建一个新博客文章<code>hexo new post &#39;文章标题&#39; </code>,提交<code>hexo clean</code> ,<code>hexo g </code>,<code>hexo d</code>。  网页查看：输入网址链接 <code>username.github.io</code>。   </li>
+<li>补充一点基本操作，创建一个新博客文章<code>hexo new post &#39;文章标题&#39; </code>,提交<code>hexo clean</code> ,<code>hexo g </code>,<code>hexo d</code>。 网页查看：输入网址链接 <code>username.github.io</code>。</li>
 </ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/01/22/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" data-id="ckyqsez620001pj9b10536435" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/01/22/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" data-id="ckys9gzxv0002ad9b33hagarx" class="article-share-link">Share</a>
       
       
     </footer>
@@ -149,6 +147,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2022/01/24/opengl-coordinate/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          opengl-coordinate
+        
+      </div>
+    </a>
   
   
     <a href="/2022/01/22/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
@@ -188,6 +195,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2022/01/24/opengl-coordinate/">opengl-coordinate</a>
+          </li>
         
           <li>
             <a href="/2022/01/22/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a>
