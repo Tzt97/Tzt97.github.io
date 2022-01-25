@@ -184,21 +184,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="今天还是学习-OpenGL，就是效率很慢啊"><a href="#今天还是学习-OpenGL，就是效率很慢啊" class="headerlink" title="今天还是学习 OpenGL，就是效率很慢啊"></a>今天还是学习 OpenGL，就是效率很慢啊</h2><h3 id="今天学习-OpenGL-的摄像头，使用键盘鼠标可以控制观察角度"><a href="#今天学习-OpenGL-的摄像头，使用键盘鼠标可以控制观察角度" class="headerlink" title="今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度"></a>今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度</h3><ol>
+          <h2 id="今天还是学习-opengl就是效率很慢啊">今天还是学习 OpenGL，就是效率很慢啊</h2>
+<h3 id="今天学习-opengl-的摄像头使用键盘鼠标可以控制观察角度">今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度</h3>
+<ol type="1">
 <li>创造一个 lookat 摄像头矩阵——创建了一个三个单位轴相互垂直的、以摄像机的位置为原点的坐标系。</li>
 </ol>
 <p><img src="https://learnopengl-cn.github.io/img/01/09/camera_axes.png" width = "50%" height = "50%" div align=center /></p>
-<p>矩阵主要由以下内包括：</p>
-<script type="math/tex; mode=display">LookAt = \begin{bmatrix} \color{red}{R_x} & \color{red}{R_y} & \color{red}{R_z} & 0 \\ \color{green}{U_x} & \color{green}{U_y} & \color{green}{U_z} & 0 \\ \color{blue}{D_x} & \color{blue}{D_y} & \color{blue}{D_z} & 0 \\ 0 & 0 & 0  & 1 \end{bmatrix} * \begin{bmatrix} 1 & 0 & 0 & -\color{purple}{P_x} \\ 0 & 1 & 0 & -\color{purple}{P_y} \\ 0 & 0 & 1 & -\color{purple}{P_z} \\ 0 & 0 & 0  & 1 \end{bmatrix}</script><p>其中 R 是右向量，U 是上向量，D 是方向向量 P 是摄像机位置向量,不考虑复杂的数学知识，一个 lookat 矩阵通常这样构造</p>
+<p>矩阵主要由以下内包括： <span class="math display">\[LookAt = \begin{bmatrix} \color{red}{R_x} &amp; \color{red}{R_y} &amp; \color{red}{R_z} &amp; 0 \\ \color{green}{U_x} &amp; \color{green}{U_y} &amp; \color{green}{U_z} &amp; 0 \\ \color{blue}{D_x} &amp; \color{blue}{D_y} &amp; \color{blue}{D_z} &amp; 0 \\ 0 &amp; 0 &amp; 0  &amp; 1 \end{bmatrix} * \begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; -\color{purple}{P_x} \\ 0 &amp; 1 &amp; 0 &amp; -\color{purple}{P_y} \\ 0 &amp; 0 &amp; 1 &amp; -\color{purple}{P_z} \\ 0 &amp; 0 &amp; 0  &amp; 1 \end{bmatrix}\]</span></p>
+<p>其中 R 是右向量，U 是上向量，D 是方向向量 P 是摄像机位置向量,不考虑复杂的数学知识，一个 lookat 矩阵通常这样构造</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 view;</span><br><span class="line">view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),</span><br><span class="line">           glm::vec3(0.0f, 0.0f, 0.0f),</span><br><span class="line">           glm::vec3(0.0f, 1.0f, 0.0f));</span><br></pre></td></tr></table></figure>
 <p><code>vec3(0.0f, 0.0f, 3.0f)</code>是指相机的位置向量，<code>vec3(0.0f, 0.0f, 0.0f)</code>是指目标物的位置向量，<code>vec3(0.0f, 1.0f, 0.0f)</code>是一个上向量</p>
 <p>构造原理代码如下</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">// Custom implementation of the LookAt function</span><br><span class="line">glm::mat4 calculate_lookAt_matrix(glm::vec3 position, glm::vec3 target, glm::vec3 worldUp)</span><br><span class="line">&#123;</span><br><span class="line">    // 1. Position = known</span><br><span class="line">    // 2. Calculate cameraDirection</span><br><span class="line">    glm::vec3 zaxis = glm::normalize(position - target);</span><br><span class="line">    // 3. Get positive right axis vector</span><br><span class="line">    glm::vec3 xaxis = glm::normalize(glm::cross(glm::normalize(worldUp), zaxis));</span><br><span class="line">    // 4. Calculate camera up vector</span><br><span class="line">    glm::vec3 yaxis = glm::cross(zaxis, xaxis);</span><br><span class="line"></span><br><span class="line">    // Create translation and rotation matrix</span><br><span class="line">    // In glm we access elements as mat[col][row] due to column-major layout</span><br><span class="line">    glm::mat4 translation = glm::mat4(1.0f); // Identity matrix by default</span><br><span class="line">    translation[3][0] = -position.x; // Third column, first row</span><br><span class="line">    translation[3][1] = -position.y;</span><br><span class="line">    translation[3][2] = -position.z;</span><br><span class="line">    glm::mat4 rotation = glm::mat4(1.0f);</span><br><span class="line">    rotation[0][0] = xaxis.x; // First column, first row</span><br><span class="line">    rotation[1][0] = xaxis.y;</span><br><span class="line">    rotation[2][0] = xaxis.z;</span><br><span class="line">    rotation[0][1] = yaxis.x; // First column, second row</span><br><span class="line">    rotation[1][1] = yaxis.y;</span><br><span class="line">    rotation[2][1] = yaxis.z;</span><br><span class="line">    rotation[0][2] = zaxis.x; // First column, third row</span><br><span class="line">    rotation[1][2] = zaxis.y;</span><br><span class="line">    rotation[2][2] = zaxis.z;</span><br><span class="line"></span><br><span class="line">    // Return lookAt matrix as combination of translation and rotation matrix</span><br><span class="line">    return rotation * translation; // Remember to read from right to left (first translation then rotation)</span><br><span class="line">&#125;</span><br><span class="line">    // Don&#x27;t forget to replace glm::lookAt with your own version</span><br><span class="line">    // view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));</span><br><span class="line">    view = calculate_lookAt_matrix(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));</span><br></pre></td></tr></table></figure>
-<p>2.实现键盘 wsad 控制摄像头的移动<br>2.1 创建 lookat 矩阵</p>
+<p>2.实现键盘 wsad 控制摄像头的移动 2.1 创建 lookat 矩阵</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  3.0f);</span><br><span class="line">glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);</span><br><span class="line">glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);</span><br><span class="line">view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);</span><br></pre></td></tr></table></figure>
 <p>2.2 改变 GLFW 的键盘输入函数 processInput</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">void processInput(GLFWwindow *window)</span><br><span class="line">&#123;</span><br><span class="line"> ...</span><br><span class="line"> float cameraSpeed = 0.05f; // adjust accordingly</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)</span><br><span class="line">     cameraPos += cameraSpeed * cameraFront;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)</span><br><span class="line">     cameraPos -= cameraSpeed * cameraFront;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)</span><br><span class="line">     cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)</span><br><span class="line">     cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2.3 移动速度<br>目前我们的移动速度是个常量。理论上没什么问题，但是实际情况下根据处理器的能力不同，有些人可能会比其他人每秒绘制更多帧，也就是以更高的频率调用 processInput 函数。结果就是，根据配置的不同，有些人可能移动很快，而有些人会移动很慢。当你发布你的程序的时候，你必须确保它在所有硬件上移动速度都一样。图形程序和游戏通常会跟踪一个时间差(Deltatime)变量，它储存了渲染上一帧所用的时间。我们把所有速度都去乘以 deltaTime 值。结果就是，如果我们的 deltaTime 很大，就意味着上一帧的渲染花费了更多时间，所以这一帧的速度需要变得更高来平衡渲染所花去的时间。使用这种方法时，无论你的电脑快还是慢，摄像机的速度都会相应平衡，这样每个用户的体验就都一样了。</p>
+<p>2.3 移动速度 目前我们的移动速度是个常量。理论上没什么问题，但是实际情况下根据处理器的能力不同，有些人可能会比其他人每秒绘制更多帧，也就是以更高的频率调用 processInput 函数。结果就是，根据配置的不同，有些人可能移动很快，而有些人会移动很慢。当你发布你的程序的时候，你必须确保它在所有硬件上移动速度都一样。图形程序和游戏通常会跟踪一个时间差(Deltatime)变量，它储存了渲染上一帧所用的时间。我们把所有速度都去乘以 deltaTime 值。结果就是，如果我们的 deltaTime 很大，就意味着上一帧的渲染花费了更多时间，所以这一帧的速度需要变得更高来平衡渲染所花去的时间。使用这种方法时，无论你的电脑快还是慢，摄像机的速度都会相应平衡，这样每个用户的体验就都一样了。</p>
 
       
     </div>
@@ -263,31 +265,32 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="今天继续学习-OpenGL"><a href="#今天继续学习-OpenGL" class="headerlink" title="今天继续学习 OpenGL"></a>今天继续学习 OpenGL</h1><h2 id="学习坐标变换"><a href="#学习坐标变换" class="headerlink" title="学习坐标变换"></a>学习坐标变换</h2><ol>
+          <h1 id="今天继续学习-opengl">今天继续学习 OpenGL</h1>
+<h2 id="学习坐标变换">学习坐标变换</h2>
+<ol type="1">
 <li><p>理论</p>
-<script type="math/tex; mode=display">V_{clip}=M_{projection}\cdot M_{view}\cdot M_{model}\cdot V_{local}</script><p>$V_{local}$一般就是指位置坐标，是一个 4*1 的向量，{x,y,z,1}</p>
-<p>$M_{model}$是指变换矩阵，包括旋转与平移,是一个 4*4 矩阵；</p>
+<p><span class="math display">\[V_{clip}=M_{projection}\cdot M_{view}\cdot M_{model}\cdot V_{local}\]</span></p>
+<p><span class="math inline">\(V_{local}\)</span>一般就是指位置坐标，是一个 4*1 的向量，{x,y,z,1}</p>
+<p><span class="math inline">\(M_{model}\)</span>是指变换矩阵，包括旋转与平移,是一个 4*4 矩阵；</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 model = glm::mat4(1.0f);</span><br><span class="line">model = glm::rotate(model, glm::radians(-55.0f)</span><br><span class="line">glm::vec3(1.0f, 0.0f, 0.0f));</span><br></pre></td></tr></table></figure>
-<p>$M_{view}$指相机（人眼）距离观察目标的相对位置</p>
+<p><span class="math inline">\(M_{view}\)</span>指相机（人眼）距离观察目标的相对位置</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 view;</span><br><span class="line">// 注意，我们将矩阵向我们要进行移动场景的反方向移动。</span><br><span class="line">view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));</span><br></pre></td></tr></table></figure>
-<p>$M_{projection}$主要是指投影矩阵，包括平行投影与投射投影</p>
-<ol>
+<p><span class="math inline">\(M_{projection}\)</span>主要是指投影矩阵，包括平行投影与投射投影</p>
+<ol type="1">
 <li>平行投影</li>
 </ol>
 <p><img src="https://learnopengl-cn.github.io/img/01/08/orthographic_frustum.png" width = "50%" height = "50%" div align=center /></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 100.0f);</span><br></pre></td></tr></table></figure>
 <p>前两个参数指定了投影体的左右坐标，第三和第四参数指定了投影体的底部和顶部。通过这四个参数我们定义了近平面和远平面的大小，然后第五和第六个参数则定义了近平面和远平面的距离。这个投影矩阵会将处于这些 x，y，z 值范围内的坐标变换为标准化设备坐标。</p>
-<p>2.投射投影<br><img src="https://learnopengl-cn.github.io/img/01/08/perspective_frustum.png" width = "50%" height = "50%" div align=center /></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 projection;</span><br><span class="line">projection = glm::perspective(glm::radians(45.0f), screenWidth / screenHeight, 0.1f, 100.0f);</span><br></pre></td></tr></table></figure>
-</li>
+<p>2.投射投影 <img src="https://learnopengl-cn.github.io/img/01/08/perspective_frustum.png" width = "50%" height = "50%" div align=center /></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 projection;</span><br><span class="line">projection = glm::perspective(glm::radians(45.0f), screenWidth / screenHeight, 0.1f, 100.0f);</span><br></pre></td></tr></table></figure></li>
 <li><p>代码实现</p>
 <p>几何着色器代码</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#version 330 core</span><br><span class="line">layout (location = 0) in vec3 aPos;</span><br><span class="line">...</span><br><span class="line">uniform mat4 model;</span><br><span class="line">uniform mat4 view;</span><br><span class="line">uniform mat4 projection;</span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    // 注意乘法要从右向左读</span><br><span class="line">    gl_Position = projection * view * model * vec4(aPos, 1.0);</span><br><span class="line">    ...</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 <p>渲染代码</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 model         = glm::mat4(1.0f);</span><br><span class="line">glm::mat4 view          = glm::mat4(1.0f);</span><br><span class="line">glm::mat4 projection    = glm::mat4(1.0f);</span><br><span class="line">model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));</span><br><span class="line">view  = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));</span><br><span class="line">projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);</span><br><span class="line">glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, &quot;model &quot;), 1, GL_FALSE, &amp;model [0][0]);</span><br><span class="line">glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, &quot;view&quot;), 1, GL_FALSE, &amp;view[0][0]);</span><br><span class="line">glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, &quot;projection&quot;), 1, GL_FALSE, &amp;projection[0][0]);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>效果图</p>
-<p><img src="https://learnopengl-cn.github.io/img/01/08/coordinate_systems_result.png" width = "50%" height = "50%" div align=center /></p>
-</li>
+<p><img src="https://learnopengl-cn.github.io/img/01/08/coordinate_systems_result.png" width = "50%" height = "50%" div align=center /></p></li>
 <li><p>3D 实现</p>
 <p>拓展我们的 2D 平面为一个 3D 立方体。要想渲染一个立方体，我们一共需要 36 个顶点（6 个面 x 每个面有 2 个三角形组成 x 每个三角形有 3 个顶点）</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">float vertices[] = &#123;</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line"> -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 1.0f,</span><br><span class="line"> -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"> -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line"> -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"></span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"> -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line"> -0.5f,  0.5f, -0.5f,  0.0f, 1.0f&#125;;</span><br></pre></td></tr></table></figure>
@@ -299,8 +302,7 @@
 <p>此时图像十分奇怪，因为没有视野覆盖，OpenGL 里面提供了函数来进行深度的覆盖与缓冲，OpenGL 存储深度信息在一个叫做 Z 缓冲(Z-buffer)的缓冲中，它允许 OpenGL 决定何时覆盖一个像素而何时不覆盖。通过使用 Z 缓冲，我们可以配置 OpenGL 来进行深度测试</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glEnable(GL_DEPTH_TEST);</span><br><span class="line">glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br></pre></td></tr></table></figure>
 <p><img src="https://github.com/Tzt97/picture/blob/main/截屏2022-01-24%20下午5.27.21.png?raw=true" width = "50%" height = "50%" div align=center /></p>
-<p>至此，本章学习结束</p>
-</li>
+<p>至此，本章学习结束</p></li>
 </ol>
 
       
@@ -366,36 +368,33 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="零碎知识何其多，博客以记之，先搭建一个简陋的用用。"><a href="#零碎知识何其多，博客以记之，先搭建一个简陋的用用。" class="headerlink" title="零碎知识何其多，博客以记之，先搭建一个简陋的用用。"></a>零碎知识何其多，博客以记之，先搭建一个简陋的用用。</h2><ol>
-<li>准备工作<code>npm install -g hexo-cli</code></li>
-<li>创建一个文件夹，例 blog</li>
-<li><p>打开终端 <code>cd blog</code>执行以下命令<br><img src="https://github.com/Tzt97/picture/blob/main/p1.png?raw=true" width = "50%" height = "50%" div align=center /></p>
-</li>
+          <h2 id="零碎知识何其多博客以记之先搭建一个简陋的用用">零碎知识何其多，博客以记之，先搭建一个简陋的用用。</h2>
+<ol type="1">
+<li><p>准备工作<code>npm install -g hexo-cli</code></p></li>
+<li><p>创建一个文件夹，例 blog</p></li>
+<li><p>打开终端 <code>cd blog</code>执行以下命令 <img src="https://github.com/Tzt97/picture/blob/main/p1.png?raw=true" width = "50%" height = "50%" div align=center /></p></li>
 <li><p>搭建 hexo 环境</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
 <p>搭建完后，blog 文件夹如下图所示</p>
-<p> <img src="https://github.com/Tzt97/picture/blob/main/p2.png?raw=true" width = "50%" height = "50%" div align=center /></p>
-<p>最后调试<code>hexo s --debug //启动hexo服务器，默认localhost:4000访问，可以看到调试信息</code></p>
-</li>
-<li><p>再 GitHub 上创建一个个人仓库，注意命名格式，创建仓库的名字必须为 username.github.io,例如下图</p>
+<p><img src="https://github.com/Tzt97/picture/blob/main/p2.png?raw=true" width = "50%" height = "50%" div align=center /></p>
+<p>最后调试<code>hexo s --debug //启动hexo服务器，默认localhost:4000访问，可以看到调试信息</code></p></li>
+<li><p>再 GitHub 上创建一个个人仓库，注意命名格式，创建仓库的名字必须为 username.github.io,例如下图</p></li>
+</ol>
 <p><img src="https://github.com/Tzt97/picture/blob/main/p3.png?raw=true" width = "50%" height = "50%" div align=center /></p>
-</li>
+<ol start="6" type="1">
 <li><p>联系本地 blog 文件夹与 GitHub 远程仓库，在 terminal 终端，将当前目录切换到你的本地博客目录，执行以下命令：<code>npm install hexo-deployer-git --save</code>，安装完成之后，打开本地博客目录的_config.yml 文件，编辑其中的 deploy 节点：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/youlookwhat/youlookwhat.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
-</li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/youlookwhat/youlookwhat.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure></li>
 <li><p>将本地初始化的 hello world 上传到仓库</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean  // clean本地项目，防止缓存</span><br><span class="line">hexo g      // 根据你编辑的md格式的博客，生成静态网页</span><br><span class="line">hexo d      // 将本地博客发布到github</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>执行后会让在终端输入用户名和密码，这里的密码是 token,而不是用户密码。token 的获取详见链接<a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_36728518/article/details/119733175">token</a>,但是要保存 token 并且每次提交都要复制粘贴一遍太麻烦，因此使用 ssh 密钥的方法来上传，具体生成方法如下</p>
-</li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean  // clean本地项目，防止缓存</span><br><span class="line">hexo g      // 根据你编辑的md格式的博客，生成静态网页</span><br><span class="line">hexo d      // 将本地博客发布到github</span><br></pre></td></tr></table></figure></li>
+<li><p>执行后会让在终端输入用户名和密码，这里的密码是 token,而不是用户密码。token 的获取详见链接<a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_36728518/article/details/119733175">token</a>,但是要保存 token 并且每次提交都要复制粘贴一遍太麻烦，因此使用 ssh 密钥的方法来上传，具体生成方法如下</p></li>
 </ol>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> # 用你注册GitHub时的邮箱号，进行秘钥生成</span><br><span class="line">cd ~</span><br><span class="line">ssh-keygen -t rsa -C &quot;xxxxxxx@qq.com&quot;</span><br><span class="line"># 系统就会生成一个隐藏文件夹.ssh</span><br><span class="line">cd .ssh</span><br><span class="line">ls</span><br><span class="line"># 复制公钥</span><br><span class="line">vim id_rsa.pub</span><br></pre></td></tr></table></figure>
-<p>然后将密钥粘贴到 GitHub 上：<br><img src="https://img-blog.csdnimg.cn/20190120160825203.png" width = "30%" height = "30%" div align=center /></p>
+<p>然后将密钥粘贴到 GitHub 上： <img src="https://img-blog.csdnimg.cn/20190120160825203.png" width = "30%" height = "30%" div align=center /></p>
 <p><img src="https://img-blog.csdnimg.cn/20190120161011234.png" width = "30%" height = "30%" div align=center /></p>
 <p><img src="https://img-blog.csdnimg.cn/20190120161020474.png" width = "30%" height = "30%" div align=center /></p>
-<pre><code>  这样每次提交就不用输入用户名和密码了
-</code></pre><ol>
-<li>补充一点基本操作，创建一个新博客文章<code>hexo new post &#39;文章标题&#39;</code>,提交<code>hexo clean</code> ,<code>hexo g</code>,<code>hexo d</code>。 网页查看：输入网址链接 <code>username.github.io</code>。</li>
+<pre><code>  这样每次提交就不用输入用户名和密码了</code></pre>
+<ol start="9" type="1">
+<li>补充一点基本操作，创建一个新博客文章<code>hexo new post '文章标题'</code>,提交<code>hexo clean</code> ,<code>hexo g</code>,<code>hexo d</code>。 网页查看：输入网址链接 <code>username.github.io</code>。</li>
 </ol>
 
       
@@ -462,13 +461,18 @@
 
       
           <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="quick-start">Quick Start</h2>
+<h3 id="create-a-new-post">Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h3 id="run-server">Run server</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<h3 id="generate-static-files">Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 
       
@@ -636,6 +640,61 @@
 
 
   
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
