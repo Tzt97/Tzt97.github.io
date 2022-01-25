@@ -7,12 +7,12 @@
   
   <title>opengl-coordinate | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="今天继续学习 OpenGL学习坐标变换 理论  $$V_{clip}&#x3D;M_{projection}\cdot M_{view}\cdot M_{model}\cdot V_{local}$$        $V_{local}$一般就是指位置坐标，是一个 4*1 的向量，{x,y,z,1} $M_{model}$是指变换矩阵，包括旋转与平移,是一个 4*4 矩阵； 123glm::mat4 mod">
+  <meta name="description" content="今天继续学习 OpenGL学习坐标变换 理论  $$V_{clip}&#x3D;M_{projection}\cdot M_{view}\cdot M_{model}\cdot V_{local}$$       $V_{local}$一般就是指位置坐标，是一个 4*1 的向量，{x,y,z,1} $M_{model}$是指变换矩阵，包括旋转与平移,是一个 4*4 矩阵； 123glm::mat4 mode">
 <meta property="og:type" content="article">
 <meta property="og:title" content="opengl-coordinate">
 <meta property="og:url" content="http://example.com/2022/01/24/opengl-coordinate/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="今天继续学习 OpenGL学习坐标变换 理论  $$V_{clip}&#x3D;M_{projection}\cdot M_{view}\cdot M_{model}\cdot V_{local}$$        $V_{local}$一般就是指位置坐标，是一个 4*1 的向量，{x,y,z,1} $M_{model}$是指变换矩阵，包括旋转与平移,是一个 4*4 矩阵； 123glm::mat4 mod">
+<meta property="og:description" content="今天继续学习 OpenGL学习坐标变换 理论  $$V_{clip}&#x3D;M_{projection}\cdot M_{view}\cdot M_{model}\cdot V_{local}$$       $V_{local}$一般就是指位置坐标，是一个 4*1 的向量，{x,y,z,1} $M_{model}$是指变换矩阵，包括旋转与平移,是一个 4*4 矩阵； 123glm::mat4 mode">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://learnopengl-cn.github.io/img/01/08/orthographic_frustum.png">
 <meta property="og:image" content="https://learnopengl-cn.github.io/img/01/08/perspective_frustum.png">
@@ -98,53 +98,40 @@
 <li><p>理论</p>
  $$V_{clip}=M_{projection}\cdot M_{view}\cdot M_{model}\cdot V_{local}$$  
    
-
 <p>$V_{local}$一般就是指位置坐标，是一个 4*1 的向量，{x,y,z,1}</p>
 <p>$M_{model}$是指变换矩阵，包括旋转与平移,是一个 4*4 矩阵；</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 model = glm::mat4(1.0f);</span><br><span class="line">model = glm::rotate(model, glm::radians(-55.0f)</span><br><span class="line">glm::vec3(1.0f, 0.0f, 0.0f));</span><br></pre></td></tr></table></figure>
-
 <p>$M_{view}$指相机（人眼）距离观察目标的相对位置</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 view;</span><br><span class="line">// 注意，我们将矩阵向我们要进行移动场景的反方向移动。</span><br><span class="line">view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));</span><br></pre></td></tr></table></figure>
-
 <p>$M_{projection}$主要是指投影矩阵，包括平行投影与投射投影</p>
 <ol>
 <li>平行投影</li>
 </ol>
-<img src="https://learnopengl-cn.github.io/img/01/08/orthographic_frustum.png" width = "50%" height = "50%" div align=center />
-
+<p><img src="https://learnopengl-cn.github.io/img/01/08/orthographic_frustum.png" width = "50%" height = "50%" div align=center /></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 100.0f);</span><br></pre></td></tr></table></figure>
-
 <p>前两个参数指定了投影体的左右坐标，第三和第四参数指定了投影体的底部和顶部。通过这四个参数我们定义了近平面和远平面的大小，然后第五和第六个参数则定义了近平面和远平面的距离。这个投影矩阵会将处于这些 x，y，z 值范围内的坐标变换为标准化设备坐标。</p>
-<p>2.投射投影</p>
-<img src="https://learnopengl-cn.github.io/img/01/08/perspective_frustum.png" width = "50%" height = "50%" div align=center />
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 projection;</span><br><span class="line">projection = glm::perspective(glm::radians(45.0f), screenWidth / screenHeight, 0.1f, 100.0f);</span><br></pre></td></tr></table></figure></li>
+<p>2.投射投影<br><img src="https://learnopengl-cn.github.io/img/01/08/perspective_frustum.png" width = "50%" height = "50%" div align=center /></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 projection;</span><br><span class="line">projection = glm::perspective(glm::radians(45.0f), screenWidth / screenHeight, 0.1f, 100.0f);</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>代码实现</p>
 <p>几何着色器代码</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#version 330 core</span><br><span class="line">layout (location = 0) in vec3 aPos;</span><br><span class="line">...</span><br><span class="line">uniform mat4 model;</span><br><span class="line">uniform mat4 view;</span><br><span class="line">uniform mat4 projection;</span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    // 注意乘法要从右向左读</span><br><span class="line">    gl_Position = projection * view * model * vec4(aPos, 1.0);</span><br><span class="line">    ...</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
 <p>渲染代码</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 model         = glm::mat4(1.0f);</span><br><span class="line">glm::mat4 view          = glm::mat4(1.0f);</span><br><span class="line">glm::mat4 projection    = glm::mat4(1.0f);</span><br><span class="line">model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));</span><br><span class="line">view  = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));</span><br><span class="line">projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);</span><br><span class="line">glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, &quot;model &quot;), 1, GL_FALSE, &amp;model [0][0]);</span><br><span class="line">glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, &quot;view&quot;), 1, GL_FALSE, &amp;view[0][0]);</span><br><span class="line">glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, &quot;projection&quot;), 1, GL_FALSE, &amp;projection[0][0]);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p>效果图</p>
-<img src="https://learnopengl-cn.github.io/img/01/08/coordinate_systems_result.png" width = "50%" height = "50%" div align=center /></li>
+<p><img src="https://learnopengl-cn.github.io/img/01/08/coordinate_systems_result.png" width = "50%" height = "50%" div align=center /></p>
+</li>
 <li><p>3D 实现</p>
 <p>拓展我们的 2D 平面为一个 3D 立方体。要想渲染一个立方体，我们一共需要 36 个顶点（6 个面 x 每个面有 2 个三角形组成 x 每个三角形有 3 个顶点）</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">float vertices[] = &#123;</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line"> -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 1.0f,</span><br><span class="line"> -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"> -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line"> -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"></span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"> -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line"> -0.5f,  0.5f, -0.5f,  0.0f, 1.0f&#125;;</span><br></pre></td></tr></table></figure>
-
 <p>让立方体随着时间旋转</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));</span><br></pre></td></tr></table></figure>
-
 <p>渲染代码</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDrawArrays(GL_TRIANGLES, 0, 36);</span><br></pre></td></tr></table></figure>
-
-<img src="https://github.com/Tzt97/picture/blob/main/p4.png?raw=true" width = "50%" height = "50%" div align=center />
-
+<p><img src="https://github.com/Tzt97/picture/blob/main/p4.png?raw=true" width = "50%" height = "50%" div align=center /></p>
 <p>此时图像十分奇怪，因为没有视野覆盖，OpenGL 里面提供了函数来进行深度的覆盖与缓冲，OpenGL 存储深度信息在一个叫做 Z 缓冲(Z-buffer)的缓冲中，它允许 OpenGL 决定何时覆盖一个像素而何时不覆盖。通过使用 Z 缓冲，我们可以配置 OpenGL 来进行深度测试</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glEnable(GL_DEPTH_TEST);</span><br><span class="line">glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br></pre></td></tr></table></figure>
-
-<img src="https://github.com/Tzt97/picture/blob/main/截屏2022-01-24%20下午5.27.21.png?raw=true" width = "50%" height = "50%" div align=center />
-
+<p><img src="https://github.com/Tzt97/picture/blob/main/截屏2022-01-24%20下午5.27.21.png?raw=true" width = "50%" height = "50%" div align=center /></p>
 <p>至此，本章学习结束</p>
 </li>
 </ol>
@@ -152,7 +139,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/01/24/opengl-coordinate/" data-id="ckytv7cbn0001ym9b322847rf" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/01/24/opengl-coordinate/" data-id="ckytvf9970002zs9bahak4mun" class="article-share-link">Share</a>
       
       
     </footer>
@@ -160,6 +147,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2022/01/25/opengl-cameral/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          opengl-cameral
+        
+      </div>
+    </a>
   
   
     <a href="/2022/01/22/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" id="article-nav-older" class="article-nav-link-wrap">
@@ -199,6 +195,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2022/01/25/opengl-cameral/">opengl-cameral</a>
+          </li>
         
           <li>
             <a href="/2022/01/24/opengl-coordinate/">opengl-coordinate</a>

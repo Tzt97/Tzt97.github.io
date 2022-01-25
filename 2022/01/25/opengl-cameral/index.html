@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>opengl-cameral | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="今天还是学习 OpenGL，就是效率很慢啊今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度 创造一个 lookat 摄像头矩阵——创建了一个三个单位轴相互垂直的、以摄像机的位置为原点的坐标系。   矩阵主要由以下内包括： LookAt &#x3D; \begin{bmatrix} \color{red}{R_x} &amp; \color{red}{R_y} &amp; \color{red}{R_z} &amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="opengl-cameral">
+<meta property="og:url" content="http://example.com/2022/01/25/opengl-cameral/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="今天还是学习 OpenGL，就是效率很慢啊今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度 创造一个 lookat 摄像头矩阵——创建了一个三个单位轴相互垂直的、以摄像机的位置为原点的坐标系。   矩阵主要由以下内包括： LookAt &#x3D; \begin{bmatrix} \color{red}{R_x} &amp; \color{red}{R_y} &amp; \color{red}{R_z} &amp;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://learnopengl-cn.github.io/img/01/09/camera_axes.png">
+<meta property="article:published_time" content="2022-01-25T07:50:29.000Z">
+<meta property="article:modified_time" content="2022-01-25T08:39:12.191Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://learnopengl-cn.github.io/img/01/09/camera_axes.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-opengl-cameral" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/01/25/opengl-cameral/" class="article-date">
+  <time datetime="2022-01-25T07:50:29.000Z" itemprop="datePublished">2022-01-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      opengl-cameral
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="今天还是学习-OpenGL，就是效率很慢啊"><a href="#今天还是学习-OpenGL，就是效率很慢啊" class="headerlink" title="今天还是学习 OpenGL，就是效率很慢啊"></a>今天还是学习 OpenGL，就是效率很慢啊</h2><h3 id="今天学习-OpenGL-的摄像头，使用键盘鼠标可以控制观察角度"><a href="#今天学习-OpenGL-的摄像头，使用键盘鼠标可以控制观察角度" class="headerlink" title="今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度"></a>今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度</h3><ol>
+<li>创造一个 lookat 摄像头矩阵——创建了一个三个单位轴相互垂直的、以摄像机的位置为原点的坐标系。</li>
+</ol>
+<p><img src="https://learnopengl-cn.github.io/img/01/09/camera_axes.png" width = "50%" height = "50%" div align=center /></p>
+<p>矩阵主要由以下内包括：</p>
+<script type="math/tex; mode=display">LookAt = \begin{bmatrix} \color{red}{R_x} & \color{red}{R_y} & \color{red}{R_z} & 0 \\ \color{green}{U_x} & \color{green}{U_y} & \color{green}{U_z} & 0 \\ \color{blue}{D_x} & \color{blue}{D_y} & \color{blue}{D_z} & 0 \\ 0 & 0 & 0  & 1 \end{bmatrix} * \begin{bmatrix} 1 & 0 & 0 & -\color{purple}{P_x} \\ 0 & 1 & 0 & -\color{purple}{P_y} \\ 0 & 0 & 1 & -\color{purple}{P_z} \\ 0 & 0 & 0  & 1 \end{bmatrix}</script><p>其中 R 是右向量，U 是上向量，D 是方向向量 P 是摄像机位置向量,不考虑复杂的数学知识，一个 lookat 矩阵通常这样构造</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 view;</span><br><span class="line">view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),</span><br><span class="line">           glm::vec3(0.0f, 0.0f, 0.0f),</span><br><span class="line">           glm::vec3(0.0f, 1.0f, 0.0f));</span><br></pre></td></tr></table></figure>
+<p><code>vec3(0.0f, 0.0f, 3.0f)</code>是指相机的位置向量，<code>vec3(0.0f, 0.0f, 0.0f)</code>是指目标物的位置向量，<code>vec3(0.0f, 1.0f, 0.0f)</code>是一个上向量</p>
+<p>构造原理代码如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">// Custom implementation of the LookAt function</span><br><span class="line">glm::mat4 calculate_lookAt_matrix(glm::vec3 position, glm::vec3 target, glm::vec3 worldUp)</span><br><span class="line">&#123;</span><br><span class="line">    // 1. Position = known</span><br><span class="line">    // 2. Calculate cameraDirection</span><br><span class="line">    glm::vec3 zaxis = glm::normalize(position - target);</span><br><span class="line">    // 3. Get positive right axis vector</span><br><span class="line">    glm::vec3 xaxis = glm::normalize(glm::cross(glm::normalize(worldUp), zaxis));</span><br><span class="line">    // 4. Calculate camera up vector</span><br><span class="line">    glm::vec3 yaxis = glm::cross(zaxis, xaxis);</span><br><span class="line"></span><br><span class="line">    // Create translation and rotation matrix</span><br><span class="line">    // In glm we access elements as mat[col][row] due to column-major layout</span><br><span class="line">    glm::mat4 translation = glm::mat4(1.0f); // Identity matrix by default</span><br><span class="line">    translation[3][0] = -position.x; // Third column, first row</span><br><span class="line">    translation[3][1] = -position.y;</span><br><span class="line">    translation[3][2] = -position.z;</span><br><span class="line">    glm::mat4 rotation = glm::mat4(1.0f);</span><br><span class="line">    rotation[0][0] = xaxis.x; // First column, first row</span><br><span class="line">    rotation[1][0] = xaxis.y;</span><br><span class="line">    rotation[2][0] = xaxis.z;</span><br><span class="line">    rotation[0][1] = yaxis.x; // First column, second row</span><br><span class="line">    rotation[1][1] = yaxis.y;</span><br><span class="line">    rotation[2][1] = yaxis.z;</span><br><span class="line">    rotation[0][2] = zaxis.x; // First column, third row</span><br><span class="line">    rotation[1][2] = zaxis.y;</span><br><span class="line">    rotation[2][2] = zaxis.z;</span><br><span class="line"></span><br><span class="line">    // Return lookAt matrix as combination of translation and rotation matrix</span><br><span class="line">    return rotation * translation; // Remember to read from right to left (first translation then rotation)</span><br><span class="line">&#125;</span><br><span class="line">    // Don&#x27;t forget to replace glm::lookAt with your own version</span><br><span class="line">    // view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));</span><br><span class="line">    view = calculate_lookAt_matrix(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));</span><br></pre></td></tr></table></figure>
+<p>2.实现键盘 wsad 控制摄像头的移动<br>2.1 创建 lookat 矩阵</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  3.0f);</span><br><span class="line">glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);</span><br><span class="line">glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);</span><br><span class="line">view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);</span><br></pre></td></tr></table></figure>
+<p>2.2 改变 GLFW 的键盘输入函数 processInput</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">void processInput(GLFWwindow *window)</span><br><span class="line">&#123;</span><br><span class="line"> ...</span><br><span class="line"> float cameraSpeed = 0.05f; // adjust accordingly</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)</span><br><span class="line">     cameraPos += cameraSpeed * cameraFront;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)</span><br><span class="line">     cameraPos -= cameraSpeed * cameraFront;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)</span><br><span class="line">     cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)</span><br><span class="line">     cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.3 移动速度<br>目前我们的移动速度是个常量。理论上没什么问题，但是实际情况下根据处理器的能力不同，有些人可能会比其他人每秒绘制更多帧，也就是以更高的频率调用 processInput 函数。结果就是，根据配置的不同，有些人可能移动很快，而有些人会移动很慢。当你发布你的程序的时候，你必须确保它在所有硬件上移动速度都一样。图形程序和游戏通常会跟踪一个时间差(Deltatime)变量，它储存了渲染上一帧所用的时间。我们把所有速度都去乘以 deltaTime 值。结果就是，如果我们的 deltaTime 很大，就意味着上一帧的渲染花费了更多时间，所以这一帧的速度需要变得更高来平衡渲染所花去的时间。使用这种方法时，无论你的电脑快还是慢，摄像机的速度都会相应平衡，这样每个用户的体验就都一样了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/01/25/opengl-cameral/" data-id="ckytvf9940001zs9bb1npgrdr" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/01/24/opengl-coordinate/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">opengl-coordinate</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/01/25/opengl-cameral/">opengl-cameral</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/24/opengl-coordinate/">opengl-coordinate</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/22/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/22/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
