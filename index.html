@@ -87,7 +87,11 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="今天继续学习-OpenGL"><a href="#今天继续学习-OpenGL" class="headerlink" title="今天继续学习 OpenGL"></a>今天继续学习 OpenGL</h1><h2 id="学习坐标变换"><a href="#学习坐标变换" class="headerlink" title="学习坐标变换"></a>学习坐标变换</h2><ol>
-<li><p>理论<br>$$V_{clip}=M_{projection}\cdot M_{view}\cdot M_{model}\cdot V_{local}$$<br>$V_{local}$一般就是指位置坐标，是一个 4*1 的向量，{x,y,z,1}</p>
+<li><p>理论</p>
+ $$V_{clip}=M_{projection}\cdot M_{view}\cdot M_{model}\cdot V_{local}$$  
+   
+
+<p>$V_{local}$一般就是指位置坐标，是一个 4*1 的向量，{x,y,z,1}</p>
 <p>$M_{model}$是指变换矩阵，包括旋转与平移,是一个 4*4 矩阵；</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 model = glm::mat4(1.0f);</span><br><span class="line">model = glm::rotate(model, glm::radians(-55.0f)</span><br><span class="line">glm::vec3(1.0f, 0.0f, 0.0f));</span><br></pre></td></tr></table></figure>
 
@@ -140,7 +144,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/01/24/opengl-coordinate/" data-id="ckyshn91w0001iv9b3imohh94" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/01/24/opengl-coordinate/" data-id="ckytv7cbn0001ym9b322847rf" class="article-share-link">Share</a>
       
       
     </footer>
@@ -216,7 +220,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/01/22/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" data-id="ckyshn91y0002iv9b4twi8057" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/01/22/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" data-id="ckytv7cbq0002ym9bavl07gka" class="article-share-link">Share</a>
       
       
     </footer>
@@ -265,7 +269,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/01/22/hello-world/" data-id="ckyshn91r0000iv9b8rn6457y" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/01/22/hello-world/" data-id="ckytv7cbg0000ym9b19m68cfs" class="article-share-link">Share</a>
       
       
     </footer>
