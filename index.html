@@ -170,7 +170,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-01-25 15:50:29 / Modified: 16:39:12" itemprop="dateCreated datePublished" datetime="2022-01-25T15:50:29+08:00">2022-01-25</time>
+              <time title="Created: 2022-01-25 15:50:29 / Modified: 18:37:37" itemprop="dateCreated datePublished" datetime="2022-01-25T15:50:29+08:00">2022-01-25</time>
             </span>
 
           
@@ -190,7 +190,8 @@
 <li>创造一个 lookat 摄像头矩阵——创建了一个三个单位轴相互垂直的、以摄像机的位置为原点的坐标系。</li>
 </ol>
 <p><img src="https://learnopengl-cn.github.io/img/01/09/camera_axes.png" width = "50%" height = "50%" div align=center /></p>
-<p>矩阵主要由以下内包括： <span class="math display">\[LookAt = \begin{bmatrix} \color{red}{R_x} &amp; \color{red}{R_y} &amp; \color{red}{R_z} &amp; 0 \\ \color{green}{U_x} &amp; \color{green}{U_y} &amp; \color{green}{U_z} &amp; 0 \\ \color{blue}{D_x} &amp; \color{blue}{D_y} &amp; \color{blue}{D_z} &amp; 0 \\ 0 &amp; 0 &amp; 0  &amp; 1 \end{bmatrix} * \begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; -\color{purple}{P_x} \\ 0 &amp; 1 &amp; 0 &amp; -\color{purple}{P_y} \\ 0 &amp; 0 &amp; 1 &amp; -\color{purple}{P_z} \\ 0 &amp; 0 &amp; 0  &amp; 1 \end{bmatrix}\]</span></p>
+<p>矩阵主要由以下内包括：</p>
+<p><span class="math display">\[ LookAt = \begin{bmatrix} \color{red}{R_x} &amp; \color{red}{R_y} &amp; \color{red}{R_z} &amp; 0 \\ \color{green}{U_x} &amp; \color{green}{U_y} &amp; \color{green}{U_z} &amp; 0 \\ \color{blue}{D_x} &amp; \color{blue}{D_y} &amp; \color{blue}{D_z} &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} \* \begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; -\color{purple}{P_x} \\ 0 &amp; 1 &amp; 0 &amp; -\color{purple}{P_y} \\ 0 &amp; 0 &amp; 1 &amp; -\color{purple}{P_z} \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} \]</span></p>
 <p>其中 R 是右向量，U 是上向量，D 是方向向量 P 是摄像机位置向量,不考虑复杂的数学知识，一个 lookat 矩阵通常这样构造</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 view;</span><br><span class="line">view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),</span><br><span class="line">           glm::vec3(0.0f, 0.0f, 0.0f),</span><br><span class="line">           glm::vec3(0.0f, 1.0f, 0.0f));</span><br></pre></td></tr></table></figure>
 <p><code>vec3(0.0f, 0.0f, 3.0f)</code>是指相机的位置向量，<code>vec3(0.0f, 0.0f, 0.0f)</code>是指目标物的位置向量，<code>vec3(0.0f, 1.0f, 0.0f)</code>是一个上向量</p>
