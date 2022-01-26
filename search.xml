@@ -1,43 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>blog-next</title>
-    <url>/2022/01/26/blog-next/</url>
-    <content><![CDATA[<h2 id="昨天写opengl写了一半发现公式在hexo中没法转义百度后总结了一下公式在hexo-next中的显示方法顺道给博客布置了next主题进行了一部分的调参">昨天写OpenGL写了一半发现公式在hexo中没法转义，百度后总结了一下公式在hexo-next中的显示方法，顺道给博客布置了next主题，进行了一部分的调参。</h2>
-<span id="more"></span>
-<ol type="1">
-<li><p>next主题下载</p>
-<p>默认的hexo博客布置没有next主题，用了landscape，首先下载next主题，有两种方式</p>
-<p>方法一 npm 方法，要求hexo 版本高于5.0 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd blog</span><br><span class="line">$ npm install hexo-theme-next</span><br></pre></td></tr></table></figure></p>
-<p>方法二 git clone <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd blog </span><br><span class="line">$ git clone https://github.com/next-theme/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure> 我用了方法二，提示报错，百度了一下换成了下面的命令 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git clone git://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure></p></li>
-<li><p>next 主题的使用与配置</p>
-<p><a href="https://www.jianshu.com/p/97e0c6a51809">使用</a></p>
-<p>下载完成之后，打开/blog/_config.yml文件，查找#Extensions字段，修改如下： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Extensions</span><br><span class="line">## Plugins: https://hexo.io/plugins/</span><br><span class="line">## Themes: https://hexo.io/themes/</span><br><span class="line">theme: next</span><br></pre></td></tr></table></figure> next里面有四个子主题，选择其中一个,打开/blog/themes/next/_config.yml文件，查找Scheme Settings字段并修改如下： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Scheme Settings</span><br><span class="line">#</span><br><span class="line">---------------------------------------------------------------</span><br><span class="line"># Schemes</span><br><span class="line">#scheme: Muse</span><br><span class="line">#scheme: Mist</span><br><span class="line">#scheme: Pisces</span><br><span class="line">scheme: Gemini</span><br><span class="line"># Dark Mode</span><br><span class="line">darkmode: false</span><br></pre></td></tr></table></figure> ok 现在你的博客已经换成了next主题了。</p>
-<p><a href="https://blog.csdn.net/as480133937/article/details/100138838/">配置</a></p>
-<p>在 Hexo 中有两份主要的配置文件，其名称都是 _config.yml。 其中，一份位于站点根目录下，主要包含 Hexo 本身的站点配置；另一份位于主题theme目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。为了描述方便，在以下说明中，将前者称为 站点配置文件， 后者称为 主题配置文件</p>
-<p>2.1 新建标签及分类界面</p>
-<p>打开 主题配置文件，搜索 menu，找到如下代码： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">menu:</span><br><span class="line">home: / || home</span><br><span class="line">#about: /about/ || user</span><br><span class="line">#tags: /tags/ || tags</span><br><span class="line">#categories: /categories/ || th</span><br><span class="line">archives: /archives/ || archive</span><br><span class="line">#schedule: /schedule/ || calendar</span><br><span class="line">#sitemap: /sitemap.xml || sitemap</span><br><span class="line">#commonweal: /404/ || heartbeat</span><br></pre></td></tr></table></figure> 同时终端 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br><span class="line">hexo new page tages</span><br></pre></td></tr></table></figure> 会在生成source下生成两个文件夹，categories和tages，以后在新建md文件时，加上标签就可以归到对应标签或分类界面了 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">title: blog-next</span><br><span class="line">date: 2022-01-26 11:13:02</span><br><span class="line">categories: 博客</span><br></pre></td></tr></table></figure> 2.2 隐藏网页底部 powered By Hexo</p>
-<p>打开 themes/next/layout/_partials/footer.swig,找到(command+f) <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;%- if theme.footer.powered %&#125;</span><br><span class="line"> &lt;div class=&quot;powered-by&quot;&gt;</span><br><span class="line">  &#123;%- set next_site = &#x27;https://theme-next.org&#x27; %&#125;</span><br><span class="line">  %- if theme.scheme !== &#x27;Gemini&#x27; %&#125;</span><br><span class="line">   &#123;%- set next_site = &#x27;https://&#x27; + theme.scheme | lower + &#x27;.theme-next.org&#x27; %&#125;</span><br><span class="line">  &#123;%- endif %&#125;</span><br><span class="line">  &#123;&#123;- __(&#x27;footer.powered&#x27;, next_url(&#x27;https://hexo.io&#x27;, &#x27;Hexo&#x27;, &#123;class: &#x27;theme-link&#x27;&#125;) + &#x27; &amp; &#x27; + next_url(next_site, &#x27;NexT.&#x27; + theme.scheme, &#123;class: &#x27;theme-link&#x27;&#125;)) &#125;&#125;</span><br><span class="line"> &lt;/div&gt;</span><br><span class="line"> &#123;%- endif %&#125;</span><br></pre></td></tr></table></figure> 把这段代码首尾分别加上：<!-- 和-->，或者直接删除。</p>
-<p>2.3 浏览页面显示当前浏览进度</p>
-<p>打开 themes/next/_config.yml，搜索关键字 scrollpercent，把 false 改为 true。</p>
-<p>2.4 Local Search本地搜索 安装插件hexo-generator-searchdb,执行以下命令: <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure> 修改hexo/_config.yml站点配置文件，新增以下内容到任意位置 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">search:</span><br><span class="line">path: search.xml</span><br><span class="line">field: post</span><br><span class="line">format: html</span><br><span class="line">limit: 10000</span><br></pre></td></tr></table></figure> 编辑 主题配置文件，启用本地搜索功能： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Local search</span><br><span class="line">local_search:</span><br><span class="line">enable: true</span><br></pre></td></tr></table></figure></p>
-<p>2.4 阅读全文设置 在每篇文章自己想要展示的地方后面加一个<!-- more -->即可 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">## 今天还是学习 OpenGL，就是效率很慢啊</span><br><span class="line">### 今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度</span><br><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure> 效果如下</p>
-<p><img src="https://github.com/Tzt97/picture/blob/main/截屏2022-01-26%20下午12.17.46.png?raw=true" width = "50%" height = "50%" div align=center /></p>
-<p>2.5 剩下的暂时没有配置，花里胡哨的，以后用到了再说吧</p></li>
-<li><p><a href="https://zhuanlan.zhihu.com/p/381508379">hexo中公式的显示</a></p>
-<p>卸载hexo-math：<code>$ npm un hexo-math</code></p>
-<p>卸载hexo-renderer-marked：<code>$ npm un hexo-renderer-marked</code></p>
-<p>安装hexo-renderer-pandoc：<code>$ npm i hexo-renderer-pandoc</code></p>
-<p>安装hexo-renderer-pandoc：<code>$ brew install pandoc</code>（mac）</p>
-<p>在hexo/_config.yml末尾添加一段代码 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">math:</span><br><span class="line"> engine: &#x27;mathjax&#x27; # or &#x27;katex&#x27;</span><br><span class="line"> mathjax:</span><br><span class="line">   # src: custom_mathjax_source</span><br><span class="line">   config:</span><br><span class="line">     # MathJax config</span><br></pre></td></tr></table></figure> 修改next/_config.yml中mathjax的设置 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mathjax:</span><br><span class="line">enable: true</span><br></pre></td></tr></table></figure> md文件前面要加上mathjax:true <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">title: opengl-coordinate</span><br><span class="line">date: 2022-01-24 10:58:09</span><br><span class="line">categories: opengl-learn</span><br><span class="line">mathjax: true</span><br></pre></td></tr></table></figure></p>
-<p>这样就ok了</p></li>
-</ol>
-]]></content>
-      <categories>
-        <category>博客</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Hello World</title>
     <url>/2022/01/22/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>. <span id="more"></span></p>
@@ -54,70 +17,6 @@
 <h3 id="deploy-to-remote-sites">Deploy to remote sites</h3>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-      <categories>
-        <category>博客</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>opengl-cameral</title>
-    <url>/2022/01/25/opengl-cameral/</url>
-    <content><![CDATA[<h2 id="今天还是学习-opengl就是效率很慢啊">今天还是学习 OpenGL，就是效率很慢啊</h2>
-<h3 id="今天学习-opengl-的摄像头使用键盘鼠标可以控制观察角度">今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度</h3>
-<span id="more"></span>
-<ol type="1">
-<li>创造一个 lookat 摄像头矩阵——创建了一个三个单位轴相互垂直的、以摄像机的位置为原点的坐标系。</li>
-</ol>
-<p><img src="https://learnopengl-cn.github.io/img/01/09/camera_axes.png" width = "50%" height = "50%" div align=center /></p>
-<p>矩阵主要由以下内包括：</p>
-<p><span class="math display">\[ LookAt = \begin{bmatrix} \color{red}{R_x} &amp; \color{red}{R_y} &amp; \color{red}{R_z} &amp; 0 \\ \color{green}{U_x} &amp; \color{green}{U_y} &amp; \color{green}{U_z} &amp; 0 \\ \color{blue}{D_x} &amp; \color{blue}{D_y} &amp; \color{blue}{D_z} &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} * \begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; -\color{purple}{P_x} \\ 0 &amp; 1 &amp; 0 &amp; -\color{purple}{P_y} \\ 0 &amp; 0 &amp; 1 &amp; -\color{purple}{P_z} \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} \]</span></p>
-<p>其中 R 是右向量，U 是上向量，D 是方向向量 P 是摄像机位置向量,不考虑复杂的数学知识，一个 lookat 矩阵通常这样构造</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::mat4 view;</span><br><span class="line">view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),</span><br><span class="line">           glm::vec3(0.0f, 0.0f, 0.0f),</span><br><span class="line">           glm::vec3(0.0f, 1.0f, 0.0f));</span><br></pre></td></tr></table></figure>
-<p><code>vec3(0.0f, 0.0f, 3.0f)</code>是指相机的位置向量，<code>vec3(0.0f, 0.0f, 0.0f)</code>是指目标物的位置向量，<code>vec3(0.0f, 1.0f, 0.0f)</code>是一个上向量</p>
-<p>构造原理代码如下</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// Custom implementation of the LookAt function</span><br><span class="line">glm::mat4 calculate_lookAt_matrix(glm::vec3 position, glm::vec3 target, glm::vec3 worldUp)</span><br><span class="line">&#123;</span><br><span class="line">    // 1. Position = known</span><br><span class="line">    // 2. Calculate cameraDirection</span><br><span class="line">    glm::vec3 zaxis = glm::normalize(position - target);</span><br><span class="line">    // 3. Get positive right axis vector</span><br><span class="line">    glm::vec3 xaxis = glm::normalize(glm::cross(glm::normalize(worldUp), zaxis));</span><br><span class="line">    // 4. Calculate camera up vector</span><br><span class="line">    glm::vec3 yaxis = glm::cross(zaxis, xaxis);</span><br><span class="line"></span><br><span class="line">    // Create translation and rotation matrix</span><br><span class="line">    // In glm we access elements as mat[col][row] due to column-major layout</span><br><span class="line">    glm::mat4 translation = glm::mat4(1.0f); // Identity matrix by default</span><br><span class="line">    translation[3][0] = -position.x; // Third column, first row</span><br><span class="line">    translation[3][1] = -position.y;</span><br><span class="line">    translation[3][2] = -position.z;</span><br><span class="line">    glm::mat4 rotation = glm::mat4(1.0f);</span><br><span class="line">    rotation[0][0] = xaxis.x; // First column, first row</span><br><span class="line">    rotation[1][0] = xaxis.y;</span><br><span class="line">    rotation[2][0] = xaxis.z;</span><br><span class="line">    rotation[0][1] = yaxis.x; // First column, second row</span><br><span class="line">    rotation[1][1] = yaxis.y;</span><br><span class="line">    rotation[2][1] = yaxis.z;</span><br><span class="line">    rotation[0][2] = zaxis.x; // First column, third row</span><br><span class="line">    rotation[1][2] = zaxis.y;</span><br><span class="line">    rotation[2][2] = zaxis.z;</span><br><span class="line"></span><br><span class="line">    // Return lookAt matrix as combination of translation and rotation matrix</span><br><span class="line">    return rotation * translation; // Remember to read from right to left (first translation then rotation)</span><br><span class="line">&#125;</span><br><span class="line">    // Don&#x27;t forget to replace glm::lookAt with your own version</span><br><span class="line">    // view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));</span><br><span class="line">    view = calculate_lookAt_matrix(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));</span><br></pre></td></tr></table></figure>
-<p>2.实现键盘 wsad 控制摄像头的移动 2.1 创建 lookat 矩阵</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  3.0f);</span><br><span class="line">glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);</span><br><span class="line">glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);</span><br><span class="line">view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);</span><br></pre></td></tr></table></figure>
-<p>2.2 改变 GLFW 的键盘输入函数 processInput</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void processInput(GLFWwindow *window)</span><br><span class="line">&#123;</span><br><span class="line"> ...</span><br><span class="line"> float cameraSpeed = 0.05f; // adjust accordingly</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)</span><br><span class="line">     cameraPos += cameraSpeed * cameraFront;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)</span><br><span class="line">     cameraPos -= cameraSpeed * cameraFront;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)</span><br><span class="line">     cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)</span><br><span class="line">     cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2.3 移动速度 目前我们的移动速度是个常量。理论上没什么问题，但是实际情况下根据处理器的能力不同，有些人可能会比其他人每秒绘制更多帧，也就是以更高的频率调用 processInput 函数。结果就是，根据配置的不同，有些人可能移动很快，而有些人会移动很慢。当你发布你的程序的时候，你必须确保它在所有硬件上移动速度都一样。图形程序和游戏通常会跟踪一个时间差(Deltatime)变量，它储存了渲染上一帧所用的时间。我们把所有速度都去乘以 deltaTime 值。结果就是，如果我们的 deltaTime 很大，就意味着上一帧的渲染花费了更多时间，所以这一帧的速度需要变得更高来平衡渲染所花去的时间。使用这种方法时，无论你的电脑快还是慢，摄像机的速度都会相应平衡，这样每个用户的体验就都一样了。</p>
-]]></content>
-      <categories>
-        <category>opengl-learn</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>博客搭建</title>
-    <url>/2022/01/22/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<h2 id="零碎知识何其多博客以记之先搭建一个简陋的用用">零碎知识何其多，博客以记之，先搭建一个简陋的用用。</h2>
-<span id="more"></span>
-<ol type="1">
-<li><p>准备工作<code>npm install -g hexo-cli</code></p></li>
-<li><p>创建一个文件夹，例 blog</p></li>
-<li><p>打开终端 <code>cd blog</code>执行以下命令 <img src="https://github.com/Tzt97/picture/blob/main/p1.png?raw=true" width = "50%" height = "50%" div align=center /></p></li>
-<li><p>搭建 hexo 环境</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo init</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
-<p>搭建完后，blog 文件夹如下图所示</p>
-<p><img src="https://github.com/Tzt97/picture/blob/main/p2.png?raw=true" width = "50%" height = "50%" div align=center /></p>
-<p>最后调试<code>hexo s --debug //启动hexo服务器，默认localhost:4000访问，可以看到调试信息</code></p></li>
-<li><p>再 GitHub 上创建一个个人仓库，注意命名格式，创建仓库的名字必须为 username.github.io,例如下图</p></li>
-</ol>
-<p><img src="https://github.com/Tzt97/picture/blob/main/p3.png?raw=true" width = "50%" height = "50%" div align=center /></p>
-<ol start="6" type="1">
-<li><p>联系本地 blog 文件夹与 GitHub 远程仓库，在 terminal 终端，将当前目录切换到你的本地博客目录，执行以下命令：<code>npm install hexo-deployer-git --save</code>，安装完成之后，打开本地博客目录的_config.yml 文件，编辑其中的 deploy 节点：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/youlookwhat/youlookwhat.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure></li>
-<li><p>将本地初始化的 hello world 上传到仓库</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo clean  // clean本地项目，防止缓存</span><br><span class="line">hexo g      // 根据你编辑的md格式的博客，生成静态网页</span><br><span class="line">hexo d      // 将本地博客发布到github</span><br></pre></td></tr></table></figure></li>
-<li><p>执行后会让在终端输入用户名和密码，这里的密码是 token,而不是用户密码。token 的获取详见链接<a href="https://blog.csdn.net/sinat_36728518/article/details/119733175">token</a>,但是要保存 token 并且每次提交都要复制粘贴一遍太麻烦，因此使用 ssh 密钥的方法来上传，具体生成方法如下</p></li>
-</ol>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> # 用你注册GitHub时的邮箱号，进行秘钥生成</span><br><span class="line">cd ~</span><br><span class="line">ssh-keygen -t rsa -C &quot;xxxxxxx@qq.com&quot;</span><br><span class="line"># 系统就会生成一个隐藏文件夹.ssh</span><br><span class="line">cd .ssh</span><br><span class="line">ls</span><br><span class="line"># 复制公钥</span><br><span class="line">vim id_rsa.pub</span><br></pre></td></tr></table></figure>
-<p>然后将密钥粘贴到 GitHub 上： <img src="https://img-blog.csdnimg.cn/20190120160825203.png" width = "30%" height = "30%" div align=center /></p>
-<p><img src="https://img-blog.csdnimg.cn/20190120161011234.png" width = "30%" height = "30%" div align=center /></p>
-<p><img src="https://img-blog.csdnimg.cn/20190120161020474.png" width = "30%" height = "30%" div align=center /></p>
-<pre><code>  这样每次提交就不用输入用户名和密码了</code></pre>
-<ol start="9" type="1">
-<li>补充一点基本操作，创建一个新博客文章<code>hexo new post '文章标题'</code>,提交<code>hexo clean</code> ,<code>hexo g</code>,<code>hexo d</code>。 网页查看：输入网址链接 <code>username.github.io</code>。</li>
-</ol>
 ]]></content>
       <categories>
         <category>博客</category>
@@ -169,6 +68,119 @@
 ]]></content>
       <categories>
         <category>opengl-learn</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>博客搭建</title>
+    <url>/2022/01/22/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="零碎知识何其多博客以记之先搭建一个简陋的用用">零碎知识何其多，博客以记之，先搭建一个简陋的用用。</h2>
+<span id="more"></span>
+<ol type="1">
+<li><p>准备工作<code>npm install -g hexo-cli</code></p></li>
+<li><p>创建一个文件夹，例 blog</p></li>
+<li><p>打开终端 <code>cd blog</code>执行以下命令 <img src="https://github.com/Tzt97/picture/blob/main/p1.png?raw=true" width = "50%" height = "50%" div align=center /></p></li>
+<li><p>搭建 hexo 环境</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo init</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<p>搭建完后，blog 文件夹如下图所示</p>
+<p><img src="https://github.com/Tzt97/picture/blob/main/p2.png?raw=true" width = "50%" height = "50%" div align=center /></p>
+<p>最后调试<code>hexo s --debug //启动hexo服务器，默认localhost:4000访问，可以看到调试信息</code></p></li>
+<li><p>再 GitHub 上创建一个个人仓库，注意命名格式，创建仓库的名字必须为 username.github.io,例如下图</p></li>
+</ol>
+<p><img src="https://github.com/Tzt97/picture/blob/main/p3.png?raw=true" width = "50%" height = "50%" div align=center /></p>
+<ol start="6" type="1">
+<li><p>联系本地 blog 文件夹与 GitHub 远程仓库，在 terminal 终端，将当前目录切换到你的本地博客目录，执行以下命令：<code>npm install hexo-deployer-git --save</code>，安装完成之后，打开本地博客目录的_config.yml 文件，编辑其中的 deploy 节点：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: https://github.com/youlookwhat/youlookwhat.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure></li>
+<li><p>将本地初始化的 hello world 上传到仓库</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo clean  // clean本地项目，防止缓存</span><br><span class="line">hexo g      // 根据你编辑的md格式的博客，生成静态网页</span><br><span class="line">hexo d      // 将本地博客发布到github</span><br></pre></td></tr></table></figure></li>
+<li><p>执行后会让在终端输入用户名和密码，这里的密码是 token,而不是用户密码。token 的获取详见链接<a href="https://blog.csdn.net/sinat_36728518/article/details/119733175">token</a>,但是要保存 token 并且每次提交都要复制粘贴一遍太麻烦，因此使用 ssh 密钥的方法来上传，具体生成方法如下</p></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> # 用你注册GitHub时的邮箱号，进行秘钥生成</span><br><span class="line">cd ~</span><br><span class="line">ssh-keygen -t rsa -C &quot;xxxxxxx@qq.com&quot;</span><br><span class="line"># 系统就会生成一个隐藏文件夹.ssh</span><br><span class="line">cd .ssh</span><br><span class="line">ls</span><br><span class="line"># 复制公钥</span><br><span class="line">vim id_rsa.pub</span><br></pre></td></tr></table></figure>
+<p>然后将密钥粘贴到 GitHub 上： <img src="https://img-blog.csdnimg.cn/20190120160825203.png" width = "30%" height = "30%" div align=center /></p>
+<p><img src="https://img-blog.csdnimg.cn/20190120161011234.png" width = "30%" height = "30%" div align=center /></p>
+<p><img src="https://img-blog.csdnimg.cn/20190120161020474.png" width = "30%" height = "30%" div align=center /></p>
+<pre><code>  这样每次提交就不用输入用户名和密码了</code></pre>
+<ol start="9" type="1">
+<li>补充一点基本操作，创建一个新博客文章<code>hexo new post '文章标题'</code>,提交<code>hexo clean</code> ,<code>hexo g</code>,<code>hexo d</code>。 网页查看：输入网址链接 <code>username.github.io</code>。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>博客</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>opengl-cameral</title>
+    <url>/2022/01/25/opengl-cameral/</url>
+    <content><![CDATA[<h2 id="今天还是学习-opengl就是效率很慢啊">今天还是学习 OpenGL，就是效率很慢啊</h2>
+<h3 id="今天学习-opengl-的摄像头使用键盘鼠标可以控制观察角度">今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度</h3>
+<span id="more"></span>
+<ol type="1">
+<li>创造一个 lookat 摄像头矩阵——创建了一个三个单位轴相互垂直的、以摄像机的位置为原点的坐标系。</li>
+</ol>
+<p><img src="https://learnopengl-cn.github.io/img/01/09/camera_axes.png" width = "50%" height = "50%" div align=center /></p>
+<p>矩阵主要由以下内包括：</p>
+<p><span class="math display">\[ LookAt = \begin{bmatrix} \color{red}{R_x} &amp; \color{red}{R_y} &amp; \color{red}{R_z} &amp; 0 \\ \color{green}{U_x} &amp; \color{green}{U_y} &amp; \color{green}{U_z} &amp; 0 \\ \color{blue}{D_x} &amp; \color{blue}{D_y} &amp; \color{blue}{D_z} &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} * \begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; -\color{purple}{P_x} \\ 0 &amp; 1 &amp; 0 &amp; -\color{purple}{P_y} \\ 0 &amp; 0 &amp; 1 &amp; -\color{purple}{P_z} \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} \]</span></p>
+<p>其中 R 是右向量，U 是上向量，D 是方向向量 P 是摄像机位置向量,不考虑复杂的数学知识，一个 lookat 矩阵通常这样构造</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::mat4 view;</span><br><span class="line">view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),</span><br><span class="line">           glm::vec3(0.0f, 0.0f, 0.0f),</span><br><span class="line">           glm::vec3(0.0f, 1.0f, 0.0f));</span><br></pre></td></tr></table></figure>
+<p><code>vec3(0.0f, 0.0f, 3.0f)</code>是指相机的位置向量，<code>vec3(0.0f, 0.0f, 0.0f)</code>是指目标物的位置向量，<code>vec3(0.0f, 1.0f, 0.0f)</code>是一个上向量</p>
+<p>构造原理代码如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// Custom implementation of the LookAt function</span><br><span class="line">glm::mat4 calculate_lookAt_matrix(glm::vec3 position, glm::vec3 target, glm::vec3 worldUp)</span><br><span class="line">&#123;</span><br><span class="line">    // 1. Position = known</span><br><span class="line">    // 2. Calculate cameraDirection</span><br><span class="line">    glm::vec3 zaxis = glm::normalize(position - target);</span><br><span class="line">    // 3. Get positive right axis vector</span><br><span class="line">    glm::vec3 xaxis = glm::normalize(glm::cross(glm::normalize(worldUp), zaxis));</span><br><span class="line">    // 4. Calculate camera up vector</span><br><span class="line">    glm::vec3 yaxis = glm::cross(zaxis, xaxis);</span><br><span class="line"></span><br><span class="line">    // Create translation and rotation matrix</span><br><span class="line">    // In glm we access elements as mat[col][row] due to column-major layout</span><br><span class="line">    glm::mat4 translation = glm::mat4(1.0f); // Identity matrix by default</span><br><span class="line">    translation[3][0] = -position.x; // Third column, first row</span><br><span class="line">    translation[3][1] = -position.y;</span><br><span class="line">    translation[3][2] = -position.z;</span><br><span class="line">    glm::mat4 rotation = glm::mat4(1.0f);</span><br><span class="line">    rotation[0][0] = xaxis.x; // First column, first row</span><br><span class="line">    rotation[1][0] = xaxis.y;</span><br><span class="line">    rotation[2][0] = xaxis.z;</span><br><span class="line">    rotation[0][1] = yaxis.x; // First column, second row</span><br><span class="line">    rotation[1][1] = yaxis.y;</span><br><span class="line">    rotation[2][1] = yaxis.z;</span><br><span class="line">    rotation[0][2] = zaxis.x; // First column, third row</span><br><span class="line">    rotation[1][2] = zaxis.y;</span><br><span class="line">    rotation[2][2] = zaxis.z;</span><br><span class="line"></span><br><span class="line">    // Return lookAt matrix as combination of translation and rotation matrix</span><br><span class="line">    return rotation * translation; // Remember to read from right to left (first translation then rotation)</span><br><span class="line">&#125;</span><br><span class="line">    // Don&#x27;t forget to replace glm::lookAt with your own version</span><br><span class="line">    // view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));</span><br><span class="line">    view = calculate_lookAt_matrix(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));</span><br></pre></td></tr></table></figure>
+<p>2.实现键盘 wsad 控制摄像头的移动 2.1 创建 lookat 矩阵</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  3.0f);</span><br><span class="line">glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);</span><br><span class="line">glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);</span><br><span class="line">view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);</span><br></pre></td></tr></table></figure>
+<p>2.2 改变 GLFW 的键盘输入函数 processInput</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void processInput(GLFWwindow *window)</span><br><span class="line">&#123;</span><br><span class="line"> ...</span><br><span class="line"> float cameraSpeed = 0.05f; // adjust accordingly</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)</span><br><span class="line">     cameraPos += cameraSpeed * cameraFront;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)</span><br><span class="line">     cameraPos -= cameraSpeed * cameraFront;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)</span><br><span class="line">     cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)</span><br><span class="line">     cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.3 移动速度 目前我们的移动速度是个常量。理论上没什么问题，但是实际情况下根据处理器的能力不同，有些人可能会比其他人每秒绘制更多帧，也就是以更高的频率调用 processInput 函数。结果就是，根据配置的不同，有些人可能移动很快，而有些人会移动很慢。当你发布你的程序的时候，你必须确保它在所有硬件上移动速度都一样。图形程序和游戏通常会跟踪一个时间差(Deltatime)变量，它储存了渲染上一帧所用的时间。我们把所有速度都去乘以 deltaTime 值。结果就是，如果我们的 deltaTime 很大，就意味着上一帧的渲染花费了更多时间，所以这一帧的速度需要变得更高来平衡渲染所花去的时间。使用这种方法时，无论你的电脑快还是慢，摄像机的速度都会相应平衡，这样每个用户的体验就都一样了。</p>
+<p>我们跟踪两个全局变量来计算出deltaTime值： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">float deltaTime = 0.0f; // 当前帧与上一帧的时间差</span><br><span class="line">float lastFrame = 0.0f; // 上一帧的时间</span><br></pre></td></tr></table></figure> 在每一帧中我们计算出新的deltaTime以备后用。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">float currentFrame = static_cast&lt;float&gt;(glfwGetTime());</span><br><span class="line">deltaTime = currentFrame - lastFrame;</span><br><span class="line">lastFrame = currentFrame;</span><br></pre></td></tr></table></figure> 现在我们有了deltaTime，在计算速度的时候可以将其考虑进去了： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void processInput(GLFWwindow *window)</span><br><span class="line">&#123;</span><br><span class="line">  float cameraSpeed = static_cast&lt;float&gt;(2.5 * deltaTime);</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 3. 实现鼠标或者触摸板实现视角转动</p>
+<p>这里涉及到欧拉角的知识，欧拉角(Euler Angle)是可以表示3D空间中任何旋转的3个值，由莱昂哈德·欧拉(Leonhard Euler)在18世纪提出。一共有3种欧拉角：俯仰角(Pitch)、偏航角(Yaw)和滚转角(Roll)，下面的图片展示了它们的含义：</p>
+<p><img src="https://learnopengl-cn.github.io/img/01/09/camera_pitch_yaw_roll.png" width = "50%" height = "50%" div align=center /></p>
+<p>俯仰角是描述我们如何往上或往下看的角，可以在第一张图中看到。第二张图展示了偏航角，偏航角表示我们往左和往右看的程度。滚转角代表我们如何翻滚摄像机，通常在太空飞船的摄像机中使用。每个欧拉角都有一个值来表示，把三个角结合起来我们就能够计算3D空间中任何的旋转向量了。</p>
+<p>对于我们的摄像机系统来说，我们只关心俯仰角和偏航角，所以我们不会讨论滚转角。 <img src="https://learnopengl-cn.github.io/img/01/09/camera_pitch.png" width = "50%" height = "50%" div align=center /></p>
+<p>如果我们想象自己在xz平面上，看向y轴，我们可以基于第一个三角形计算来计算它的长度/y方向的强度(Strength)（我们往上或往下看多少）。从图中我们可以看到对于一个给定俯仰角的y值等于<span class="math inline">\(\sin\ \theta\)</span> <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">front.y = sin(glm::radians(pitch)); // 注意我们先把角度转为弧度</span><br><span class="line"></span><br></pre></td></tr></table></figure> 俯仰角的三角形一样，我们可以看到x分量取决于cos(yaw)的值，z值同样取决于偏航角的正弦值。把这个加到前面的值中，会得到基于俯仰角和偏航角的方向向量： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));</span><br><span class="line">front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));</span><br></pre></td></tr></table></figure> 为了计算俯仰角和偏航角，我们需要让GLFW监听鼠标移动事件。（和键盘输入相似）我们会用一个回调函数来完成，函数的原型如下： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void mouse_callback(GLFWwindow* window, double xpos, double ypos);</span><br></pre></td></tr></table></figure> 这里的xpos和ypos代表当前鼠标的位置。当我们用GLFW注册了回调函数之后，鼠标一移动mouse_callback函数就会被调用： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glfwSetCursorPosCallback(window, mouse_callback);</span><br></pre></td></tr></table></figure> 最终获取方向向量之前做下面这几步：</p>
+<p>3.1 计算鼠标距上一帧的偏移量。 第一步是计算鼠标自上一帧的偏移量。</p>
+<p>我们必须先在程序中储存上一帧的鼠标位置，我们把它的初始值设置为屏幕的中心（屏幕的尺寸是800x600）： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">float lastX = 400, lastY = 300;</span><br><span class="line"></span><br></pre></td></tr></table></figure> 然后在鼠标的回调函数中我们计算当前帧和上一帧鼠标位置的偏移量： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">float xoffset = xpos - lastX;</span><br><span class="line">float yoffset = lastY - ypos; // 注意这里是相反的，因为y坐标是从底部往顶部依次增大的</span><br><span class="line">lastX = xpos;</span><br><span class="line">lastY = ypos;</span><br><span class="line"></span><br><span class="line">float sensitivity = 0.05f;</span><br><span class="line">xoffset *= sensitivity;</span><br><span class="line">yoffset *= sensitivity;</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<p>3.2 把偏移量添加到摄像机的俯仰角和偏航角中。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">yaw   += xoffset;</span><br><span class="line">pitch += yoffset;</span><br></pre></td></tr></table></figure></p>
+<p>3.3 对偏航角和俯仰角进行最大和最小值的限制。</p>
+<p>对于俯仰角，要让用户不能看向高于89度的地方（在90度时视角会发生逆转，所以我们把89度作为极限），同样也不允许小于-89度。这样能够保证用户只能看到天空或脚下，但是不能超越这个限制。我们可以在值超过限制的时候将其改为极限值来实现： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if(pitch &gt; 89.0f)</span><br><span class="line"> pitch =  89.0f;</span><br><span class="line">if(pitch &lt; -89.0f)</span><br><span class="line"> pitch = -89.0f;</span><br></pre></td></tr></table></figure></p>
+<p>3.4 计算方向向量,通过俯仰角和偏航角来计算以得到真正的方向向量： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::vec3 front;</span><br><span class="line">front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));</span><br><span class="line">front.y = sin(glm::radians(pitch));</span><br><span class="line">front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));</span><br><span class="line">cameraFront = glm::normalize(front);</span><br></pre></td></tr></table></figure> 现在运行代码，你会发现在窗口第一次获取焦点的时候摄像机会突然跳一下。这个问题产生的原因是，在你的鼠标移动进窗口的那一刻，鼠标回调函数就会被调用，这时候的xpos和ypos会等于鼠标刚刚进入屏幕的那个位置。这通常是一个距离屏幕中心很远的地方，因而产生一个很大的偏移量，所以就会跳了。我们可以简单的使用一个bool变量检验我们是否是第一次获取鼠标输入，如果是，那么我们先把鼠标的初始位置更新为xpos和ypos值，这样就能解决这个问题；接下来的鼠标移动就会使用刚进入的鼠标位置坐标来计算偏移量了： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">if(firstMouse) // 这个bool变量初始时是设定为true的</span><br><span class="line">&#123;</span><br><span class="line"> lastX = xpos;</span><br><span class="line"> lastY = ypos;</span><br><span class="line"> firstMouse = false;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure> 最后的代码应该是这样的： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void mouse_callback(GLFWwindow* window, double xpos, double ypos)</span><br><span class="line">&#123;</span><br><span class="line"> if(firstMouse)</span><br><span class="line"> &#123;</span><br><span class="line">     lastX = xpos;</span><br><span class="line">     lastY = ypos;</span><br><span class="line">     firstMouse = false;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> float xoffset = xpos - lastX;</span><br><span class="line"> float yoffset = lastY - ypos; </span><br><span class="line"> lastX = xpos;</span><br><span class="line"> lastY = ypos;</span><br><span class="line"></span><br><span class="line"> float sensitivity = 0.05;</span><br><span class="line"> xoffset *= sensitivity;</span><br><span class="line"> yoffset *= sensitivity;</span><br><span class="line"></span><br><span class="line"> yaw   += xoffset;</span><br><span class="line"> pitch += yoffset;</span><br><span class="line"></span><br><span class="line"> if(pitch &gt; 89.0f)</span><br><span class="line">     pitch = 89.0f;</span><br><span class="line"> if(pitch &lt; -89.0f)</span><br><span class="line">     pitch = -89.0f;</span><br><span class="line"></span><br><span class="line"> glm::vec3 front;</span><br><span class="line"> front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));</span><br><span class="line"> front.y = sin(glm::radians(pitch));</span><br><span class="line"> front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));</span><br><span class="line"> cameraFront = glm::normalize(front);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure> 4. 缩放 我们会使用鼠标的滚轮（触摸板）来放大。与鼠标移动、键盘输入一样，我们需要一个鼠标滚轮的回调函数： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glfwSetScrollCallback(window, scroll_callback);</span><br><span class="line">void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)</span><br><span class="line">&#123;</span><br><span class="line">    if(fov &gt;= 1.0f &amp;&amp; fov &lt;= 45.0f)</span><br><span class="line">    fov -= yoffset;</span><br><span class="line">    if(fov &lt;= 1.0f)</span><br><span class="line">    fov = 1.0f;</span><br><span class="line">    if(fov &gt;= 45.0f)</span><br><span class="line">    fov = 45.0f;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure> yoffset值代表我们竖直滚动的大小。当scroll_callback函数被调用后，我们改变全局变量fov变量的内容。因为45.0f是默认的视野值，我们将会把缩放级别(Zoom Level)限制在1.0f到45.0f。现在使用fov变量作为它的视野： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);</span><br></pre></td></tr></table></figure> 5. 摄像机类 前面介绍了摄像机的控制，包括移动，转动，缩放等，为了方便以后容易调试，设计一个摄像机类.h文件，<a href="https://learnopengl.com/code_viewer_gh.php?code=includes/learnopengl/camera.h">camera.h</a></p>
+]]></content>
+      <categories>
+        <category>opengl-learn</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>blog-next</title>
+    <url>/2022/01/26/blog-next/</url>
+    <content><![CDATA[<h2 id="昨天写opengl写了一半发现公式在hexo中没法转义百度后总结了一下公式在hexo-next中的显示方法顺道给博客布置了next主题进行了一部分的调参">昨天写OpenGL写了一半发现公式在hexo中没法转义，百度后总结了一下公式在hexo-next中的显示方法，顺道给博客布置了next主题，进行了一部分的调参。</h2>
+<span id="more"></span>
+<ol type="1">
+<li><p>next主题下载</p>
+<p>默认的hexo博客布置没有next主题，用了landscape，首先下载next主题，有两种方式</p>
+<p>方法一 npm 方法，要求hexo 版本高于5.0 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd blog</span><br><span class="line">$ npm install hexo-theme-next</span><br></pre></td></tr></table></figure></p>
+<p>方法二 git clone <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd blog </span><br><span class="line">$ git clone https://github.com/next-theme/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure> 我用了方法二，提示报错，百度了一下换成了下面的命令 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git clone git://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure></p></li>
+<li><p>next 主题的使用与配置</p>
+<p><a href="https://www.jianshu.com/p/97e0c6a51809">使用</a></p>
+<p>下载完成之后，打开/blog/_config.yml文件，查找#Extensions字段，修改如下： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Extensions</span><br><span class="line">## Plugins: https://hexo.io/plugins/</span><br><span class="line">## Themes: https://hexo.io/themes/</span><br><span class="line">theme: next</span><br></pre></td></tr></table></figure> next里面有四个子主题，选择其中一个,打开/blog/themes/next/_config.yml文件，查找Scheme Settings字段并修改如下： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Scheme Settings</span><br><span class="line">#</span><br><span class="line">---------------------------------------------------------------</span><br><span class="line"># Schemes</span><br><span class="line">#scheme: Muse</span><br><span class="line">#scheme: Mist</span><br><span class="line">#scheme: Pisces</span><br><span class="line">scheme: Gemini</span><br><span class="line"># Dark Mode</span><br><span class="line">darkmode: false</span><br></pre></td></tr></table></figure> ok 现在你的博客已经换成了next主题了。</p>
+<p><a href="https://blog.csdn.net/as480133937/article/details/100138838/">配置</a></p>
+<p>在 Hexo 中有两份主要的配置文件，其名称都是 _config.yml。 其中，一份位于站点根目录下，主要包含 Hexo 本身的站点配置；另一份位于主题theme目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。为了描述方便，在以下说明中，将前者称为 站点配置文件， 后者称为 主题配置文件</p>
+<p>2.1 新建标签及分类界面</p>
+<p>打开 主题配置文件，搜索 menu，找到如下代码： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">menu:</span><br><span class="line">home: / || home</span><br><span class="line">#about: /about/ || user</span><br><span class="line">#tags: /tags/ || tags</span><br><span class="line">#categories: /categories/ || th</span><br><span class="line">archives: /archives/ || archive</span><br><span class="line">#schedule: /schedule/ || calendar</span><br><span class="line">#sitemap: /sitemap.xml || sitemap</span><br><span class="line">#commonweal: /404/ || heartbeat</span><br></pre></td></tr></table></figure> 同时终端 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br><span class="line">hexo new page tages</span><br></pre></td></tr></table></figure> 会在生成source下生成两个文件夹，categories和tages，以后在新建md文件时，加上标签就可以归到对应标签或分类界面了 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">title: blog-next</span><br><span class="line">date: 2022-01-26 11:13:02</span><br><span class="line">categories: 博客</span><br></pre></td></tr></table></figure> 2.2 隐藏网页底部 powered By Hexo</p>
+<p>打开 themes/next/layout/_partials/footer.swig,找到(command+f) <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;%- if theme.footer.powered %&#125;</span><br><span class="line"> &lt;div class=&quot;powered-by&quot;&gt;</span><br><span class="line">  &#123;%- set next_site = &#x27;https://theme-next.org&#x27; %&#125;</span><br><span class="line">  %- if theme.scheme !== &#x27;Gemini&#x27; %&#125;</span><br><span class="line">   &#123;%- set next_site = &#x27;https://&#x27; + theme.scheme | lower + &#x27;.theme-next.org&#x27; %&#125;</span><br><span class="line">  &#123;%- endif %&#125;</span><br><span class="line">  &#123;&#123;- __(&#x27;footer.powered&#x27;, next_url(&#x27;https://hexo.io&#x27;, &#x27;Hexo&#x27;, &#123;class: &#x27;theme-link&#x27;&#125;) + &#x27; &amp; &#x27; + next_url(next_site, &#x27;NexT.&#x27; + theme.scheme, &#123;class: &#x27;theme-link&#x27;&#125;)) &#125;&#125;</span><br><span class="line"> &lt;/div&gt;</span><br><span class="line"> &#123;%- endif %&#125;</span><br></pre></td></tr></table></figure> 把这段代码首尾分别加上：<!-- 和-->，或者直接删除。</p>
+<p>2.3 浏览页面显示当前浏览进度</p>
+<p>打开 themes/next/_config.yml，搜索关键字 scrollpercent，把 false 改为 true。</p>
+<p>2.4 Local Search本地搜索 安装插件hexo-generator-searchdb,执行以下命令: <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure> 修改hexo/_config.yml站点配置文件，新增以下内容到任意位置 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">search:</span><br><span class="line">path: search.xml</span><br><span class="line">field: post</span><br><span class="line">format: html</span><br><span class="line">limit: 10000</span><br></pre></td></tr></table></figure> 编辑 主题配置文件，启用本地搜索功能： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Local search</span><br><span class="line">local_search:</span><br><span class="line">enable: true</span><br></pre></td></tr></table></figure></p>
+<p>2.4 阅读全文设置 在每篇文章自己想要展示的地方后面加一个<!-- more -->即可 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">## 今天还是学习 OpenGL，就是效率很慢啊</span><br><span class="line">### 今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度</span><br><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure> 效果如下</p>
+<p><img src="https://github.com/Tzt97/picture/blob/main/截屏2022-01-26%20下午12.17.46.png?raw=true" width = "50%" height = "50%" div align=center /></p>
+<p>2.5 剩下的暂时没有配置，花里胡哨的，以后用到了再说吧</p></li>
+<li><p><a href="https://zhuanlan.zhihu.com/p/381508379">hexo中公式的显示</a></p>
+<p>卸载hexo-math：<code>$ npm un hexo-math</code></p>
+<p>卸载hexo-renderer-marked：<code>$ npm un hexo-renderer-marked</code></p>
+<p>安装hexo-renderer-pandoc：<code>$ npm i hexo-renderer-pandoc</code></p>
+<p>安装hexo-renderer-pandoc：<code>$ brew install pandoc</code>（mac）</p>
+<p>在hexo/_config.yml末尾添加一段代码 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">math:</span><br><span class="line"> engine: &#x27;mathjax&#x27; # or &#x27;katex&#x27;</span><br><span class="line"> mathjax:</span><br><span class="line">   # src: custom_mathjax_source</span><br><span class="line">   config:</span><br><span class="line">     # MathJax config</span><br></pre></td></tr></table></figure> 修改next/_config.yml中mathjax的设置 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mathjax:</span><br><span class="line">enable: true</span><br></pre></td></tr></table></figure> md文件前面要加上mathjax:true <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">title: opengl-coordinate</span><br><span class="line">date: 2022-01-24 10:58:09</span><br><span class="line">categories: opengl-learn</span><br><span class="line">mathjax: true</span><br></pre></td></tr></table></figure></p>
+<p>这样就ok了</p></li>
+</ol>
+]]></content>
+      <categories>
+        <category>博客</category>
       </categories>
   </entry>
 </search>
