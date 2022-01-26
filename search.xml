@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>blog-next</title>
+    <url>/2022/01/26/blog-next/</url>
+    <content><![CDATA[<h2 id="昨天写opengl写了一半发现公式在hexo中没法转义百度后总结了一下公式在hexo-next中的显示方法顺道给博客布置了next主题进行了一部分的调参">昨天写OpenGL写了一半发现公式在hexo中没法转义，百度后总结了一下公式在hexo-next中的显示方法，顺道给博客布置了next主题，进行了一部分的调参。</h2>
+<ol type="1">
+<li><p>next主题下载</p>
+<p>默认的hexo博客布置没有next主题，用了landscape，首先下载next主题，有两种方式</p>
+<p>方法一 npm 方法，要求hexo 版本高于5.0 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd blog</span><br><span class="line">$ npm install hexo-theme-next</span><br></pre></td></tr></table></figure></p>
+<p>方法二 git clone <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd blog </span><br><span class="line">$ git clone https://github.com/next-theme/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure> 我用了方法二，提示报错，百度了一下换成了下面的命令 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git clone git://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure></p></li>
+<li><p>next 主题的使用与配置</p>
+<p><a href="https://www.jianshu.com/p/97e0c6a51809">使用</a></p>
+<p>下载完成之后，打开/blog/_config.yml文件，查找#Extensions字段，修改如下： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Extensions</span><br><span class="line">## Plugins: https://hexo.io/plugins/</span><br><span class="line">## Themes: https://hexo.io/themes/</span><br><span class="line">theme: next</span><br></pre></td></tr></table></figure> next里面有四个子主题，选择其中一个,打开/blog/themes/next/_config.yml文件，查找Scheme Settings字段并修改如下： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Scheme Settings</span><br><span class="line">#</span><br><span class="line">---------------------------------------------------------------</span><br><span class="line"># Schemes</span><br><span class="line">#scheme: Muse</span><br><span class="line">#scheme: Mist</span><br><span class="line">#scheme: Pisces</span><br><span class="line">scheme: Gemini</span><br><span class="line"># Dark Mode</span><br><span class="line">darkmode: false</span><br></pre></td></tr></table></figure> ok 现在你的博客已经换成了next主题了。</p>
+<p><a href="https://blog.csdn.net/as480133937/article/details/100138838/">配置</a></p>
+<p>在 Hexo 中有两份主要的配置文件，其名称都是 _config.yml。 其中，一份位于站点根目录下，主要包含 Hexo 本身的站点配置；另一份位于主题theme目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。为了描述方便，在以下说明中，将前者称为 站点配置文件， 后者称为 主题配置文件</p>
+<p>2.1 新建标签及分类界面</p>
+<p>打开 主题配置文件，搜索 menu，找到如下代码： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">menu:</span><br><span class="line">home: / || home</span><br><span class="line">#about: /about/ || user</span><br><span class="line">#tags: /tags/ || tags</span><br><span class="line">#categories: /categories/ || th</span><br><span class="line">archives: /archives/ || archive</span><br><span class="line">#schedule: /schedule/ || calendar</span><br><span class="line">#sitemap: /sitemap.xml || sitemap</span><br><span class="line">#commonweal: /404/ || heartbeat</span><br></pre></td></tr></table></figure> 同时终端 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br><span class="line">hexo new page tages</span><br></pre></td></tr></table></figure> 会在生成source下生成两个文件夹，categories和tages，以后在新建md文件时，加上标签就可以归到对应标签或分类界面了 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">title: blog-next</span><br><span class="line">date: 2022-01-26 11:13:02</span><br><span class="line">categories: 博客</span><br></pre></td></tr></table></figure> 2.2 隐藏网页底部 powered By Hexo</p>
+<p>打开 themes/next/layout/_partials/footer.swig,找到(command+f) <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;%- if theme.footer.powered %&#125;</span><br><span class="line"> &lt;div class=&quot;powered-by&quot;&gt;</span><br><span class="line">  &#123;%- set next_site = &#x27;https://theme-next.org&#x27; %&#125;</span><br><span class="line">  %- if theme.scheme !== &#x27;Gemini&#x27; %&#125;</span><br><span class="line">   &#123;%- set next_site = &#x27;https://&#x27; + theme.scheme | lower + &#x27;.theme-next.org&#x27; %&#125;</span><br><span class="line">  &#123;%- endif %&#125;</span><br><span class="line">  &#123;&#123;- __(&#x27;footer.powered&#x27;, next_url(&#x27;https://hexo.io&#x27;, &#x27;Hexo&#x27;, &#123;class: &#x27;theme-link&#x27;&#125;) + &#x27; &amp; &#x27; + next_url(next_site, &#x27;NexT.&#x27; + theme.scheme, &#123;class: &#x27;theme-link&#x27;&#125;)) &#125;&#125;</span><br><span class="line"> &lt;/div&gt;</span><br><span class="line"> &#123;%- endif %&#125;</span><br></pre></td></tr></table></figure> 把这段代码首尾分别加上：<!-- 和-->，或者直接删除。</p>
+<p>2.3 浏览页面显示当前浏览进度</p>
+<p>打开 themes/next/_config.yml，搜索关键字 scrollpercent，把 false 改为 true。</p>
+<p>2.4 Local Search本地搜索 安装插件hexo-generator-searchdb,执行以下命令: <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure> 修改hexo/_config.yml站点配置文件，新增以下内容到任意位置 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">search:</span><br><span class="line">path: search.xml</span><br><span class="line">field: post</span><br><span class="line">format: html</span><br><span class="line">limit: 10000</span><br></pre></td></tr></table></figure> 编辑 主题配置文件，启用本地搜索功能： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Local search</span><br><span class="line">local_search:</span><br><span class="line">enable: true</span><br></pre></td></tr></table></figure></p>
+<p>2.4 阅读全文设置 在每篇文章自己想要展示的地方后面加一个<span id="more"></span>即可 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">## 今天还是学习 OpenGL，就是效率很慢啊</span><br><span class="line">### 今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度</span><br><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure> 效果如下</p>
+<p><img src="https://github.com/Tzt97/picture/blob/main/截屏2022-01-26%20下午12.17.46.png?raw=true" width = "50%" height = "50%" div align=center /></p>
+<p>2.5 剩下的暂时没有配置，花里胡哨的，以后用到了再说吧</p></li>
+<li><p><a href="https://zhuanlan.zhihu.com/p/381508379">hexo中公式的显示</a></p>
+<p>卸载hexo-math：<code>$ npm un hexo-math</code></p>
+<p>卸载hexo-renderer-marked：<code>$ npm un hexo-renderer-marked</code></p>
+<p>安装hexo-renderer-pandoc：<code>$ npm i hexo-renderer-pandoc</code></p>
+<p>安装hexo-renderer-pandoc：<code>$ brew install pandoc</code>（mac）</p>
+<p>在hexo/_config.yml末尾添加一段代码 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">math:</span><br><span class="line"> engine: &#x27;mathjax&#x27; # or &#x27;katex&#x27;</span><br><span class="line"> mathjax:</span><br><span class="line">   # src: custom_mathjax_source</span><br><span class="line">   config:</span><br><span class="line">     # MathJax config</span><br></pre></td></tr></table></figure> 修改next/_config.yml中mathjax的设置 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mathjax:</span><br><span class="line">enable: true</span><br></pre></td></tr></table></figure> md文件前面要加上mathjax:true <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">title: opengl-coordinate</span><br><span class="line">date: 2022-01-24 10:58:09</span><br><span class="line">categories: opengl-learn</span><br><span class="line">mathjax: true</span><br></pre></td></tr></table></figure></p>
+<p>这样就ok了</p></li>
+</ol>
+]]></content>
+      <categories>
+        <category>博客</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2022/01/22/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>. <span id="more"></span></p>
@@ -20,6 +56,33 @@
 ]]></content>
       <categories>
         <category>博客</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>opengl-cameral</title>
+    <url>/2022/01/25/opengl-cameral/</url>
+    <content><![CDATA[<h2 id="今天还是学习-opengl就是效率很慢啊">今天还是学习 OpenGL，就是效率很慢啊</h2>
+<h3 id="今天学习-opengl-的摄像头使用键盘鼠标可以控制观察角度">今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度</h3>
+<span id="more"></span>
+<ol type="1">
+<li>创造一个 lookat 摄像头矩阵——创建了一个三个单位轴相互垂直的、以摄像机的位置为原点的坐标系。</li>
+</ol>
+<p><img src="https://learnopengl-cn.github.io/img/01/09/camera_axes.png" width = "50%" height = "50%" div align=center /></p>
+<p>矩阵主要由以下内包括：</p>
+<p><span class="math display">\[ LookAt = \begin{bmatrix} \color{red}{R_x} &amp; \color{red}{R_y} &amp; \color{red}{R_z} &amp; 0 \\ \color{green}{U_x} &amp; \color{green}{U_y} &amp; \color{green}{U_z} &amp; 0 \\ \color{blue}{D_x} &amp; \color{blue}{D_y} &amp; \color{blue}{D_z} &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} * \begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; -\color{purple}{P_x} \\ 0 &amp; 1 &amp; 0 &amp; -\color{purple}{P_y} \\ 0 &amp; 0 &amp; 1 &amp; -\color{purple}{P_z} \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} \]</span></p>
+<p>其中 R 是右向量，U 是上向量，D 是方向向量 P 是摄像机位置向量,不考虑复杂的数学知识，一个 lookat 矩阵通常这样构造</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::mat4 view;</span><br><span class="line">view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),</span><br><span class="line">           glm::vec3(0.0f, 0.0f, 0.0f),</span><br><span class="line">           glm::vec3(0.0f, 1.0f, 0.0f));</span><br></pre></td></tr></table></figure>
+<p><code>vec3(0.0f, 0.0f, 3.0f)</code>是指相机的位置向量，<code>vec3(0.0f, 0.0f, 0.0f)</code>是指目标物的位置向量，<code>vec3(0.0f, 1.0f, 0.0f)</code>是一个上向量</p>
+<p>构造原理代码如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// Custom implementation of the LookAt function</span><br><span class="line">glm::mat4 calculate_lookAt_matrix(glm::vec3 position, glm::vec3 target, glm::vec3 worldUp)</span><br><span class="line">&#123;</span><br><span class="line">    // 1. Position = known</span><br><span class="line">    // 2. Calculate cameraDirection</span><br><span class="line">    glm::vec3 zaxis = glm::normalize(position - target);</span><br><span class="line">    // 3. Get positive right axis vector</span><br><span class="line">    glm::vec3 xaxis = glm::normalize(glm::cross(glm::normalize(worldUp), zaxis));</span><br><span class="line">    // 4. Calculate camera up vector</span><br><span class="line">    glm::vec3 yaxis = glm::cross(zaxis, xaxis);</span><br><span class="line"></span><br><span class="line">    // Create translation and rotation matrix</span><br><span class="line">    // In glm we access elements as mat[col][row] due to column-major layout</span><br><span class="line">    glm::mat4 translation = glm::mat4(1.0f); // Identity matrix by default</span><br><span class="line">    translation[3][0] = -position.x; // Third column, first row</span><br><span class="line">    translation[3][1] = -position.y;</span><br><span class="line">    translation[3][2] = -position.z;</span><br><span class="line">    glm::mat4 rotation = glm::mat4(1.0f);</span><br><span class="line">    rotation[0][0] = xaxis.x; // First column, first row</span><br><span class="line">    rotation[1][0] = xaxis.y;</span><br><span class="line">    rotation[2][0] = xaxis.z;</span><br><span class="line">    rotation[0][1] = yaxis.x; // First column, second row</span><br><span class="line">    rotation[1][1] = yaxis.y;</span><br><span class="line">    rotation[2][1] = yaxis.z;</span><br><span class="line">    rotation[0][2] = zaxis.x; // First column, third row</span><br><span class="line">    rotation[1][2] = zaxis.y;</span><br><span class="line">    rotation[2][2] = zaxis.z;</span><br><span class="line"></span><br><span class="line">    // Return lookAt matrix as combination of translation and rotation matrix</span><br><span class="line">    return rotation * translation; // Remember to read from right to left (first translation then rotation)</span><br><span class="line">&#125;</span><br><span class="line">    // Don&#x27;t forget to replace glm::lookAt with your own version</span><br><span class="line">    // view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));</span><br><span class="line">    view = calculate_lookAt_matrix(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));</span><br></pre></td></tr></table></figure>
+<p>2.实现键盘 wsad 控制摄像头的移动 2.1 创建 lookat 矩阵</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  3.0f);</span><br><span class="line">glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);</span><br><span class="line">glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);</span><br><span class="line">view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);</span><br></pre></td></tr></table></figure>
+<p>2.2 改变 GLFW 的键盘输入函数 processInput</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void processInput(GLFWwindow *window)</span><br><span class="line">&#123;</span><br><span class="line"> ...</span><br><span class="line"> float cameraSpeed = 0.05f; // adjust accordingly</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)</span><br><span class="line">     cameraPos += cameraSpeed * cameraFront;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)</span><br><span class="line">     cameraPos -= cameraSpeed * cameraFront;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)</span><br><span class="line">     cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)</span><br><span class="line">     cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.3 移动速度 目前我们的移动速度是个常量。理论上没什么问题，但是实际情况下根据处理器的能力不同，有些人可能会比其他人每秒绘制更多帧，也就是以更高的频率调用 processInput 函数。结果就是，根据配置的不同，有些人可能移动很快，而有些人会移动很慢。当你发布你的程序的时候，你必须确保它在所有硬件上移动速度都一样。图形程序和游戏通常会跟踪一个时间差(Deltatime)变量，它储存了渲染上一帧所用的时间。我们把所有速度都去乘以 deltaTime 值。结果就是，如果我们的 deltaTime 很大，就意味着上一帧的渲染花费了更多时间，所以这一帧的速度需要变得更高来平衡渲染所花去的时间。使用这种方法时，无论你的电脑快还是慢，摄像机的速度都会相应平衡，这样每个用户的体验就都一样了。</p>
+]]></content>
+      <categories>
+        <category>opengl-learn</category>
       </categories>
   </entry>
   <entry>
@@ -105,33 +168,6 @@
 ]]></content>
       <categories>
         <category>博客</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>opengl-cameral</title>
-    <url>/2022/01/25/opengl-cameral/</url>
-    <content><![CDATA[<h2 id="今天还是学习-opengl就是效率很慢啊">今天还是学习 OpenGL，就是效率很慢啊</h2>
-<h3 id="今天学习-opengl-的摄像头使用键盘鼠标可以控制观察角度">今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度</h3>
-<span id="more"></span>
-<ol type="1">
-<li>创造一个 lookat 摄像头矩阵——创建了一个三个单位轴相互垂直的、以摄像机的位置为原点的坐标系。</li>
-</ol>
-<p><img src="https://learnopengl-cn.github.io/img/01/09/camera_axes.png" width = "50%" height = "50%" div align=center /></p>
-<p>矩阵主要由以下内包括：</p>
-<p><span class="math display">\[ LookAt = \begin{bmatrix} \color{red}{R_x} &amp; \color{red}{R_y} &amp; \color{red}{R_z} &amp; 0 \\ \color{green}{U_x} &amp; \color{green}{U_y} &amp; \color{green}{U_z} &amp; 0 \\ \color{blue}{D_x} &amp; \color{blue}{D_y} &amp; \color{blue}{D_z} &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} * \begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; -\color{purple}{P_x} \\ 0 &amp; 1 &amp; 0 &amp; -\color{purple}{P_y} \\ 0 &amp; 0 &amp; 1 &amp; -\color{purple}{P_z} \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} \]</span></p>
-<p>其中 R 是右向量，U 是上向量，D 是方向向量 P 是摄像机位置向量,不考虑复杂的数学知识，一个 lookat 矩阵通常这样构造</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::mat4 view;</span><br><span class="line">view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),</span><br><span class="line">           glm::vec3(0.0f, 0.0f, 0.0f),</span><br><span class="line">           glm::vec3(0.0f, 1.0f, 0.0f));</span><br></pre></td></tr></table></figure>
-<p><code>vec3(0.0f, 0.0f, 3.0f)</code>是指相机的位置向量，<code>vec3(0.0f, 0.0f, 0.0f)</code>是指目标物的位置向量，<code>vec3(0.0f, 1.0f, 0.0f)</code>是一个上向量</p>
-<p>构造原理代码如下</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// Custom implementation of the LookAt function</span><br><span class="line">glm::mat4 calculate_lookAt_matrix(glm::vec3 position, glm::vec3 target, glm::vec3 worldUp)</span><br><span class="line">&#123;</span><br><span class="line">    // 1. Position = known</span><br><span class="line">    // 2. Calculate cameraDirection</span><br><span class="line">    glm::vec3 zaxis = glm::normalize(position - target);</span><br><span class="line">    // 3. Get positive right axis vector</span><br><span class="line">    glm::vec3 xaxis = glm::normalize(glm::cross(glm::normalize(worldUp), zaxis));</span><br><span class="line">    // 4. Calculate camera up vector</span><br><span class="line">    glm::vec3 yaxis = glm::cross(zaxis, xaxis);</span><br><span class="line"></span><br><span class="line">    // Create translation and rotation matrix</span><br><span class="line">    // In glm we access elements as mat[col][row] due to column-major layout</span><br><span class="line">    glm::mat4 translation = glm::mat4(1.0f); // Identity matrix by default</span><br><span class="line">    translation[3][0] = -position.x; // Third column, first row</span><br><span class="line">    translation[3][1] = -position.y;</span><br><span class="line">    translation[3][2] = -position.z;</span><br><span class="line">    glm::mat4 rotation = glm::mat4(1.0f);</span><br><span class="line">    rotation[0][0] = xaxis.x; // First column, first row</span><br><span class="line">    rotation[1][0] = xaxis.y;</span><br><span class="line">    rotation[2][0] = xaxis.z;</span><br><span class="line">    rotation[0][1] = yaxis.x; // First column, second row</span><br><span class="line">    rotation[1][1] = yaxis.y;</span><br><span class="line">    rotation[2][1] = yaxis.z;</span><br><span class="line">    rotation[0][2] = zaxis.x; // First column, third row</span><br><span class="line">    rotation[1][2] = zaxis.y;</span><br><span class="line">    rotation[2][2] = zaxis.z;</span><br><span class="line"></span><br><span class="line">    // Return lookAt matrix as combination of translation and rotation matrix</span><br><span class="line">    return rotation * translation; // Remember to read from right to left (first translation then rotation)</span><br><span class="line">&#125;</span><br><span class="line">    // Don&#x27;t forget to replace glm::lookAt with your own version</span><br><span class="line">    // view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));</span><br><span class="line">    view = calculate_lookAt_matrix(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));</span><br></pre></td></tr></table></figure>
-<p>2.实现键盘 wsad 控制摄像头的移动 2.1 创建 lookat 矩阵</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  3.0f);</span><br><span class="line">glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);</span><br><span class="line">glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);</span><br><span class="line">view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);</span><br></pre></td></tr></table></figure>
-<p>2.2 改变 GLFW 的键盘输入函数 processInput</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void processInput(GLFWwindow *window)</span><br><span class="line">&#123;</span><br><span class="line"> ...</span><br><span class="line"> float cameraSpeed = 0.05f; // adjust accordingly</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)</span><br><span class="line">     cameraPos += cameraSpeed * cameraFront;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)</span><br><span class="line">     cameraPos -= cameraSpeed * cameraFront;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)</span><br><span class="line">     cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;</span><br><span class="line"> if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)</span><br><span class="line">     cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2.3 移动速度 目前我们的移动速度是个常量。理论上没什么问题，但是实际情况下根据处理器的能力不同，有些人可能会比其他人每秒绘制更多帧，也就是以更高的频率调用 processInput 函数。结果就是，根据配置的不同，有些人可能移动很快，而有些人会移动很慢。当你发布你的程序的时候，你必须确保它在所有硬件上移动速度都一样。图形程序和游戏通常会跟踪一个时间差(Deltatime)变量，它储存了渲染上一帧所用的时间。我们把所有速度都去乘以 deltaTime 值。结果就是，如果我们的 deltaTime 很大，就意味着上一帧的渲染花费了更多时间，所以这一帧的速度需要变得更高来平衡渲染所花去的时间。使用这种方法时，无论你的电脑快还是慢，摄像机的速度都会相应平衡，这样每个用户的体验就都一样了。</p>
-]]></content>
-      <categories>
-        <category>opengl-learn</category>
       </categories>
   </entry>
 </search>

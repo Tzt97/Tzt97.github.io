@@ -20,28 +20,34 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Tzt">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="昨天写OpenGL写了一半发现公式在hexo中没法转义，百度后总结了一下公式在hexo-next中的显示方法，顺道给博客布置了next主题，进行了一部分的调参。  next主题下载 默认的hexo博客布置没有next主题，用了landscape，首先下载next主题，有两种方式 方法一 npm 方法，要求hexo 版本高于5.0 12$ cd blog$ npm install hexo-them">
+<meta property="og:type" content="article">
+<meta property="og:title" content="blog-next">
+<meta property="og:url" content="http://example.com/2022/01/26/blog-next/index.html">
 <meta property="og:site_name" content="Tzt">
+<meta property="og:description" content="昨天写OpenGL写了一半发现公式在hexo中没法转义，百度后总结了一下公式在hexo-next中的显示方法，顺道给博客布置了next主题，进行了一部分的调参。  next主题下载 默认的hexo博客布置没有next主题，用了landscape，首先下载next主题，有两种方式 方法一 npm 方法，要求hexo 版本高于5.0 12$ cd blog$ npm install hexo-them">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/Tzt97/picture/blob/main/截屏2022-01-26%20下午12.17.46.png?raw=true">
+<meta property="article:published_time" content="2022-01-26T03:13:02.000Z">
+<meta property="article:modified_time" content="2022-01-26T04:29:07.968Z">
 <meta property="article:author" content="Tzt">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/Tzt97/picture/blob/main/截屏2022-01-26%20下午12.17.46.png?raw=true">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2022/01/26/blog-next/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Tzt</title>
+  <title>blog-next | Tzt</title>
   
 
 
@@ -174,9 +180,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
@@ -192,10 +199,9 @@
       <meta itemprop="name" content="Tzt">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/26/blog-next/" class="post-title-link" itemprop="url">blog-next</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          blog-next
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -228,7 +234,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="昨天写opengl写了一半发现公式在hexo中没法转义百度后总结了一下公式在hexo-next中的显示方法顺道给博客布置了next主题进行了一部分的调参">昨天写OpenGL写了一半发现公式在hexo中没法转义，百度后总结了一下公式在hexo-next中的显示方法，顺道给博客布置了next主题，进行了一部分的调参。</h2>
+        <h2 id="昨天写opengl写了一半发现公式在hexo中没法转义百度后总结了一下公式在hexo-next中的显示方法顺道给博客布置了next主题进行了一部分的调参">昨天写OpenGL写了一半发现公式在hexo中没法转义，百度后总结了一下公式在hexo-next中的显示方法，顺道给博客布置了next主题，进行了一部分的调参。</h2>
 <ol type="1">
 <li><p>next主题下载</p>
 <p>默认的hexo博客布置没有next主题，用了landscape，首先下载next主题，有两种方式</p>
@@ -245,350 +251,42 @@
 <p>2.3 浏览页面显示当前浏览进度</p>
 <p>打开 themes/next/_config.yml，搜索关键字 scrollpercent，把 false 改为 true。</p>
 <p>2.4 Local Search本地搜索 安装插件hexo-generator-searchdb,执行以下命令: <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure> 修改hexo/_config.yml站点配置文件，新增以下内容到任意位置 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">search:</span><br><span class="line">path: search.xml</span><br><span class="line">field: post</span><br><span class="line">format: html</span><br><span class="line">limit: 10000</span><br></pre></td></tr></table></figure> 编辑 主题配置文件，启用本地搜索功能： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Local search</span><br><span class="line">local_search:</span><br><span class="line">enable: true</span><br></pre></td></tr></table></figure></p>
-<p>2.4 阅读全文设置 在每篇文章自己想要展示的地方后面加一个
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/26/blog-next/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
+<p>2.4 阅读全文设置 在每篇文章自己想要展示的地方后面加一个<span id="more"></span>即可 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">## 今天还是学习 OpenGL，就是效率很慢啊</span><br><span class="line">### 今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度</span><br><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure> 效果如下</p>
+<p><img src="https://github.com/Tzt97/picture/blob/main/截屏2022-01-26%20下午12.17.46.png?raw=true" width = "50%" height = "50%" div align=center /></p>
+<p>2.5 剩下的暂时没有配置，花里胡哨的，以后用到了再说吧</p></li>
+<li><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/381508379">hexo中公式的显示</a></p>
+<p>卸载hexo-math：<code>$ npm un hexo-math</code></p>
+<p>卸载hexo-renderer-marked：<code>$ npm un hexo-renderer-marked</code></p>
+<p>安装hexo-renderer-pandoc：<code>$ npm i hexo-renderer-pandoc</code></p>
+<p>安装hexo-renderer-pandoc：<code>$ brew install pandoc</code>（mac）</p>
+<p>在hexo/_config.yml末尾添加一段代码 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">math:</span><br><span class="line"> engine: &#x27;mathjax&#x27; # or &#x27;katex&#x27;</span><br><span class="line"> mathjax:</span><br><span class="line">   # src: custom_mathjax_source</span><br><span class="line">   config:</span><br><span class="line">     # MathJax config</span><br></pre></td></tr></table></figure> 修改next/_config.yml中mathjax的设置 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mathjax:</span><br><span class="line">enable: true</span><br></pre></td></tr></table></figure> md文件前面要加上mathjax:true <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: opengl-coordinate</span><br><span class="line">date: 2022-01-24 10:58:09</span><br><span class="line">categories: opengl-learn</span><br><span class="line">mathjax: true</span><br></pre></td></tr></table></figure></p>
+<p>这样就ok了</p></li>
+</ol>
+
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/25/opengl-cameral/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Tzt">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tzt">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/25/opengl-cameral/" class="post-title-link" itemprop="url">opengl-cameral</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-01-25 15:50:29 / Modified: 23:29:12" itemprop="dateCreated datePublished" datetime="2022-01-25T15:50:29+08:00">2022-01-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/opengl-learn/" itemprop="url" rel="index"><span itemprop="name">opengl-learn</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="今天还是学习-opengl就是效率很慢啊">今天还是学习 OpenGL，就是效率很慢啊</h2>
-<h3 id="今天学习-opengl-的摄像头使用键盘鼠标可以控制观察角度">今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度</h3>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/25/opengl-cameral/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/24/opengl-coordinate/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Tzt">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tzt">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/24/opengl-coordinate/" class="post-title-link" itemprop="url">opengl-coordinate</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-01-24 10:58:09" itemprop="dateCreated datePublished" datetime="2022-01-24T10:58:09+08:00">2022-01-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-01-25 23:29:54" itemprop="dateModified" datetime="2022-01-25T23:29:54+08:00">2022-01-25</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/opengl-learn/" itemprop="url" rel="index"><span itemprop="name">opengl-learn</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="今天继续学习-opengl">今天继续学习 OpenGL</h1>
-<h2 id="学习坐标变换">学习坐标变换</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/24/opengl-coordinate/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/25/opengl-cameral/" rel="prev" title="opengl-cameral">
+      <i class="fa fa-chevron-left"></i> opengl-cameral
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/22/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Tzt">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tzt">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/22/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">博客搭建</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-01-22 20:40:40" itemprop="dateCreated datePublished" datetime="2022-01-22T20:40:40+08:00">2022-01-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-01-25 23:30:08" itemprop="dateModified" datetime="2022-01-25T23:30:08+08:00">2022-01-25</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%8D%9A%E5%AE%A2/" itemprop="url" rel="index"><span itemprop="name">博客</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="零碎知识何其多博客以记之先搭建一个简陋的用用">零碎知识何其多，博客以记之，先搭建一个简陋的用用。</h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/22/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/22/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Tzt">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Tzt">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/22/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-01-22 14:34:42" itemprop="dateCreated datePublished" datetime="2022-01-22T14:34:42+08:00">2022-01-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-01-25 23:31:02" itemprop="dateModified" datetime="2022-01-25T23:31:02+08:00">2022-01-25</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%8D%9A%E5%AE%A2/" itemprop="url" rel="index"><span itemprop="name">博客</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/22/hello-world/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
@@ -641,6 +339,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%A8%E5%A4%A9%E5%86%99opengl%E5%86%99%E4%BA%86%E4%B8%80%E5%8D%8A%E5%8F%91%E7%8E%B0%E5%85%AC%E5%BC%8F%E5%9C%A8hexo%E4%B8%AD%E6%B2%A1%E6%B3%95%E8%BD%AC%E4%B9%89%E7%99%BE%E5%BA%A6%E5%90%8E%E6%80%BB%E7%BB%93%E4%BA%86%E4%B8%80%E4%B8%8B%E5%85%AC%E5%BC%8F%E5%9C%A8hexo-next%E4%B8%AD%E7%9A%84%E6%98%BE%E7%A4%BA%E6%96%B9%E6%B3%95%E9%A1%BA%E9%81%93%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%B8%83%E7%BD%AE%E4%BA%86next%E4%B8%BB%E9%A2%98%E8%BF%9B%E8%A1%8C%E4%BA%86%E4%B8%80%E9%83%A8%E5%88%86%E7%9A%84%E8%B0%83%E5%8F%82"><span class="nav-number">1.</span> <span class="nav-text">昨天写OpenGL写了一半发现公式在hexo中没法转义，百度后总结了一下公式在hexo-next中的显示方法，顺道给博客布置了next主题，进行了一部分的调参。</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -754,59 +453,6 @@
   
 
   
-      
-
-<script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      loader: {
-        source: {
-          '[tex]/amsCd': '[tex]/amscd',
-          '[tex]/AMScd': '[tex]/amscd'
-        }
-      },
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    (function () {
-      var script = document.createElement('script');
-      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-      script.defer = true;
-      document.head.appendChild(script);
-    })();
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
 
   
 
