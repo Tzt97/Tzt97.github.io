@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="现实世界的光照是极其复杂的，仅仅有光源与物体是不够的，OpenGL的光照使用的是简化的模型，对现实的情况进行近似，这样处理起来会更容易一些，而且看起来也差不多一样。这些光照模型都是基于我们对光的物理特性的理解。 这里介绍一下冯氏光照模型(Phong Lighting Model)与其相应代码实现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="opengl-light(二)">
+<meta property="og:url" content="http://example.com/2022/01/27/opengl-light-%E4%BA%8C/index.html">
+<meta property="og:site_name" content="Tzt">
+<meta property="og:description" content="现实世界的光照是极其复杂的，仅仅有光源与物体是不够的，OpenGL的光照使用的是简化的模型，对现实的情况进行近似，这样处理起来会更容易一些，而且看起来也差不多一样。这些光照模型都是基于我们对光的物理特性的理解。 这里介绍一下冯氏光照模型(Phong Lighting Model)与其相应代码实现">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://learnopengl-cn.github.io/img/02/02/basic_lighting_phong.png">
+<meta property="og:image" content="https://learnopengl-cn.github.io/img/02/02/basic_lighting_specular_theory.png">
+<meta property="og:image" content="https://learnopengl-cn.github.io/img/02/02/ambient_lighting.png">
+<meta property="og:image" content="https://learnopengl-cn.github.io/img/02/02/diffuse_light.png">
+<meta property="og:image" content="https://learnopengl-cn.github.io/img/02/02/basic_lighting_diffuse.png">
+<meta property="og:image" content="https://learnopengl-cn.github.io/img/02/02/basic_lighting_normal_transformation.png">
+<meta property="og:image" content="https://learnopengl-cn.github.io/img/02/02/basic_lighting_specular_shininess.png">
+<meta property="og:image" content="https://learnopengl-cn.github.io/img/02/02/basic_lighting_specular.png">
+<meta property="og:image" content="https://github.com/Tzt97/picture/blob/main/p9.gif?raw=true">
+<meta property="og:image" content="https://learnopengl-cn.github.io/img/02/02/basic_lighting_gouruad.png">
+<meta property="og:image" content="https://github.com/Tzt97/picture/blob/main/p10.gif?raw=true">
+<meta property="article:published_time" content="2022-01-27T10:02:13.000Z">
+<meta property="article:modified_time" content="2022-01-27T13:22:57.980Z">
+<meta property="article:author" content="Tzt">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://learnopengl-cn.github.io/img/02/02/basic_lighting_phong.png">
+
+<link rel="canonical" href="http://example.com/2022/01/27/opengl-light-%E4%BA%8C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>opengl-light(二) | Tzt</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Tzt</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Tzt97" class="github-corner" title="GitHub" aria-label="GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/27/opengl-light-%E4%BA%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Tzt">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tzt">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          opengl-light(二)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-01-27 18:02:13 / Modified: 21:22:57" itemprop="dateCreated datePublished" datetime="2022-01-27T18:02:13+08:00">2022-01-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/opengl-learn/" itemprop="url" rel="index"><span itemprop="name">opengl-learn</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="现实世界的光照是极其复杂的仅仅有光源与物体是不够的opengl的光照使用的是简化的模型对现实的情况进行近似这样处理起来会更容易一些而且看起来也差不多一样这些光照模型都是基于我们对光的物理特性的理解">现实世界的光照是极其复杂的，仅仅有光源与物体是不够的，OpenGL的光照使用的是简化的模型，对现实的情况进行近似，这样处理起来会更容易一些，而且看起来也差不多一样。这些光照模型都是基于我们对光的物理特性的理解。</h2>
+<h3 id="这里介绍一下冯氏光照模型phong-lighting-model与其相应代码实现">这里介绍一下冯氏光照模型(Phong Lighting Model)与其相应代码实现</h3>
+<span id="more"></span>
+<ol type="1">
+<li><p>冯氏光照模型</p>
+<p>模型的主要结构由3个分量组成：环境(Ambient)、漫反射(Diffuse)和镜面(Specular)光照</p>
+<p><img src="https://learnopengl-cn.github.io/img/02/02/basic_lighting_phong.png" width = "50%" height = "50%" div    align=center /></p>
+<p>环境光照(Ambient Lighting)：我们会使用一个环境光照常量，它永远会给物体一些颜色。 (即使微弱，永远有光的存在!!!)</p>
+<p>漫反射光照(Diffuse Lighting)：模拟光源对物体的方向性影响(Directional Impact) 。它是冯氏光照模型中视觉上最显著的分量。物体的某一部分越是正对着光源，它就会越亮。</p>
+<p>镜面光照(Specular Lighting)：模拟光源、物体、眼球三方面的成像。模拟有光泽物体上面 出现的亮点。镜面光照的颜色相比于物体的颜色会更倾向于光的颜色。</p>
+<p><img src="https://learnopengl-cn.github.io/img/02/02/basic_lighting_specular_theory.png" width = "50%" height = "50%" div    align=center /></p></li>
+<li><p>环境光照 把环境光照添加到场景里非常简单。我们用光的颜色乘以一个很小的常量环境因子，再乘以物体的颜色，然后将最终结果作为片段的颜色。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line"> float ambientStrength = 0.1;</span><br><span class="line"> vec3 ambient = ambientStrength * lightColor;</span><br><span class="line"></span><br><span class="line"> vec3 result = ambient * objectColor;</span><br><span class="line"> FragColor = vec4(result, 1.0);</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure> 效果图如下：</p>
+<p><img src="https://learnopengl-cn.github.io/img/02/02/ambient_lighting.png" width = "50%" height = "50%" div    align=center /></p></li>
+<li><p>漫反射光照</p>
+<p>下图左上方有一个光源，它所发出的光线落在物体的一个片段上。我们需要测量这个光线是以什么角度接触到这个片段的。如果光线垂直于物体表面，这束光对物体的影响会最大化（译注：更亮）。为了测量光线和片段的角度，我们使用一个叫做法向量(Normal Vector)的东西，它是垂直于片段表面的一个向量（这里以黄色箭头表示），我们在后面再讲这个东西。这两个向量之间的角度很容易就能够通过点乘计算出来。 <img src="https://learnopengl-cn.github.io/img/02/02/diffuse_light.png" width = "50%" height = "50%" div    align=center /></p>
+<p>所以，计算漫反射光照需要什么？</p>
+<ol type="1">
+<li>法向量：一个垂直于顶点表面的向量。</li>
+<li>定向的光线：作为光源的位置与片段的位置之间向量差的方向向量。为了计算这个光线，我们需要光的位置向量和片段的位置向量。</li>
+</ol>
+<p>在这里我们简单的把法线数据手工添加到顶点数据中。更新后的顶点数据数组如下 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">float vertices[] = &#123;</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, </span><br><span class="line">  0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, </span><br><span class="line">  0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, </span><br><span class="line"> -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, </span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, </span><br><span class="line"></span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,</span><br><span class="line"> -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,</span><br><span class="line"> -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,</span><br><span class="line"> -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,</span><br><span class="line"></span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,</span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,</span><br><span class="line"> -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,</span><br><span class="line"> -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure> 由于我们向顶点数组添加了额外的数据，所以我们应该更新光照的顶点着色器： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#version 330 core</span><br><span class="line">layout (location = 0) in vec3 aPos;</span><br><span class="line">layout (location = 1) in vec3 aNormal;</span><br></pre></td></tr></table></figure> 修改一下顶点属性指针来适应新的顶点数组的大小 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// position attribute</span><br><span class="line">glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);</span><br><span class="line">glEnableVertexAttribArray(0);</span><br><span class="line">// Normal attribute</span><br><span class="line">glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));</span><br><span class="line">glEnableVertexAttribArray(1);</span><br></pre></td></tr></table></figure> 光照的计算都是在片段着色器里进行，所以我们需要将法向量由顶点着色器传递到片段着色器。我们这么做： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">out vec3 Normal;</span><br><span class="line"></span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">   gl_Position = projection * view * model * vec4(aPos, 1.0);</span><br><span class="line">   Normal = aNormal;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 在片段着色器中定义相应的输入变量 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">in vec3 Normal;</span><br></pre></td></tr></table></figure> 题外话：补充<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/92735700">gif</a>知识点，GIF上传网址：1 GitHub 2 <a target="_blank" rel="noopener" href="https://giphy.com">giphy</a>,ok 结束题外话 计算漫反射光照</p>
+<p>现在对每个顶点都有了法向量，但是我们仍然需要光源的位置向量和片段的位置向量。由于光源的位置是一个静态变量，我们可以简单地在片段着色器中把它声明为uniform： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uniform vec3 lightPos;</span><br></pre></td></tr></table></figure> 使用在前面声明的lightPos向量作为光源位置： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lightingShader.setVec3(&quot;lightPos&quot;, lightPos);</span><br></pre></td></tr></table></figure> 还需要片段的位置。我们会在世界空间中进行所有的光照计算，因此我们需要一个在世界空间中的顶点位置。我们可以通过把顶点位置属性乘以模型矩阵（不是观察和投影矩阵）来把它变换到世界空间坐标。这个在顶点着色器中很容易完成，所以我们声明一个输出变量，并计算它的世界空间坐标： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">out vec3 FragPos;  </span><br><span class="line">out vec3 Normal;</span><br><span class="line"></span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line"> gl_Position = projection * view * model * vec4(aPos, 1.0);</span><br><span class="line"> FragPos = vec3(model * vec4(aPos, 1.0));</span><br><span class="line"> Normal = aNormal;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 最后，在片段着色器中添加相应的输入变量。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">in vec3 FragPos;</span><br></pre></td></tr></table></figure> 计算光源和片段位置之间的方向向量 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vec3 lightDir = normalize(lightPos - FragPos);</span><br></pre></td></tr></table></figure> 对norm和lightDir向量进行点乘，计算光源对当前片段实际的漫发射影响。结果值再乘以光的颜色，得到漫反射分量。两个向量之间的角度越大，漫反射分量就会越小,两个向量之间的角度大于90度，点乘的结果就会变成负数，这样会导致漫反射分量变为负数。为此，我们使用max函数返回两个参数之间较大的参数，从而保证漫反射分量不会变成负数。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vec3 norm = normalize(Normal);</span><br><span class="line">float diff = max(dot(norm, lightDir), 0.0);</span><br><span class="line">vec3 diffuse = diff * lightColor;</span><br></pre></td></tr></table></figure> 我们有了环境光分量和漫反射分量，我们把它们相加，然后把结果乘以物体的颜色，来获得片段最后的输出颜色。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vec3 result = (ambient + diffuse) * objectColor;</span><br><span class="line">FragColor = vec4(result, 1.0);</span><br></pre></td></tr></table></figure> 此时，效果图应如下</p>
+<p><img src="https://learnopengl-cn.github.io/img/02/02/basic_lighting_diffuse.png" width = "50%" height = "50%" div    align=center /></p>
+<p>最后考虑到不等比缩放时（注意：等比缩放不会破坏法线，因为法线的方向没被改变，仅仅改变了法线的长度，而这很容易通过标准化来修复），法向量就不会再垂直于对应的表面了，这样光照就会被破坏。使用一个为法向量专门定制的模型矩阵。这个矩阵称之为法线矩阵(Normal Matrix)，在顶点着色器中，我们可以使用inverse和transpose函数自己生成这个法线矩阵，这两个函数对所有类型矩阵都有效。注意我们还要把被处理过的矩阵强制转换为3×3矩阵，来保证它失去了位移属性以及能够乘以vec3的法向量。 <img src="https://learnopengl-cn.github.io/img/02/02/basic_lighting_normal_transformation.png" width = "50%" height = "50%" div    align=center /> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Normal = mat3(transpose(inverse(model))) * aNormal;</span><br></pre></td></tr></table></figure></p></li>
+<li><p>镜面光照</p>
+<p>和漫反射光照一样，镜面光照也是依据光的方向向量和物体的法向量来决定的，但是它也依赖于观察方向，例如玩家是从什么方向看着这个片段的。我们通过反射法向量周围光的方向来计算反射向量。然后我们计算反射向量和视线方向的角度差，如果夹角越小，那么镜面光的影响就会越大。它的作用效果就是，当我们去看光被物体所反射的那个方向的时候，我们会看到一个高光。观察向量是镜面光照附加的一个变量，我们可以使用观察者世界空间位置和片段的位置来计算它。之后，我们计算镜面光强度，用它乘以光源的颜色，再将它加上环境光和漫反射分量。</p>
+<p>为了得到观察者的世界空间坐标，我们简单地使用摄像机对象的位置坐标代替（它当然就是观察者）。所以我们把另一个uniform添加到片段着色器，把相应的摄像机位置坐标传给片段着色器： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">uniform vec3 viewPos;</span><br><span class="line">lightingShader.setVec3(&quot;viewPos&quot;, camera.Position);</span><br></pre></td></tr></table></figure> 下一步，我们计算视线方向向量，和对应的沿着法线轴的反射向量 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vec3 viewDir = normalize(viewPos - FragPos);</span><br><span class="line">vec3 reflectDir = reflect(-lightDir, norm);</span><br></pre></td></tr></table></figure> 我们对lightDir向量进行了取反。reflect函数要求第一个向量是指向片段位置的向量，但是lightDir当前正好相反，是从片段指出向量（由先前我们计算lightDir向量时，减法的顺序决定）。为了保证我们得到正确的reflect向量，我们通过对lightDir向量取反来获得相反的方向。第二个参数要求是一个法向量，所以我们提供的是已标准化的norm向量。</p>
+<p>接下来做的是计算镜面分量。下面的代码完成了这件事： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">float specularStrength = 0.5;</span><br><span class="line">float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);</span><br><span class="line">vec3 specular = specularStrength * spec * lightColor;</span><br></pre></td></tr></table></figure> 其中定义一个镜面强度(Specular Intensity)变量，给镜面高光一个中等亮度颜色，让它不要产生过度的影响。在计算视线方向与反射方向的点乘（并确保它不是负值）时，然后取它的32次幂。这个32是高光的反光度(Shininess)。一个物体的反光度越高，反射光的能力越强，散射得越少，高光点就会越小。在下面的图片里，你会看到不同反光度的视觉效果影响：</p>
+<p><img src="https://learnopengl-cn.github.io/img/02/02/basic_lighting_specular_shininess.png" width = "50%" height = "50%" div    align=center /></p>
+<p>最后一件事情是把它加到环境光分量和漫反射分量里，再用结果乘以物体的颜色： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vec3 result = (ambient + diffuse + specular) * objectColor;</span><br><span class="line">FragColor = vec4(result, 1.0);</span><br></pre></td></tr></table></figure> 可以看到类似的画面</p>
+<p><img src="https://learnopengl-cn.github.io/img/02/02/basic_lighting_specular.png" width = "50%" height = "50%" div    align=center /></p></li>
+<li><p>补充</p></li>
+</ol>
+<p>5.1 让光源动起来</p>
+<p>使用sin或cos函数让光源在场景中来回移动。观察光照随时间的改变。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lightPos.x = 1.0f + sin(glfwGetTime()) * 2.0f;</span><br><span class="line">lightPos.y = sin(glfwGetTime() / 2.0f) * 1.0f;</span><br></pre></td></tr></table></figure> 效果图如下</p>
+<p><img src="https://github.com/Tzt97/picture/blob/main/p9.gif?raw=true" width = "50%" height = "50%" div    align=center /></p>
+<p>5.2 在观察空间（而不是世界空间）中计算冯氏光照 OpenGL里面没观察空间就是(0,0,0)处，世界空间是指相机空间，故只需要把相机位置坐标设成(0,0,0)即可</p>
+<p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lightPos.x = 1.0f + sin(glfwGetTime()) * 2.0f;</span><br><span class="line">lightPos.y = sin(glfwGetTime() / 2.0f) * 1.0f;</span><br></pre></td></tr></table></figure> 5.3 实现一个Gouraud着色（而不是冯氏着色）</p>
+<p>冯氏着色是在片段着色器中计算渲染的，而Gouraud着色是在顶点着色器中实现的冯氏光照模型。然而，顶点着色器中的最终颜色值是仅仅只是那个顶点的颜色值，片段的颜色值是由插值光照颜色所得来的。结果就是这种光照看起来不会非常真实，除非使用了大量顶点。由于插值，这种光照看起来有点逊色。冯氏着色能产生更平滑的光照效果。</p>
+<p><img src="https://learnopengl-cn.github.io/img/02/02/basic_lighting_gouruad.png" width = "50%" height = "50%" div    align=center /></p>
+<p>本例中的代码改变如下 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">//vs</span><br><span class="line">#version 330 core</span><br><span class="line">layout (location = 0) in vec3 aPos;</span><br><span class="line">layout (location = 1) in vec3 aNormal;</span><br><span class="line"></span><br><span class="line">out vec3 LightingColor; // resulting color from lighting calculations</span><br><span class="line"></span><br><span class="line">uniform vec3 lightPos;</span><br><span class="line">uniform vec3 viewPos;</span><br><span class="line">uniform vec3 lightColor;</span><br><span class="line"></span><br><span class="line">uniform mat4 model;</span><br><span class="line">uniform mat4 view;</span><br><span class="line">uniform mat4 projection;</span><br><span class="line"></span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line"> gl_Position = projection * view * model * vec4(aPos, 1.0);</span><br><span class="line"> </span><br><span class="line"> // gouraud shading</span><br><span class="line"> // ------------------------</span><br><span class="line"> vec3 Position = vec3(model * vec4(aPos, 1.0));</span><br><span class="line"> vec3 Normal = mat3(transpose(inverse(model))) * aNormal;</span><br><span class="line"> </span><br><span class="line"> // ambient</span><br><span class="line"> float ambientStrength = 0.1;</span><br><span class="line"> vec3 ambient = ambientStrength * lightColor;</span><br><span class="line"></span><br><span class="line"> // diffuse </span><br><span class="line"> vec3 norm = normalize(Normal);</span><br><span class="line"> vec3 lightDir = normalize(lightPos - Position);</span><br><span class="line"> float diff = max(dot(norm, lightDir), 0.0);</span><br><span class="line"> vec3 diffuse = diff * lightColor;</span><br><span class="line"> </span><br><span class="line"> // specular</span><br><span class="line"> float specularStrength = 1.0; // this is set higher to better show the effect of Gouraud shading </span><br><span class="line"> vec3 viewDir = normalize(viewPos - Position);</span><br><span class="line"> vec3 reflectDir = reflect(-lightDir, norm);  </span><br><span class="line"> float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);</span><br><span class="line"> vec3 specular = specularStrength * spec * lightColor;      </span><br><span class="line"></span><br><span class="line"> LightingColor = ambient + diffuse + specular;</span><br><span class="line">&#125;</span><br><span class="line">// Fragment shader:</span><br><span class="line">// ================</span><br><span class="line">#version 330 core</span><br><span class="line">out vec4 FragColor;</span><br><span class="line"></span><br><span class="line">in vec3 LightingColor; </span><br><span class="line"></span><br><span class="line">uniform vec3 objectColor;</span><br><span class="line"></span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">FragColor = vec4(LightingColor * objectColor, 1.0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 效果图应如下</p>
+<p><img src="https://github.com/Tzt97/picture/blob/main/p10.gif?raw=true" width = "50%" height = "50%" div    align=center /></p>
+<p>好吧，由于录屏软件和GIF转化的问题，看起来这两种着色方式差距不大，但是自己跑一下代码的话还是一点明显差别的，Gouraud着色有点条纹感。</p>
+<p>今天到这，明天不能只学OpenGL了</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/27/opengl-light-%E4%B8%80/" rel="prev" title="opengl-light(一)">
+      <i class="fa fa-chevron-left"></i> opengl-light(一)
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%B0%E5%AE%9E%E4%B8%96%E7%95%8C%E7%9A%84%E5%85%89%E7%85%A7%E6%98%AF%E6%9E%81%E5%85%B6%E5%A4%8D%E6%9D%82%E7%9A%84%E4%BB%85%E4%BB%85%E6%9C%89%E5%85%89%E6%BA%90%E4%B8%8E%E7%89%A9%E4%BD%93%E6%98%AF%E4%B8%8D%E5%A4%9F%E7%9A%84opengl%E7%9A%84%E5%85%89%E7%85%A7%E4%BD%BF%E7%94%A8%E7%9A%84%E6%98%AF%E7%AE%80%E5%8C%96%E7%9A%84%E6%A8%A1%E5%9E%8B%E5%AF%B9%E7%8E%B0%E5%AE%9E%E7%9A%84%E6%83%85%E5%86%B5%E8%BF%9B%E8%A1%8C%E8%BF%91%E4%BC%BC%E8%BF%99%E6%A0%B7%E5%A4%84%E7%90%86%E8%B5%B7%E6%9D%A5%E4%BC%9A%E6%9B%B4%E5%AE%B9%E6%98%93%E4%B8%80%E4%BA%9B%E8%80%8C%E4%B8%94%E7%9C%8B%E8%B5%B7%E6%9D%A5%E4%B9%9F%E5%B7%AE%E4%B8%8D%E5%A4%9A%E4%B8%80%E6%A0%B7%E8%BF%99%E4%BA%9B%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B%E9%83%BD%E6%98%AF%E5%9F%BA%E4%BA%8E%E6%88%91%E4%BB%AC%E5%AF%B9%E5%85%89%E7%9A%84%E7%89%A9%E7%90%86%E7%89%B9%E6%80%A7%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">现实世界的光照是极其复杂的，仅仅有光源与物体是不够的，OpenGL的光照使用的是简化的模型，对现实的情况进行近似，这样处理起来会更容易一些，而且看起来也差不多一样。这些光照模型都是基于我们对光的物理特性的理解。</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%99%E9%87%8C%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8B%E5%86%AF%E6%B0%8F%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8Bphong-lighting-model%E4%B8%8E%E5%85%B6%E7%9B%B8%E5%BA%94%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.</span> <span class="nav-text">这里介绍一下冯氏光照模型(Phong Lighting Model)与其相应代码实现</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Tzt</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tzt</span>
+</div>
+
+<!--
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
