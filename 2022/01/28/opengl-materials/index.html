@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="今天首先学一点OpenGL 今天学到了材质，如果我们想要在OpenGL中模拟多种类型的物体，我们必须为每个物体分别定义一个材质(Material)属性。代码上就是通过三个冯氏光照分量(环境光照(Ambient Lighting)、漫反射光照(Diffuse Lighting)和镜面光照(Specular Lighting))和反光度(Shininess)定义材质属性(结构体),同时对光源也做了相应">
+<meta property="og:type" content="article">
+<meta property="og:title" content="opengl-materials">
+<meta property="og:url" content="http://example.com/2022/01/28/opengl-materials/index.html">
+<meta property="og:site_name" content="Tzt">
+<meta property="og:description" content="今天首先学一点OpenGL 今天学到了材质，如果我们想要在OpenGL中模拟多种类型的物体，我们必须为每个物体分别定义一个材质(Material)属性。代码上就是通过三个冯氏光照分量(环境光照(Ambient Lighting)、漫反射光照(Diffuse Lighting)和镜面光照(Specular Lighting))和反光度(Shininess)定义材质属性(结构体),同时对光源也做了相应">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://learnopengl-cn.github.io/img/02/03/materials_real_world.png">
+<meta property="og:image" content="https://learnopengl-cn.github.io/img/02/03/materials_with_material.png">
+<meta property="og:image" content="https://learnopengl-cn.github.io/img/02/03/materials_light.png">
+<meta property="og:image" content="https://github.com/Tzt97/picture/blob/main/12.gif?raw=true">
+<meta property="article:published_time" content="2022-01-28T04:37:26.000Z">
+<meta property="article:modified_time" content="2022-01-28T05:04:27.144Z">
+<meta property="article:author" content="Tzt">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://learnopengl-cn.github.io/img/02/03/materials_real_world.png">
+
+<link rel="canonical" href="http://example.com/2022/01/28/opengl-materials/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>opengl-materials | Tzt</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Tzt</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/Tzt97" class="github-corner" title="GitHub" aria-label="GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/28/opengl-materials/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Tzt">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tzt">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          opengl-materials
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-01-28 12:37:26 / Modified: 13:04:27" itemprop="dateCreated datePublished" datetime="2022-01-28T12:37:26+08:00">2022-01-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/opengl-learn/" itemprop="url" rel="index"><span itemprop="name">opengl-learn</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="今天首先学一点opengl">今天首先学一点OpenGL</h2>
+<h3 id="今天学到了材质如果我们想要在opengl中模拟多种类型的物体我们必须为每个物体分别定义一个材质material属性代码上就是通过三个冯氏光照分量环境光照ambient-lighting漫反射光照diffuse-lighting和镜面光照specular-lighting和反光度shininess定义材质属性结构体同时对光源也做了相应改变">今天学到了材质，如果我们想要在OpenGL中模拟多种类型的物体，我们必须为每个物体分别定义一个材质(Material)属性。代码上就是通过三个冯氏光照分量(环境光照(Ambient Lighting)、漫反射光照(Diffuse Lighting)和镜面光照(Specular Lighting))和反光度(Shininess)定义材质属性(结构体),同时对光源也做了相应改变。</h3>
+<span id="more"></span>
+<ol type="1">
+<li>材质</li>
+</ol>
+<p>在现实世界里，每个物体会对光产生不同的反应。比如说，钢看起来通常会比陶瓷花瓶更闪闪发光，木头箱子也不会像钢制箱子那样对光产生很强的反射。每个物体对镜面高光也有不同的反应。有些物体反射光的时候不会有太多的散射(Scatter)，因而产生一个较小的高光点，而有些物体则会散射很多，产生一个有着更大半径的高光点。</p>
+<p>在上一节中，我们指定了一个物体和光的颜色，以及结合环境光和镜面强度分量，来定义物体的视觉输出。当描述一个物体的时候，我们可以用这三个分量来定义一个材质颜色(Material Color)：环境光照(Ambient Lighting)、漫反射光照(Diffuse Lighting)和镜面光照(Specular Lighting)。通过为每个分量指定一个颜色，我们就能够对物体的颜色输出有着精细的控制了。现在，我们再添加反光度(Shininess)这个分量到上述的三个颜色中，这就有我们需要的所有材质属性了： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#version 330 core</span><br><span class="line">struct Material &#123;</span><br><span class="line">    vec3 ambient;</span><br><span class="line">    vec3 diffuse;</span><br><span class="line">    vec3 specular;</span><br><span class="line">    float shininess;</span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line">uniform Material material;</span><br></pre></td></tr></table></figure> ambient材质向量定义了在环境光照下这个物体反射得是什么颜色，通常这是和物体颜色相同的颜色。diffuse材质向量定义了在漫反射光照下物体的颜色。（和环境光照一样）漫反射颜色也要设置为我们需要的物体颜色。specular材质向量设置的是镜面光照对物体的颜色影响（或者甚至可能反射一个物体特定的镜面高光颜色）。最后，shininess影响镜面高光的散射/半径。</p>
+<p>这四个元素定义了一个物体的材质，它们模拟了现实世界中的真实材质。下面的图片展示了几种现实世界的材质对我们的立方体的影响：</p>
+<p><img src="https://learnopengl-cn.github.io/img/02/03/materials_real_world.png" width = "50%" height = "50%" div    align=center /></p>
+<p>修改片段着色器 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">void main()</span><br><span class="line">&#123;    </span><br><span class="line">    // 环境光</span><br><span class="line">    vec3 ambient = lightColor * material.ambient;</span><br><span class="line"></span><br><span class="line">    // 漫反射 </span><br><span class="line">    vec3 norm = normalize(Normal);</span><br><span class="line">    vec3 lightDir = normalize(lightPos - FragPos);</span><br><span class="line">    float diff = max(dot(norm, lightDir), 0.0);</span><br><span class="line">    vec3 diffuse = lightColor * (diff * material.diffuse);</span><br><span class="line"></span><br><span class="line">    // 镜面光</span><br><span class="line">    vec3 viewDir = normalize(viewPos - FragPos);</span><br><span class="line">    vec3 reflectDir = reflect(-lightDir, norm);  </span><br><span class="line">    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);</span><br><span class="line">    vec3 specular = lightColor * (spec * material.specular);  </span><br><span class="line"></span><br><span class="line">    vec3 result = ambient + diffuse + specular;</span><br><span class="line">    FragColor = vec4(result, 1.0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 我们现在在需要的地方访问了材质结构体中的所有属性，并且这次是根据材质的颜色来计算最终的输出颜色的。物体的每个材质属性都乘上了它们对应的光照分量。</p>
+<p>我们现在可以在程序中设置适当的uniform，对物体设置材质了。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lightingShader.setVec3(&quot;material.ambient&quot;,  1.0f, 0.5f, 0.31f);</span><br><span class="line">lightingShader.setVec3(&quot;material.diffuse&quot;,  1.0f, 0.5f, 0.31f);</span><br><span class="line">lightingShader.setVec3(&quot;material.specular&quot;, 0.5f, 0.5f, 0.5f);</span><br><span class="line">lightingShader.setFloat(&quot;material.shininess&quot;, 32.0f);</span><br></pre></td></tr></table></figure> 我们将环境光和漫反射分量设置成我们想要让物体所拥有的颜色，而将镜面分量设置为一个中等亮度的颜色，我们不希望镜面分量在这个物体上过于强烈。我们将反光度保持为32。现在我们能够程序中非常容易地修改物体的材质了。 运行程序，你应该会得到下面这样的结果：</p>
+<p><img src="https://learnopengl-cn.github.io/img/02/03/materials_with_material.png" width = "50%" height = "50%" div    align=center /></p>
+<ol start="2" type="1">
+<li>光的属性</li>
+</ol>
+<p>这个物体太亮了。物体过亮的原因是环境光、漫反射和镜面光这三个颜色对任何一个光源都会去全力反射。物体的每个材质属性对每一个光照分量都返回了最大的强度。实际上光源对环境光、漫反射和镜面光分量也具有着不同的强度。因此我们重新设置一个光源属性。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">struct Light &#123;</span><br><span class="line">    vec3 position;</span><br><span class="line"></span><br><span class="line">    vec3 ambient;</span><br><span class="line">    vec3 diffuse;</span><br><span class="line">    vec3 specular;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">uniform Light light;</span><br></pre></td></tr></table></figure> 和材质uniform一样，我们需要更新片段着色器： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vec3 ambient  = light.ambient * material.ambient;</span><br><span class="line">vec3 diffuse  = light.diffuse * (diff * material.diffuse);</span><br><span class="line">vec3 specular = light.specular * (spec * material.specular);</span><br></pre></td></tr></table></figure> 一个光源对它的ambient、diffuse和specular光照有着不同的强度。环境光照通常会设置为一个比较低的强度，因为我们不希望环境光颜色太过显眼。光源的漫反射分量通常设置为光所具有的颜色，通常是一个比较明亮的白色。镜面光分量通常会保持为vec3(1.0)，以最大强度发光。注意我们也将光源的位置添加到了结构体中。 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lightingShader.setVec3(&quot;light.ambient&quot;,  0.2f, 0.2f, 0.2f);</span><br><span class="line">lightingShader.setVec3(&quot;light.diffuse&quot;,  0.5f, 0.5f, 0.5f); // 将光照调暗了一些以搭配场景</span><br><span class="line">lightingShader.setVec3(&quot;light.specular&quot;, 1.0f, 1.0f, 1.0f); </span><br></pre></td></tr></table></figure> <img src="https://learnopengl-cn.github.io/img/02/03/materials_light.png" width = "50%" height = "50%" div    align=center /></p>
+<ol start="3" type="1">
+<li>不同的光源颜色</li>
+</ol>
+<p>我们可以利用sin和glfwGetTime函数改变光源的环境光和漫反射颜色，从而很容易地让光源的颜色随着时间变化 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">glm::vec3 lightColor;</span><br><span class="line">lightColor.x = sin(glfwGetTime() * 2.0f);</span><br><span class="line">lightColor.y = sin(glfwGetTime() * 0.7f);</span><br><span class="line">lightColor.z = sin(glfwGetTime() * 1.3f);</span><br><span class="line"></span><br><span class="line">glm::vec3 diffuseColor = lightColor   * glm::vec3(0.5f); // 降低影响</span><br><span class="line">glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); // 很低的影响</span><br><span class="line"></span><br><span class="line">lightingShader.setVec3(&quot;light.ambient&quot;, ambientColor);</span><br><span class="line">lightingShader.setVec3(&quot;light.diffuse&quot;, diffuseColor);</span><br></pre></td></tr></table></figure> 最终效果图如下</p>
+<p><img src="https://github.com/Tzt97/picture/blob/main/12.gif?raw=true" width = "50%" height = "50%" div    align=center /></p>
+<p>OK，学别的去了(效率之低，令人发指)，溜了溜了</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/27/opengl-light-%E4%BA%8C/" rel="prev" title="opengl-light(二)">
+      <i class="fa fa-chevron-left"></i> opengl-light(二)
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8A%E5%A4%A9%E9%A6%96%E5%85%88%E5%AD%A6%E4%B8%80%E7%82%B9opengl"><span class="nav-number">1.</span> <span class="nav-text">今天首先学一点OpenGL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8A%E5%A4%A9%E5%AD%A6%E5%88%B0%E4%BA%86%E6%9D%90%E8%B4%A8%E5%A6%82%E6%9E%9C%E6%88%91%E4%BB%AC%E6%83%B3%E8%A6%81%E5%9C%A8opengl%E4%B8%AD%E6%A8%A1%E6%8B%9F%E5%A4%9A%E7%A7%8D%E7%B1%BB%E5%9E%8B%E7%9A%84%E7%89%A9%E4%BD%93%E6%88%91%E4%BB%AC%E5%BF%85%E9%A1%BB%E4%B8%BA%E6%AF%8F%E4%B8%AA%E7%89%A9%E4%BD%93%E5%88%86%E5%88%AB%E5%AE%9A%E4%B9%89%E4%B8%80%E4%B8%AA%E6%9D%90%E8%B4%A8material%E5%B1%9E%E6%80%A7%E4%BB%A3%E7%A0%81%E4%B8%8A%E5%B0%B1%E6%98%AF%E9%80%9A%E8%BF%87%E4%B8%89%E4%B8%AA%E5%86%AF%E6%B0%8F%E5%85%89%E7%85%A7%E5%88%86%E9%87%8F%E7%8E%AF%E5%A2%83%E5%85%89%E7%85%A7ambient-lighting%E6%BC%AB%E5%8F%8D%E5%B0%84%E5%85%89%E7%85%A7diffuse-lighting%E5%92%8C%E9%95%9C%E9%9D%A2%E5%85%89%E7%85%A7specular-lighting%E5%92%8C%E5%8F%8D%E5%85%89%E5%BA%A6shininess%E5%AE%9A%E4%B9%89%E6%9D%90%E8%B4%A8%E5%B1%9E%E6%80%A7%E7%BB%93%E6%9E%84%E4%BD%93%E5%90%8C%E6%97%B6%E5%AF%B9%E5%85%89%E6%BA%90%E4%B9%9F%E5%81%9A%E4%BA%86%E7%9B%B8%E5%BA%94%E6%94%B9%E5%8F%98"><span class="nav-number">1.1.</span> <span class="nav-text">今天学到了材质，如果我们想要在OpenGL中模拟多种类型的物体，我们必须为每个物体分别定义一个材质(Material)属性。代码上就是通过三个冯氏光照分量(环境光照(Ambient Lighting)、漫反射光照(Diffuse Lighting)和镜面光照(Specular Lighting))和反光度(Shininess)定义材质属性(结构体),同时对光源也做了相应改变。</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Tzt</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tzt</span>
+</div>
+
+<!--
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
