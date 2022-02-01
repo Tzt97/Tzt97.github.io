@@ -1,40 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>blog-next</title>
-    <url>/2022/01/26/blog-next/</url>
-    <content><![CDATA[<h2 id="昨天写opengl写了一半发现公式在hexo中没法转义百度后总结了一下公式在hexo-next中的显示方法顺道给博客布置了next主题进行了一部分的调参">昨天写OpenGL写了一半发现公式在hexo中没法转义，百度后总结了一下公式在hexo-next中的显示方法，顺道给博客布置了next主题，进行了一部分的调参。</h2>
+    <title>openg-lightingmaps</title>
+    <url>/2022/02/01/openg-lightingmaps/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
+    <title>opengl-coordinate</title>
+    <url>/2022/01/24/opengl-coordinate/</url>
+    <content><![CDATA[<h1 id="今天继续学习-opengl">今天继续学习 OpenGL</h1>
+<h2 id="学习坐标变换">学习坐标变换</h2>
 <span id="more"></span>
 <ol type="1">
-<li><p>next主题下载</p>
-<p>默认的hexo博客布置没有next主题，用了landscape，首先下载next主题，有两种方式</p>
-<p>方法一 npm 方法，要求hexo 版本高于5.0 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd blog</span><br><span class="line">$ npm install hexo-theme-next</span><br></pre></td></tr></table></figure></p>
-<p>方法二 git clone <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd blog </span><br><span class="line">$ git clone https://github.com/next-theme/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure> 我用了方法二，提示报错，百度了一下换成了下面的命令 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git clone git://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure></p></li>
-<li><p>next 主题的使用与配置</p>
-<p><a href="https://www.jianshu.com/p/97e0c6a51809">使用</a></p>
-<p>下载完成之后，打开/blog/_config.yml文件，查找#Extensions字段，修改如下： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Extensions</span><br><span class="line">## Plugins: https://hexo.io/plugins/</span><br><span class="line">## Themes: https://hexo.io/themes/</span><br><span class="line">theme: next</span><br></pre></td></tr></table></figure> next里面有四个子主题，选择其中一个,打开/blog/themes/next/_config.yml文件，查找Scheme Settings字段并修改如下： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Scheme Settings</span><br><span class="line">#</span><br><span class="line">---------------------------------------------------------------</span><br><span class="line"># Schemes</span><br><span class="line">#scheme: Muse</span><br><span class="line">#scheme: Mist</span><br><span class="line">#scheme: Pisces</span><br><span class="line">scheme: Gemini</span><br><span class="line"># Dark Mode</span><br><span class="line">darkmode: false</span><br></pre></td></tr></table></figure> ok 现在你的博客已经换成了next主题了。</p>
-<p><a href="https://blog.csdn.net/as480133937/article/details/100138838/">配置</a></p>
-<p>在 Hexo 中有两份主要的配置文件，其名称都是 _config.yml。 其中，一份位于站点根目录下，主要包含 Hexo 本身的站点配置；另一份位于主题theme目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。为了描述方便，在以下说明中，将前者称为 站点配置文件， 后者称为 主题配置文件</p>
-<p>2.1 新建标签及分类界面</p>
-<p>打开 主题配置文件，搜索 menu，找到如下代码： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">menu:</span><br><span class="line">home: / || home</span><br><span class="line">#about: /about/ || user</span><br><span class="line">#tags: /tags/ || tags</span><br><span class="line">#categories: /categories/ || th</span><br><span class="line">archives: /archives/ || archive</span><br><span class="line">#schedule: /schedule/ || calendar</span><br><span class="line">#sitemap: /sitemap.xml || sitemap</span><br><span class="line">#commonweal: /404/ || heartbeat</span><br></pre></td></tr></table></figure> 同时终端 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br><span class="line">hexo new page tages</span><br></pre></td></tr></table></figure> 会在生成source下生成两个文件夹，categories和tages，以后在新建md文件时，加上标签就可以归到对应标签或分类界面了 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">title: blog-next</span><br><span class="line">date: 2022-01-26 11:13:02</span><br><span class="line">categories: 博客</span><br></pre></td></tr></table></figure> 2.2 隐藏网页底部 powered By Hexo</p>
-<p>打开 themes/next/layout/_partials/footer.swig,找到(command+f) <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;%- if theme.footer.powered %&#125;</span><br><span class="line"> &lt;div class=&quot;powered-by&quot;&gt;</span><br><span class="line">  &#123;%- set next_site = &#x27;https://theme-next.org&#x27; %&#125;</span><br><span class="line">  %- if theme.scheme !== &#x27;Gemini&#x27; %&#125;</span><br><span class="line">   &#123;%- set next_site = &#x27;https://&#x27; + theme.scheme | lower + &#x27;.theme-next.org&#x27; %&#125;</span><br><span class="line">  &#123;%- endif %&#125;</span><br><span class="line">  &#123;&#123;- __(&#x27;footer.powered&#x27;, next_url(&#x27;https://hexo.io&#x27;, &#x27;Hexo&#x27;, &#123;class: &#x27;theme-link&#x27;&#125;) + &#x27; &amp; &#x27; + next_url(next_site, &#x27;NexT.&#x27; + theme.scheme, &#123;class: &#x27;theme-link&#x27;&#125;)) &#125;&#125;</span><br><span class="line"> &lt;/div&gt;</span><br><span class="line"> &#123;%- endif %&#125;</span><br></pre></td></tr></table></figure> 把这段代码首尾分别加上：<!-- 和-->，或者直接删除。</p>
-<p>2.3 浏览页面显示当前浏览进度</p>
-<p>打开 themes/next/_config.yml，搜索关键字 scrollpercent，把 false 改为 true。</p>
-<p>2.4 Local Search本地搜索 安装插件hexo-generator-searchdb,执行以下命令: <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure> 修改hexo/_config.yml站点配置文件，新增以下内容到任意位置 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">search:</span><br><span class="line">path: search.xml</span><br><span class="line">field: post</span><br><span class="line">format: html</span><br><span class="line">limit: 10000</span><br></pre></td></tr></table></figure> 编辑 主题配置文件，启用本地搜索功能： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Local search</span><br><span class="line">local_search:</span><br><span class="line">enable: true</span><br></pre></td></tr></table></figure></p>
-<p>2.4 阅读全文设置 在每篇文章自己想要展示的地方后面加一个<!-- more -->即可 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">## 今天还是学习 OpenGL，就是效率很慢啊</span><br><span class="line">### 今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度</span><br><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure> 效果如下</p>
-<p><img src="https://github.com/Tzt97/picture/blob/main/截屏2022-01-26%20下午12.17.46.png?raw=true" width = "50%" height = "50%" div align=center /></p>
-<p>2.5 剩下的暂时没有配置，花里胡哨的，以后用到了再说吧</p></li>
-<li><p><a href="https://zhuanlan.zhihu.com/p/381508379">hexo中公式的显示</a></p>
-<p>卸载hexo-math：<code>$ npm un hexo-math</code></p>
-<p>卸载hexo-renderer-marked：<code>$ npm un hexo-renderer-marked</code></p>
-<p>安装hexo-renderer-pandoc：<code>$ npm i hexo-renderer-pandoc</code></p>
-<p>安装hexo-renderer-pandoc：<code>$ brew install pandoc</code>（mac）</p>
-<p>在hexo/_config.yml末尾添加一段代码 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">math:</span><br><span class="line"> engine: &#x27;mathjax&#x27; # or &#x27;katex&#x27;</span><br><span class="line"> mathjax:</span><br><span class="line">   # src: custom_mathjax_source</span><br><span class="line">   config:</span><br><span class="line">     # MathJax config</span><br></pre></td></tr></table></figure> 修改next/_config.yml中mathjax的设置 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mathjax:</span><br><span class="line">enable: true</span><br></pre></td></tr></table></figure> md文件前面要加上mathjax:true <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">title: opengl-coordinate</span><br><span class="line">date: 2022-01-24 10:58:09</span><br><span class="line">categories: opengl-learn</span><br><span class="line">mathjax: true</span><br></pre></td></tr></table></figure></p>
-<p>这样就ok了</p></li>
+<li><p>理论</p>
+<p><span class="math display">\[V_{clip}=M_{projection}\cdot M_{view}\cdot M_{model}\cdot V_{local}\]</span></p>
+<p><span class="math inline">\(V_{local}\)</span>一般就是指位置坐标，是一个 4*1 的向量，{x,y,z,1}</p>
+<p><span class="math inline">\(M_{model}\)</span>是指变换矩阵，包括旋转与平移,是一个 4*4 矩阵；</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::mat4 model = glm::mat4(1.0f);</span><br><span class="line">model = glm::rotate(model, glm::radians(-55.0f)</span><br><span class="line">glm::vec3(1.0f, 0.0f, 0.0f));</span><br></pre></td></tr></table></figure>
+<p><span class="math inline">\(M_{view}\)</span>指相机（人眼）距离观察目标的相对位置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::mat4 view;</span><br><span class="line">// 注意，我们将矩阵向我们要进行移动场景的反方向移动。</span><br><span class="line">view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));</span><br></pre></td></tr></table></figure>
+<p><span class="math inline">\(M_{projection}\)</span>主要是指投影矩阵，包括平行投影与投射投影</p>
+<ol type="1">
+<li>平行投影</li>
+</ol>
+<p><img src="https://learnopengl-cn.github.io/img/01/08/orthographic_frustum.png" width = "50%" height = "50%" div align=center /></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 100.0f);</span><br></pre></td></tr></table></figure>
+<p>前两个参数指定了投影体的左右坐标，第三和第四参数指定了投影体的底部和顶部。通过这四个参数我们定义了近平面和远平面的大小，然后第五和第六个参数则定义了近平面和远平面的距离。这个投影矩阵会将处于这些 x，y，z 值范围内的坐标变换为标准化设备坐标。</p>
+<p>2.投射投影 <img src="https://learnopengl-cn.github.io/img/01/08/perspective_frustum.png" width = "50%" height = "50%" div align=center /></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::mat4 projection;</span><br><span class="line">projection = glm::perspective(glm::radians(45.0f), screenWidth / screenHeight, 0.1f, 100.0f);</span><br></pre></td></tr></table></figure></li>
+<li><p>代码实现</p>
+<p>几何着色器代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#version 330 core</span><br><span class="line">layout (location = 0) in vec3 aPos;</span><br><span class="line">...</span><br><span class="line">uniform mat4 model;</span><br><span class="line">uniform mat4 view;</span><br><span class="line">uniform mat4 projection;</span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    // 注意乘法要从右向左读</span><br><span class="line">    gl_Position = projection * view * model * vec4(aPos, 1.0);</span><br><span class="line">    ...</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>渲染代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::mat4 model         = glm::mat4(1.0f);</span><br><span class="line">glm::mat4 view          = glm::mat4(1.0f);</span><br><span class="line">glm::mat4 projection    = glm::mat4(1.0f);</span><br><span class="line">model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));</span><br><span class="line">view  = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));</span><br><span class="line">projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);</span><br><span class="line">glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, &quot;model &quot;), 1, GL_FALSE, &amp;model [0][0]);</span><br><span class="line">glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, &quot;view&quot;), 1, GL_FALSE, &amp;view[0][0]);</span><br><span class="line">glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, &quot;projection&quot;), 1, GL_FALSE, &amp;projection[0][0]);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>效果图</p>
+<p><img src="https://learnopengl-cn.github.io/img/01/08/coordinate_systems_result.png" width = "50%" height = "50%" div align=center /></p></li>
+<li><p>3D 实现</p>
+<p>拓展我们的 2D 平面为一个 3D 立方体。要想渲染一个立方体，我们一共需要 36 个顶点（6 个面 x 每个面有 2 个三角形组成 x 每个三角形有 3 个顶点）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">float vertices[] = &#123;</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line"> -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 1.0f,</span><br><span class="line"> -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"> -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line"> -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"></span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"> -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line"> -0.5f,  0.5f, -0.5f,  0.0f, 1.0f&#125;;</span><br></pre></td></tr></table></figure>
+<p>让立方体随着时间旋转</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));</span><br></pre></td></tr></table></figure>
+<p>渲染代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glDrawArrays(GL_TRIANGLES, 0, 36);</span><br></pre></td></tr></table></figure>
+<p><img src="https://github.com/Tzt97/picture/blob/main/p4.png?raw=true" width = "50%" height = "50%" div align=center /></p>
+<p>此时图像十分奇怪，因为没有视野覆盖，OpenGL 里面提供了函数来进行深度的覆盖与缓冲，OpenGL 存储深度信息在一个叫做 Z 缓冲(Z-buffer)的缓冲中，它允许 OpenGL 决定何时覆盖一个像素而何时不覆盖。通过使用 Z 缓冲，我们可以配置 OpenGL 来进行深度测试</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glEnable(GL_DEPTH_TEST);</span><br><span class="line">glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br></pre></td></tr></table></figure>
+<p><img src="https://github.com/Tzt97/picture/blob/main/截屏2022-01-24%20下午5.27.21.png?raw=true" width = "50%" height = "50%" div align=center /></p>
+<p>至此，本章学习结束</p></li>
 </ol>
 ]]></content>
       <categories>
-        <category>博客</category>
+        <category>opengl-learn</category>
       </categories>
   </entry>
   <entry>
@@ -99,81 +116,6 @@
       </categories>
   </entry>
   <entry>
-    <title>opengl-coordinate</title>
-    <url>/2022/01/24/opengl-coordinate/</url>
-    <content><![CDATA[<h1 id="今天继续学习-opengl">今天继续学习 OpenGL</h1>
-<h2 id="学习坐标变换">学习坐标变换</h2>
-<span id="more"></span>
-<ol type="1">
-<li><p>理论</p>
-<p><span class="math display">\[V_{clip}=M_{projection}\cdot M_{view}\cdot M_{model}\cdot V_{local}\]</span></p>
-<p><span class="math inline">\(V_{local}\)</span>一般就是指位置坐标，是一个 4*1 的向量，{x,y,z,1}</p>
-<p><span class="math inline">\(M_{model}\)</span>是指变换矩阵，包括旋转与平移,是一个 4*4 矩阵；</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::mat4 model = glm::mat4(1.0f);</span><br><span class="line">model = glm::rotate(model, glm::radians(-55.0f)</span><br><span class="line">glm::vec3(1.0f, 0.0f, 0.0f));</span><br></pre></td></tr></table></figure>
-<p><span class="math inline">\(M_{view}\)</span>指相机（人眼）距离观察目标的相对位置</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::mat4 view;</span><br><span class="line">// 注意，我们将矩阵向我们要进行移动场景的反方向移动。</span><br><span class="line">view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));</span><br></pre></td></tr></table></figure>
-<p><span class="math inline">\(M_{projection}\)</span>主要是指投影矩阵，包括平行投影与投射投影</p>
-<ol type="1">
-<li>平行投影</li>
-</ol>
-<p><img src="https://learnopengl-cn.github.io/img/01/08/orthographic_frustum.png" width = "50%" height = "50%" div align=center /></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 100.0f);</span><br></pre></td></tr></table></figure>
-<p>前两个参数指定了投影体的左右坐标，第三和第四参数指定了投影体的底部和顶部。通过这四个参数我们定义了近平面和远平面的大小，然后第五和第六个参数则定义了近平面和远平面的距离。这个投影矩阵会将处于这些 x，y，z 值范围内的坐标变换为标准化设备坐标。</p>
-<p>2.投射投影 <img src="https://learnopengl-cn.github.io/img/01/08/perspective_frustum.png" width = "50%" height = "50%" div align=center /></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::mat4 projection;</span><br><span class="line">projection = glm::perspective(glm::radians(45.0f), screenWidth / screenHeight, 0.1f, 100.0f);</span><br></pre></td></tr></table></figure></li>
-<li><p>代码实现</p>
-<p>几何着色器代码</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#version 330 core</span><br><span class="line">layout (location = 0) in vec3 aPos;</span><br><span class="line">...</span><br><span class="line">uniform mat4 model;</span><br><span class="line">uniform mat4 view;</span><br><span class="line">uniform mat4 projection;</span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    // 注意乘法要从右向左读</span><br><span class="line">    gl_Position = projection * view * model * vec4(aPos, 1.0);</span><br><span class="line">    ...</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>渲染代码</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::mat4 model         = glm::mat4(1.0f);</span><br><span class="line">glm::mat4 view          = glm::mat4(1.0f);</span><br><span class="line">glm::mat4 projection    = glm::mat4(1.0f);</span><br><span class="line">model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));</span><br><span class="line">view  = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));</span><br><span class="line">projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);</span><br><span class="line">glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, &quot;model &quot;), 1, GL_FALSE, &amp;model [0][0]);</span><br><span class="line">glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, &quot;view&quot;), 1, GL_FALSE, &amp;view[0][0]);</span><br><span class="line">glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, &quot;projection&quot;), 1, GL_FALSE, &amp;projection[0][0]);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>效果图</p>
-<p><img src="https://learnopengl-cn.github.io/img/01/08/coordinate_systems_result.png" width = "50%" height = "50%" div align=center /></p></li>
-<li><p>3D 实现</p>
-<p>拓展我们的 2D 平面为一个 3D 立方体。要想渲染一个立方体，我们一共需要 36 个顶点（6 个面 x 每个面有 2 个三角形组成 x 每个三角形有 3 个顶点）</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">float vertices[] = &#123;</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line"> -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 1.0f,</span><br><span class="line"> -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"> -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line"> -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"></span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f, -0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"> -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line"> -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line"></span><br><span class="line"> -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line">  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,</span><br><span class="line"> -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,</span><br><span class="line"> -0.5f,  0.5f, -0.5f,  0.0f, 1.0f&#125;;</span><br></pre></td></tr></table></figure>
-<p>让立方体随着时间旋转</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));</span><br></pre></td></tr></table></figure>
-<p>渲染代码</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glDrawArrays(GL_TRIANGLES, 0, 36);</span><br></pre></td></tr></table></figure>
-<p><img src="https://github.com/Tzt97/picture/blob/main/p4.png?raw=true" width = "50%" height = "50%" div align=center /></p>
-<p>此时图像十分奇怪，因为没有视野覆盖，OpenGL 里面提供了函数来进行深度的覆盖与缓冲，OpenGL 存储深度信息在一个叫做 Z 缓冲(Z-buffer)的缓冲中，它允许 OpenGL 决定何时覆盖一个像素而何时不覆盖。通过使用 Z 缓冲，我们可以配置 OpenGL 来进行深度测试</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glEnable(GL_DEPTH_TEST);</span><br><span class="line">glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);</span><br></pre></td></tr></table></figure>
-<p><img src="https://github.com/Tzt97/picture/blob/main/截屏2022-01-24%20下午5.27.21.png?raw=true" width = "50%" height = "50%" div align=center /></p>
-<p>至此，本章学习结束</p></li>
-</ol>
-]]></content>
-      <categories>
-        <category>opengl-learn</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>opengl-light(一)</title>
-    <url>/2022/01/27/opengl-light-%E4%B8%80/</url>
-    <content><![CDATA[<h2 id="好吧效率比较低以后不能只学opengl了要合理规划时间">好吧，效率比较低，以后不能只学OpenGL了，要合理规划时间</h2>
-<h3 id="今天主要是学习了opengl的光照系统说白了就是如何用着色器真实的模拟光源物体与眼睛成像的代码实现">今天主要是学习了OpenGL的光照系统，说白了就是如何用着色器真实的模拟光源、物体与眼睛成像的代码实现</h3>
-<span id="more"></span>
-<ol type="1">
-<li><p>颜色基本知识</p>
-<p>我们在现实生活中看到某一物体的颜色并不是这个物体真正拥有的颜色，而是它所反射的(Reflected)颜色。颜色可以数字化的由红色(Red)、绿色(Green)和蓝色(Blue)三个分量组成，它们通常被缩写为RGB。仅仅用这三个值就可以组合出任意一种颜色。</p>
-<p><img src="https://learnopengl-cn.github.io/img/02/01/light_reflection.png" width = "50%" height = "50%" div align=center /></p>
-<p>在计算机图形学中，如何模拟表现出物体的真实颜色呢？这里先考虑两方面，光源颜色与物体本身颜色，我们将这两个颜色向量作分量相乘，结果就是最终的颜色向量了。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::vec3 lightColor(1.0f, 1.0f, 1.0f);//光源白色</span><br><span class="line">glm::vec3 toyColor(1.0f, 0.5f, 0.31f);//本身珊瑚色</span><br><span class="line">glm::vec3 result = lightColor * toyColor; // = (1.0f, 0.5f, 0.31f);</span><br></pre></td></tr></table></figure> <img src="https://github.com/Tzt97/picture/blob/main/06.png?raw=true" width = "50%" height = "50%" div align=center /></p>
-<p>假如是绿色光源，那么物体呈现出的颜色就变为了深绿色。(推荐一个<a href="https://www.ip138.com/yanse/search.htm">颜色查询工具</a>,将OpenGL里面的RGB小数乘255就可以查询，颜色16进制可以用另一个<a href="https://www.zxgj.cn/g/yansezhi">工具</a>)</p>
-<p><img src="https://github.com/Tzt97/picture/blob/main/07.png?raw=true" width = "50%" height = "50%" div align=center /></p></li>
-<li><p>创建一个物体与白色光源</p>
-<p>2.1 创建一个表示灯（光源）的立方体</p>
-<p>首先我们还要为这个灯创建一个专门的VAO。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">unsigned int lightVAO;</span><br><span class="line">glGenVertexArrays(1, &amp;lightVAO);</span><br><span class="line">glBindVertexArray(lightVAO);</span><br><span class="line">// 只需要绑定VBO不用再次设置VBO的数据，因为箱子的VBO数据中已经包含了正确的立方体顶点数据</span><br><span class="line">glBindBuffer(GL_ARRAY_BUFFER, VBO);</span><br><span class="line">// 设置灯立方体的顶点属性（对我们的灯来说仅仅只有位置数据）</span><br><span class="line">glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);</span><br><span class="line">glEnableVertexAttribArray(0);</span><br></pre></td></tr></table></figure></p>
-<p>再定义一个顶点着色器和片段着色器 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//顶点着色器</span><br><span class="line">#version 330 core</span><br><span class="line">layout (location = 0) in vec3 aPos;</span><br><span class="line"></span><br><span class="line">uniform mat4 model;</span><br><span class="line">uniform mat4 view;</span><br><span class="line">uniform mat4 projection;</span><br><span class="line"></span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line"> gl_Position = projection * view * model * vec4(aPos, 1.0);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 片段着色器（颜色暂时固定）(个人感觉应该绑定lightcolor)</span><br><span class="line">#version 330 core</span><br><span class="line">out vec4 FragColor;</span><br><span class="line"></span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    FragColor = vec4(1.0f,); // set alle 4 vector values to 1.0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 最后移动光源的位置，即设置model矩阵 全局变量光源位置<code>glm::vec3 lightPos(1.2f, 1.0f, 2.0f);</code></p>
-<p>把灯位移到这里，然后将它缩小一点，让它不那么明显： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">model = glm::mat4();</span><br><span class="line">model = glm::translate(model, lightPos);</span><br><span class="line">model = glm::scale(model, glm::vec3(0.2f));</span><br></pre></td></tr></table></figure> 绘制 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">lampShader.use();</span><br><span class="line">// 设置模型、视图和投影矩阵uniform</span><br><span class="line">...</span><br><span class="line">// 绘制灯立方体对象</span><br><span class="line">glBindVertexArray(lightVAO);</span><br><span class="line">glDrawArrays(GL_TRIANGLES, 0, 36);</span><br></pre></td></tr></table></figure></p>
-<p>2.2 创建一个表示被观察的物体</p>
-<p>使用最早的VAO，在片段着色器中声明两个颜色变量，灯光颜色与物体颜色。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#version 330 core</span><br><span class="line">out vec4 FragColor;</span><br><span class="line"></span><br><span class="line">uniform vec3 objectColor;</span><br><span class="line">uniform vec3 lightColor;</span><br><span class="line"></span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    FragColor = vec4(lightColor * objectColor, 1.0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 我们把物体的颜色设置为之前提到的珊瑚红色，并把光源设置为白色。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 在此之前不要忘记首先 use 对应的着色器程序（来设定uniform）</span><br><span class="line">lightingShader.use();</span><br><span class="line">lightingShader.setVec3(&quot;objectColor&quot;, 1.0f, 0.5f, 0.31f);</span><br><span class="line">lightingShader.setVec3(&quot;lightColor&quot;,  1.0f, 1.0f, 1.0f);</span><br></pre></td></tr></table></figure> 绘制 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">lightingShader.use();</span><br><span class="line">// 设置模型、视图和投影矩阵uniform</span><br><span class="line">...</span><br><span class="line">// 绘制灯立方体对象</span><br><span class="line">glBindVertexArray(lightCubeVAO);</span><br><span class="line">glDrawArrays(GL_TRIANGLES, 0, 36);</span><br></pre></td></tr></table></figure> 最终效果图应当如下所示</p>
-<p><img src="https://github.com/Tzt97/picture/blob/main/08.png?raw=true" width = "50%" height = "50%" div align=center /></p></li>
-</ol>
-]]></content>
-      <categories>
-        <category>opengl-learn</category>
-      </categories>
-  </entry>
-  <entry>
     <title>opengl-light(二)</title>
     <url>/2022/01/27/opengl-light-%E4%BA%8C/</url>
     <content><![CDATA[<h2 id="现实世界的光照是极其复杂的仅仅有光源与物体是不够的opengl的光照使用的是简化的模型对现实的情况进行近似这样处理起来会更容易一些而且看起来也差不多一样这些光照模型都是基于我们对光的物理特性的理解">现实世界的光照是极其复杂的，仅仅有光源与物体是不够的，OpenGL的光照使用的是简化的模型，对现实的情况进行近似，这样处理起来会更容易一些，而且看起来也差不多一样。这些光照模型都是基于我们对光的物理特性的理解。</h2>
@@ -226,34 +168,40 @@
       </categories>
   </entry>
   <entry>
-    <title>opengl-materials</title>
-    <url>/2022/01/28/opengl-materials/</url>
-    <content><![CDATA[<h2 id="今天首先学一点opengl">今天首先学一点OpenGL</h2>
-<h3 id="今天学到了材质如果我们想要在opengl中模拟多种类型的物体我们必须为每个物体分别定义一个材质material属性代码上就是通过三个冯氏光照分量环境光照ambient-lighting漫反射光照diffuse-lighting和镜面光照specular-lighting和反光度shininess定义材质属性结构体同时对光源也做了相应改变">今天学到了材质，如果我们想要在OpenGL中模拟多种类型的物体，我们必须为每个物体分别定义一个材质(Material)属性。代码上就是通过三个冯氏光照分量(环境光照(Ambient Lighting)、漫反射光照(Diffuse Lighting)和镜面光照(Specular Lighting))和反光度(Shininess)定义材质属性(结构体),同时对光源也做了相应改变。</h3>
+    <title>blog-next</title>
+    <url>/2022/01/26/blog-next/</url>
+    <content><![CDATA[<h2 id="昨天写opengl写了一半发现公式在hexo中没法转义百度后总结了一下公式在hexo-next中的显示方法顺道给博客布置了next主题进行了一部分的调参">昨天写OpenGL写了一半发现公式在hexo中没法转义，百度后总结了一下公式在hexo-next中的显示方法，顺道给博客布置了next主题，进行了一部分的调参。</h2>
 <span id="more"></span>
 <ol type="1">
-<li>材质</li>
+<li><p>next主题下载</p>
+<p>默认的hexo博客布置没有next主题，用了landscape，首先下载next主题，有两种方式</p>
+<p>方法一 npm 方法，要求hexo 版本高于5.0 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd blog</span><br><span class="line">$ npm install hexo-theme-next</span><br></pre></td></tr></table></figure></p>
+<p>方法二 git clone <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ cd blog </span><br><span class="line">$ git clone https://github.com/next-theme/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure> 我用了方法二，提示报错，百度了一下换成了下面的命令 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git clone git://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure></p></li>
+<li><p>next 主题的使用与配置</p>
+<p><a href="https://www.jianshu.com/p/97e0c6a51809">使用</a></p>
+<p>下载完成之后，打开/blog/_config.yml文件，查找#Extensions字段，修改如下： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Extensions</span><br><span class="line">## Plugins: https://hexo.io/plugins/</span><br><span class="line">## Themes: https://hexo.io/themes/</span><br><span class="line">theme: next</span><br></pre></td></tr></table></figure> next里面有四个子主题，选择其中一个,打开/blog/themes/next/_config.yml文件，查找Scheme Settings字段并修改如下： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Scheme Settings</span><br><span class="line">#</span><br><span class="line">---------------------------------------------------------------</span><br><span class="line"># Schemes</span><br><span class="line">#scheme: Muse</span><br><span class="line">#scheme: Mist</span><br><span class="line">#scheme: Pisces</span><br><span class="line">scheme: Gemini</span><br><span class="line"># Dark Mode</span><br><span class="line">darkmode: false</span><br></pre></td></tr></table></figure> ok 现在你的博客已经换成了next主题了。</p>
+<p><a href="https://blog.csdn.net/as480133937/article/details/100138838/">配置</a></p>
+<p>在 Hexo 中有两份主要的配置文件，其名称都是 _config.yml。 其中，一份位于站点根目录下，主要包含 Hexo 本身的站点配置；另一份位于主题theme目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。为了描述方便，在以下说明中，将前者称为 站点配置文件， 后者称为 主题配置文件</p>
+<p>2.1 新建标签及分类界面</p>
+<p>打开 主题配置文件，搜索 menu，找到如下代码： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">menu:</span><br><span class="line">home: / || home</span><br><span class="line">#about: /about/ || user</span><br><span class="line">#tags: /tags/ || tags</span><br><span class="line">#categories: /categories/ || th</span><br><span class="line">archives: /archives/ || archive</span><br><span class="line">#schedule: /schedule/ || calendar</span><br><span class="line">#sitemap: /sitemap.xml || sitemap</span><br><span class="line">#commonweal: /404/ || heartbeat</span><br></pre></td></tr></table></figure> 同时终端 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo new page categories</span><br><span class="line">hexo new page tages</span><br></pre></td></tr></table></figure> 会在生成source下生成两个文件夹，categories和tages，以后在新建md文件时，加上标签就可以归到对应标签或分类界面了 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">title: blog-next</span><br><span class="line">date: 2022-01-26 11:13:02</span><br><span class="line">categories: 博客</span><br></pre></td></tr></table></figure> 2.2 隐藏网页底部 powered By Hexo</p>
+<p>打开 themes/next/layout/_partials/footer.swig,找到(command+f) <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;%- if theme.footer.powered %&#125;</span><br><span class="line"> &lt;div class=&quot;powered-by&quot;&gt;</span><br><span class="line">  &#123;%- set next_site = &#x27;https://theme-next.org&#x27; %&#125;</span><br><span class="line">  %- if theme.scheme !== &#x27;Gemini&#x27; %&#125;</span><br><span class="line">   &#123;%- set next_site = &#x27;https://&#x27; + theme.scheme | lower + &#x27;.theme-next.org&#x27; %&#125;</span><br><span class="line">  &#123;%- endif %&#125;</span><br><span class="line">  &#123;&#123;- __(&#x27;footer.powered&#x27;, next_url(&#x27;https://hexo.io&#x27;, &#x27;Hexo&#x27;, &#123;class: &#x27;theme-link&#x27;&#125;) + &#x27; &amp; &#x27; + next_url(next_site, &#x27;NexT.&#x27; + theme.scheme, &#123;class: &#x27;theme-link&#x27;&#125;)) &#125;&#125;</span><br><span class="line"> &lt;/div&gt;</span><br><span class="line"> &#123;%- endif %&#125;</span><br></pre></td></tr></table></figure> 把这段代码首尾分别加上：<!-- 和-->，或者直接删除。</p>
+<p>2.3 浏览页面显示当前浏览进度</p>
+<p>打开 themes/next/_config.yml，搜索关键字 scrollpercent，把 false 改为 true。</p>
+<p>2.4 Local Search本地搜索 安装插件hexo-generator-searchdb,执行以下命令: <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure> 修改hexo/_config.yml站点配置文件，新增以下内容到任意位置 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">search:</span><br><span class="line">path: search.xml</span><br><span class="line">field: post</span><br><span class="line">format: html</span><br><span class="line">limit: 10000</span><br></pre></td></tr></table></figure> 编辑 主题配置文件，启用本地搜索功能： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Local search</span><br><span class="line">local_search:</span><br><span class="line">enable: true</span><br></pre></td></tr></table></figure></p>
+<p>2.4 阅读全文设置 在每篇文章自己想要展示的地方后面加一个<!-- more -->即可 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">## 今天还是学习 OpenGL，就是效率很慢啊</span><br><span class="line">### 今天学习 OpenGL 的摄像头，使用键盘鼠标可以控制观察角度</span><br><span class="line">&lt;!-- more --&gt;</span><br></pre></td></tr></table></figure> 效果如下</p>
+<p><img src="https://github.com/Tzt97/picture/blob/main/截屏2022-01-26%20下午12.17.46.png?raw=true" width = "50%" height = "50%" div align=center /></p>
+<p>2.5 剩下的暂时没有配置，花里胡哨的，以后用到了再说吧</p></li>
+<li><p><a href="https://zhuanlan.zhihu.com/p/381508379">hexo中公式的显示</a></p>
+<p>卸载hexo-math：<code>$ npm un hexo-math</code></p>
+<p>卸载hexo-renderer-marked：<code>$ npm un hexo-renderer-marked</code></p>
+<p>安装hexo-renderer-pandoc：<code>$ npm i hexo-renderer-pandoc</code></p>
+<p>安装hexo-renderer-pandoc：<code>$ brew install pandoc</code>（mac）</p>
+<p>在hexo/_config.yml末尾添加一段代码 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">math:</span><br><span class="line"> engine: &#x27;mathjax&#x27; # or &#x27;katex&#x27;</span><br><span class="line"> mathjax:</span><br><span class="line">   # src: custom_mathjax_source</span><br><span class="line">   config:</span><br><span class="line">     # MathJax config</span><br></pre></td></tr></table></figure> 修改next/_config.yml中mathjax的设置 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mathjax:</span><br><span class="line">enable: true</span><br></pre></td></tr></table></figure> md文件前面要加上mathjax:true <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">title: opengl-coordinate</span><br><span class="line">date: 2022-01-24 10:58:09</span><br><span class="line">categories: opengl-learn</span><br><span class="line">mathjax: true</span><br></pre></td></tr></table></figure></p>
+<p>这样就ok了</p></li>
 </ol>
-<p>在现实世界里，每个物体会对光产生不同的反应。比如说，钢看起来通常会比陶瓷花瓶更闪闪发光，木头箱子也不会像钢制箱子那样对光产生很强的反射。每个物体对镜面高光也有不同的反应。有些物体反射光的时候不会有太多的散射(Scatter)，因而产生一个较小的高光点，而有些物体则会散射很多，产生一个有着更大半径的高光点。</p>
-<p>在上一节中，我们指定了一个物体和光的颜色，以及结合环境光和镜面强度分量，来定义物体的视觉输出。当描述一个物体的时候，我们可以用这三个分量来定义一个材质颜色(Material Color)：环境光照(Ambient Lighting)、漫反射光照(Diffuse Lighting)和镜面光照(Specular Lighting)。通过为每个分量指定一个颜色，我们就能够对物体的颜色输出有着精细的控制了。现在，我们再添加反光度(Shininess)这个分量到上述的三个颜色中，这就有我们需要的所有材质属性了： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#version 330 core</span><br><span class="line">struct Material &#123;</span><br><span class="line">    vec3 ambient;</span><br><span class="line">    vec3 diffuse;</span><br><span class="line">    vec3 specular;</span><br><span class="line">    float shininess;</span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line">uniform Material material;</span><br></pre></td></tr></table></figure> ambient材质向量定义了在环境光照下这个物体反射得是什么颜色，通常这是和物体颜色相同的颜色。diffuse材质向量定义了在漫反射光照下物体的颜色。（和环境光照一样）漫反射颜色也要设置为我们需要的物体颜色。specular材质向量设置的是镜面光照对物体的颜色影响（或者甚至可能反射一个物体特定的镜面高光颜色）。最后，shininess影响镜面高光的散射/半径。</p>
-<p>这四个元素定义了一个物体的材质，它们模拟了现实世界中的真实材质。下面的图片展示了几种现实世界的材质对我们的立方体的影响：</p>
-<p><img src="https://learnopengl-cn.github.io/img/02/03/materials_real_world.png" width = "50%" height = "50%" div    align=center /></p>
-<p>修改片段着色器 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void main()</span><br><span class="line">&#123;    </span><br><span class="line">    // 环境光</span><br><span class="line">    vec3 ambient = lightColor * material.ambient;</span><br><span class="line"></span><br><span class="line">    // 漫反射 </span><br><span class="line">    vec3 norm = normalize(Normal);</span><br><span class="line">    vec3 lightDir = normalize(lightPos - FragPos);</span><br><span class="line">    float diff = max(dot(norm, lightDir), 0.0);</span><br><span class="line">    vec3 diffuse = lightColor * (diff * material.diffuse);</span><br><span class="line"></span><br><span class="line">    // 镜面光</span><br><span class="line">    vec3 viewDir = normalize(viewPos - FragPos);</span><br><span class="line">    vec3 reflectDir = reflect(-lightDir, norm);  </span><br><span class="line">    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);</span><br><span class="line">    vec3 specular = lightColor * (spec * material.specular);  </span><br><span class="line"></span><br><span class="line">    vec3 result = ambient + diffuse + specular;</span><br><span class="line">    FragColor = vec4(result, 1.0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 我们现在在需要的地方访问了材质结构体中的所有属性，并且这次是根据材质的颜色来计算最终的输出颜色的。物体的每个材质属性都乘上了它们对应的光照分量。</p>
-<p>我们现在可以在程序中设置适当的uniform，对物体设置材质了。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">lightingShader.setVec3(&quot;material.ambient&quot;,  1.0f, 0.5f, 0.31f);</span><br><span class="line">lightingShader.setVec3(&quot;material.diffuse&quot;,  1.0f, 0.5f, 0.31f);</span><br><span class="line">lightingShader.setVec3(&quot;material.specular&quot;, 0.5f, 0.5f, 0.5f);</span><br><span class="line">lightingShader.setFloat(&quot;material.shininess&quot;, 32.0f);</span><br></pre></td></tr></table></figure> 我们将环境光和漫反射分量设置成我们想要让物体所拥有的颜色，而将镜面分量设置为一个中等亮度的颜色，我们不希望镜面分量在这个物体上过于强烈。我们将反光度保持为32。现在我们能够程序中非常容易地修改物体的材质了。 运行程序，你应该会得到下面这样的结果：</p>
-<p><img src="https://learnopengl-cn.github.io/img/02/03/materials_with_material.png" width = "50%" height = "50%" div    align=center /></p>
-<ol start="2" type="1">
-<li>光的属性</li>
-</ol>
-<p>这个物体太亮了。物体过亮的原因是环境光、漫反射和镜面光这三个颜色对任何一个光源都会去全力反射。物体的每个材质属性对每一个光照分量都返回了最大的强度。实际上光源对环境光、漫反射和镜面光分量也具有着不同的强度。因此我们重新设置一个光源属性。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct Light &#123;</span><br><span class="line">    vec3 position;</span><br><span class="line"></span><br><span class="line">    vec3 ambient;</span><br><span class="line">    vec3 diffuse;</span><br><span class="line">    vec3 specular;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">uniform Light light;</span><br></pre></td></tr></table></figure> 和材质uniform一样，我们需要更新片段着色器： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vec3 ambient  = light.ambient * material.ambient;</span><br><span class="line">vec3 diffuse  = light.diffuse * (diff * material.diffuse);</span><br><span class="line">vec3 specular = light.specular * (spec * material.specular);</span><br></pre></td></tr></table></figure> 一个光源对它的ambient、diffuse和specular光照有着不同的强度。环境光照通常会设置为一个比较低的强度，因为我们不希望环境光颜色太过显眼。光源的漫反射分量通常设置为光所具有的颜色，通常是一个比较明亮的白色。镜面光分量通常会保持为vec3(1.0)，以最大强度发光。注意我们也将光源的位置添加到了结构体中。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">lightingShader.setVec3(&quot;light.ambient&quot;,  0.2f, 0.2f, 0.2f);</span><br><span class="line">lightingShader.setVec3(&quot;light.diffuse&quot;,  0.5f, 0.5f, 0.5f); // 将光照调暗了一些以搭配场景</span><br><span class="line">lightingShader.setVec3(&quot;light.specular&quot;, 1.0f, 1.0f, 1.0f); </span><br></pre></td></tr></table></figure> <img src="https://learnopengl-cn.github.io/img/02/03/materials_light.png" width = "50%" height = "50%" div    align=center /></p>
-<ol start="3" type="1">
-<li>不同的光源颜色</li>
-</ol>
-<p>我们可以利用sin和glfwGetTime函数改变光源的环境光和漫反射颜色，从而很容易地让光源的颜色随着时间变化 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::vec3 lightColor;</span><br><span class="line">lightColor.x = sin(glfwGetTime() * 2.0f);</span><br><span class="line">lightColor.y = sin(glfwGetTime() * 0.7f);</span><br><span class="line">lightColor.z = sin(glfwGetTime() * 1.3f);</span><br><span class="line"></span><br><span class="line">glm::vec3 diffuseColor = lightColor   * glm::vec3(0.5f); // 降低影响</span><br><span class="line">glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); // 很低的影响</span><br><span class="line"></span><br><span class="line">lightingShader.setVec3(&quot;light.ambient&quot;, ambientColor);</span><br><span class="line">lightingShader.setVec3(&quot;light.diffuse&quot;, diffuseColor);</span><br></pre></td></tr></table></figure> 最终效果图如下</p>
-<p><img src="https://github.com/Tzt97/picture/blob/main/12.gif?raw=true" width = "50%" height = "50%" div    align=center /></p>
-<p>OK，学别的去了(效率之低，令人发指)，溜了溜了</p>
 ]]></content>
       <categories>
-        <category>opengl-learn</category>
+        <category>博客</category>
       </categories>
   </entry>
   <entry>
@@ -291,6 +239,64 @@
 ]]></content>
       <categories>
         <category>博客</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>opengl-materials</title>
+    <url>/2022/01/28/opengl-materials/</url>
+    <content><![CDATA[<h2 id="今天首先学一点opengl">今天首先学一点OpenGL</h2>
+<h3 id="今天学到了材质如果我们想要在opengl中模拟多种类型的物体我们必须为每个物体分别定义一个材质material属性代码上就是通过三个冯氏光照分量环境光照ambient-lighting漫反射光照diffuse-lighting和镜面光照specular-lighting和反光度shininess定义材质属性结构体同时对光源也做了相应改变">今天学到了材质，如果我们想要在OpenGL中模拟多种类型的物体，我们必须为每个物体分别定义一个材质(Material)属性。代码上就是通过三个冯氏光照分量(环境光照(Ambient Lighting)、漫反射光照(Diffuse Lighting)和镜面光照(Specular Lighting))和反光度(Shininess)定义材质属性(结构体),同时对光源也做了相应改变。</h3>
+<span id="more"></span>
+<ol type="1">
+<li>材质</li>
+</ol>
+<p>在现实世界里，每个物体会对光产生不同的反应。比如说，钢看起来通常会比陶瓷花瓶更闪闪发光，木头箱子也不会像钢制箱子那样对光产生很强的反射。每个物体对镜面高光也有不同的反应。有些物体反射光的时候不会有太多的散射(Scatter)，因而产生一个较小的高光点，而有些物体则会散射很多，产生一个有着更大半径的高光点。</p>
+<p>在上一节中，我们指定了一个物体和光的颜色，以及结合环境光和镜面强度分量，来定义物体的视觉输出。当描述一个物体的时候，我们可以用这三个分量来定义一个材质颜色(Material Color)：环境光照(Ambient Lighting)、漫反射光照(Diffuse Lighting)和镜面光照(Specular Lighting)。通过为每个分量指定一个颜色，我们就能够对物体的颜色输出有着精细的控制了。现在，我们再添加反光度(Shininess)这个分量到上述的三个颜色中，这就有我们需要的所有材质属性了： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#version 330 core</span><br><span class="line">struct Material &#123;</span><br><span class="line">    vec3 ambient;</span><br><span class="line">    vec3 diffuse;</span><br><span class="line">    vec3 specular;</span><br><span class="line">    float shininess;</span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line">uniform Material material;</span><br></pre></td></tr></table></figure> ambient材质向量定义了在环境光照下这个物体反射得是什么颜色，通常这是和物体颜色相同的颜色。diffuse材质向量定义了在漫反射光照下物体的颜色。（和环境光照一样）漫反射颜色也要设置为我们需要的物体颜色。specular材质向量设置的是镜面光照对物体的颜色影响（或者甚至可能反射一个物体特定的镜面高光颜色）。最后，shininess影响镜面高光的散射/半径。</p>
+<p>这四个元素定义了一个物体的材质，它们模拟了现实世界中的真实材质。下面的图片展示了几种现实世界的材质对我们的立方体的影响：</p>
+<p><img src="https://learnopengl-cn.github.io/img/02/03/materials_real_world.png" width = "50%" height = "50%" div    align=center /></p>
+<p>修改片段着色器 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">void main()</span><br><span class="line">&#123;    </span><br><span class="line">    // 环境光</span><br><span class="line">    vec3 ambient = lightColor * material.ambient;</span><br><span class="line"></span><br><span class="line">    // 漫反射 </span><br><span class="line">    vec3 norm = normalize(Normal);</span><br><span class="line">    vec3 lightDir = normalize(lightPos - FragPos);</span><br><span class="line">    float diff = max(dot(norm, lightDir), 0.0);</span><br><span class="line">    vec3 diffuse = lightColor * (diff * material.diffuse);</span><br><span class="line"></span><br><span class="line">    // 镜面光</span><br><span class="line">    vec3 viewDir = normalize(viewPos - FragPos);</span><br><span class="line">    vec3 reflectDir = reflect(-lightDir, norm);  </span><br><span class="line">    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);</span><br><span class="line">    vec3 specular = lightColor * (spec * material.specular);  </span><br><span class="line"></span><br><span class="line">    vec3 result = ambient + diffuse + specular;</span><br><span class="line">    FragColor = vec4(result, 1.0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 我们现在在需要的地方访问了材质结构体中的所有属性，并且这次是根据材质的颜色来计算最终的输出颜色的。物体的每个材质属性都乘上了它们对应的光照分量。</p>
+<p>我们现在可以在程序中设置适当的uniform，对物体设置材质了。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">lightingShader.setVec3(&quot;material.ambient&quot;,  1.0f, 0.5f, 0.31f);</span><br><span class="line">lightingShader.setVec3(&quot;material.diffuse&quot;,  1.0f, 0.5f, 0.31f);</span><br><span class="line">lightingShader.setVec3(&quot;material.specular&quot;, 0.5f, 0.5f, 0.5f);</span><br><span class="line">lightingShader.setFloat(&quot;material.shininess&quot;, 32.0f);</span><br></pre></td></tr></table></figure> 我们将环境光和漫反射分量设置成我们想要让物体所拥有的颜色，而将镜面分量设置为一个中等亮度的颜色，我们不希望镜面分量在这个物体上过于强烈。我们将反光度保持为32。现在我们能够程序中非常容易地修改物体的材质了。 运行程序，你应该会得到下面这样的结果：</p>
+<p><img src="https://learnopengl-cn.github.io/img/02/03/materials_with_material.png" width = "50%" height = "50%" div    align=center /></p>
+<ol start="2" type="1">
+<li>光的属性</li>
+</ol>
+<p>这个物体太亮了。物体过亮的原因是环境光、漫反射和镜面光这三个颜色对任何一个光源都会去全力反射。物体的每个材质属性对每一个光照分量都返回了最大的强度。实际上光源对环境光、漫反射和镜面光分量也具有着不同的强度。因此我们重新设置一个光源属性。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">struct Light &#123;</span><br><span class="line">    vec3 position;</span><br><span class="line"></span><br><span class="line">    vec3 ambient;</span><br><span class="line">    vec3 diffuse;</span><br><span class="line">    vec3 specular;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">uniform Light light;</span><br></pre></td></tr></table></figure> 和材质uniform一样，我们需要更新片段着色器： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vec3 ambient  = light.ambient * material.ambient;</span><br><span class="line">vec3 diffuse  = light.diffuse * (diff * material.diffuse);</span><br><span class="line">vec3 specular = light.specular * (spec * material.specular);</span><br></pre></td></tr></table></figure> 一个光源对它的ambient、diffuse和specular光照有着不同的强度。环境光照通常会设置为一个比较低的强度，因为我们不希望环境光颜色太过显眼。光源的漫反射分量通常设置为光所具有的颜色，通常是一个比较明亮的白色。镜面光分量通常会保持为vec3(1.0)，以最大强度发光。注意我们也将光源的位置添加到了结构体中。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">lightingShader.setVec3(&quot;light.ambient&quot;,  0.2f, 0.2f, 0.2f);</span><br><span class="line">lightingShader.setVec3(&quot;light.diffuse&quot;,  0.5f, 0.5f, 0.5f); // 将光照调暗了一些以搭配场景</span><br><span class="line">lightingShader.setVec3(&quot;light.specular&quot;, 1.0f, 1.0f, 1.0f); </span><br></pre></td></tr></table></figure> <img src="https://learnopengl-cn.github.io/img/02/03/materials_light.png" width = "50%" height = "50%" div    align=center /></p>
+<ol start="3" type="1">
+<li>不同的光源颜色</li>
+</ol>
+<p>我们可以利用sin和glfwGetTime函数改变光源的环境光和漫反射颜色，从而很容易地让光源的颜色随着时间变化 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::vec3 lightColor;</span><br><span class="line">lightColor.x = sin(glfwGetTime() * 2.0f);</span><br><span class="line">lightColor.y = sin(glfwGetTime() * 0.7f);</span><br><span class="line">lightColor.z = sin(glfwGetTime() * 1.3f);</span><br><span class="line"></span><br><span class="line">glm::vec3 diffuseColor = lightColor   * glm::vec3(0.5f); // 降低影响</span><br><span class="line">glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); // 很低的影响</span><br><span class="line"></span><br><span class="line">lightingShader.setVec3(&quot;light.ambient&quot;, ambientColor);</span><br><span class="line">lightingShader.setVec3(&quot;light.diffuse&quot;, diffuseColor);</span><br></pre></td></tr></table></figure> 最终效果图如下</p>
+<p><img src="https://github.com/Tzt97/picture/blob/main/12.gif?raw=true" width = "50%" height = "50%" div    align=center /></p>
+<p>OK，学别的去了(效率之低，令人发指)，溜了溜了</p>
+]]></content>
+      <categories>
+        <category>opengl-learn</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>opengl-light(一)</title>
+    <url>/2022/01/27/opengl-light-%E4%B8%80/</url>
+    <content><![CDATA[<h2 id="好吧效率比较低以后不能只学opengl了要合理规划时间">好吧，效率比较低，以后不能只学OpenGL了，要合理规划时间</h2>
+<h3 id="今天主要是学习了opengl的光照系统说白了就是如何用着色器真实的模拟光源物体与眼睛成像的代码实现">今天主要是学习了OpenGL的光照系统，说白了就是如何用着色器真实的模拟光源、物体与眼睛成像的代码实现</h3>
+<span id="more"></span>
+<ol type="1">
+<li><p>颜色基本知识</p>
+<p>我们在现实生活中看到某一物体的颜色并不是这个物体真正拥有的颜色，而是它所反射的(Reflected)颜色。颜色可以数字化的由红色(Red)、绿色(Green)和蓝色(Blue)三个分量组成，它们通常被缩写为RGB。仅仅用这三个值就可以组合出任意一种颜色。</p>
+<p><img src="https://learnopengl-cn.github.io/img/02/01/light_reflection.png" width = "50%" height = "50%" div align=center /></p>
+<p>在计算机图形学中，如何模拟表现出物体的真实颜色呢？这里先考虑两方面，光源颜色与物体本身颜色，我们将这两个颜色向量作分量相乘，结果就是最终的颜色向量了。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">glm::vec3 lightColor(1.0f, 1.0f, 1.0f);//光源白色</span><br><span class="line">glm::vec3 toyColor(1.0f, 0.5f, 0.31f);//本身珊瑚色</span><br><span class="line">glm::vec3 result = lightColor * toyColor; // = (1.0f, 0.5f, 0.31f);</span><br></pre></td></tr></table></figure> <img src="https://github.com/Tzt97/picture/blob/main/06.png?raw=true" width = "50%" height = "50%" div align=center /></p>
+<p>假如是绿色光源，那么物体呈现出的颜色就变为了深绿色。(推荐一个<a href="https://www.ip138.com/yanse/search.htm">颜色查询工具</a>,将OpenGL里面的RGB小数乘255就可以查询，颜色16进制可以用另一个<a href="https://www.zxgj.cn/g/yansezhi">工具</a>)</p>
+<p><img src="https://github.com/Tzt97/picture/blob/main/07.png?raw=true" width = "50%" height = "50%" div align=center /></p></li>
+<li><p>创建一个物体与白色光源</p>
+<p>2.1 创建一个表示灯（光源）的立方体</p>
+<p>首先我们还要为这个灯创建一个专门的VAO。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">unsigned int lightVAO;</span><br><span class="line">glGenVertexArrays(1, &amp;lightVAO);</span><br><span class="line">glBindVertexArray(lightVAO);</span><br><span class="line">// 只需要绑定VBO不用再次设置VBO的数据，因为箱子的VBO数据中已经包含了正确的立方体顶点数据</span><br><span class="line">glBindBuffer(GL_ARRAY_BUFFER, VBO);</span><br><span class="line">// 设置灯立方体的顶点属性（对我们的灯来说仅仅只有位置数据）</span><br><span class="line">glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);</span><br><span class="line">glEnableVertexAttribArray(0);</span><br></pre></td></tr></table></figure></p>
+<p>再定义一个顶点着色器和片段着色器 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//顶点着色器</span><br><span class="line">#version 330 core</span><br><span class="line">layout (location = 0) in vec3 aPos;</span><br><span class="line"></span><br><span class="line">uniform mat4 model;</span><br><span class="line">uniform mat4 view;</span><br><span class="line">uniform mat4 projection;</span><br><span class="line"></span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line"> gl_Position = projection * view * model * vec4(aPos, 1.0);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 片段着色器（颜色暂时固定）(个人感觉应该绑定lightcolor)</span><br><span class="line">#version 330 core</span><br><span class="line">out vec4 FragColor;</span><br><span class="line"></span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    FragColor = vec4(1.0f,); // set alle 4 vector values to 1.0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 最后移动光源的位置，即设置model矩阵 全局变量光源位置<code>glm::vec3 lightPos(1.2f, 1.0f, 2.0f);</code></p>
+<p>把灯位移到这里，然后将它缩小一点，让它不那么明显： <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">model = glm::mat4();</span><br><span class="line">model = glm::translate(model, lightPos);</span><br><span class="line">model = glm::scale(model, glm::vec3(0.2f));</span><br></pre></td></tr></table></figure> 绘制 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">lampShader.use();</span><br><span class="line">// 设置模型、视图和投影矩阵uniform</span><br><span class="line">...</span><br><span class="line">// 绘制灯立方体对象</span><br><span class="line">glBindVertexArray(lightVAO);</span><br><span class="line">glDrawArrays(GL_TRIANGLES, 0, 36);</span><br></pre></td></tr></table></figure></p>
+<p>2.2 创建一个表示被观察的物体</p>
+<p>使用最早的VAO，在片段着色器中声明两个颜色变量，灯光颜色与物体颜色。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#version 330 core</span><br><span class="line">out vec4 FragColor;</span><br><span class="line"></span><br><span class="line">uniform vec3 objectColor;</span><br><span class="line">uniform vec3 lightColor;</span><br><span class="line"></span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">    FragColor = vec4(lightColor * objectColor, 1.0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 我们把物体的颜色设置为之前提到的珊瑚红色，并把光源设置为白色。 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 在此之前不要忘记首先 use 对应的着色器程序（来设定uniform）</span><br><span class="line">lightingShader.use();</span><br><span class="line">lightingShader.setVec3(&quot;objectColor&quot;, 1.0f, 0.5f, 0.31f);</span><br><span class="line">lightingShader.setVec3(&quot;lightColor&quot;,  1.0f, 1.0f, 1.0f);</span><br></pre></td></tr></table></figure> 绘制 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">lightingShader.use();</span><br><span class="line">// 设置模型、视图和投影矩阵uniform</span><br><span class="line">...</span><br><span class="line">// 绘制灯立方体对象</span><br><span class="line">glBindVertexArray(lightCubeVAO);</span><br><span class="line">glDrawArrays(GL_TRIANGLES, 0, 36);</span><br></pre></td></tr></table></figure> 最终效果图应当如下所示</p>
+<p><img src="https://github.com/Tzt97/picture/blob/main/08.png?raw=true" width = "50%" height = "50%" div align=center /></p></li>
+</ol>
+]]></content>
+      <categories>
+        <category>opengl-learn</category>
       </categories>
   </entry>
 </search>
